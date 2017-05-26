@@ -5,7 +5,7 @@
 # Prerequisite:
 Google chrome and postman should be installed in the laptop. 
 
-# Installin
+# Installing
 To get the development environment running, the following dependies should be installed:
 * body-parser
 * eslint
