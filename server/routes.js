@@ -3,12 +3,12 @@ const express = require('express'),
   router = express.Router();
 
 const config = {
-  apiKey: 'AIzaSyAxE27GJgpO5FCHhp6iTOu_s0UWTgkopVI',
-  authDomain: 'post-it-aa825.firebaseapp.com',
-  databaseURL: 'https://post-it-aa825.firebaseio.com',
-  projectId: 'post-it-aa825',
-  storageBucket: 'post-it-aa825.appspot.com',
-  messagingSenderId: '310778448957'
+  apiKey: 'AIzaSyD0-vDDGz3053Lq2cerjyVySKtgRU1A7Rc',
+  authDomain: 'eloka-667be.firebaseapp.com',
+  databaseURL: 'https://eloka-667be.firebaseio.com',
+  projectId: 'eloka-667be',
+  storageBucket: 'eloka-667be.appspot.com',
+  messagingSenderId: '333745271095'
 };
 firebase.initializeApp(config);
 const db = firebase.database();
