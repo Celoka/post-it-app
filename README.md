@@ -4,18 +4,17 @@
  
 Prerequisite:
 
-Install:
-body-parser
-eslint
-express
-firebase
-firebase-admin
-webpack
-webpack-dev-server
-Babel
-Houndci
-Node js
+For the application environment, the following should be installed:
+* body-parser
+* eslint
+* express
+* firebase
+* firebase-admin
+* webpack
+* webpack-dev-server
+* Babel
+* Houndci
+* Node js
 
 #Test
-
-npm start
+* npm start
