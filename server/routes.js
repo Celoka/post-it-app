@@ -37,8 +37,8 @@ router.post('/user/signup', (req, res) => {
 });
 // -----------------------------------------Signin Route---------
 router.post('/user/signin', (req, res) => {
-  const password = req.body.password;
   const email = req.body.email;
+  const password = req.body.password;
   firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
     res.send({
       message: 'User Signed in!'
@@ -81,7 +81,7 @@ router.post('/group', (req, res) => {
 router.post('/group/:groupId/user', (req, res) => {
   const groupKey = req.params.groupId;
   firebase.database().ref(`Groups/${groupKey}/groupMembers/`)
-  .push({ user: req.body.mail });
+  .push({ user: req.body.memberId });
   res.send('user added');
 });
 module.exports = router;
