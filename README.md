@@ -4,9 +4,10 @@ PostIt is a simple application that allows friends and colleagues create groups 
 # Prerequisites
 * Google chrome and postman should be installed in the laptop.
 
-# Test
-npm start
-
+# Installing
+* Run npm to install the required dependencies.
+# Running the test
+* npm start
 # Features
 Some of the features of the application are:
 * It should allow Users Signup/Login to the system.
