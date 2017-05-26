@@ -1,9 +1,8 @@
 const express = require('express'),
-  app = express(),
-  port = process.env.PORT || 6969,
-  bodyParser = require('body-parser'),
-  routes = require('./routes');
-
+      app = express(),
+      port = process.env.PORT || 6969,
+      bodyParser = require('body-parser'),
+      routes = require('./routes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

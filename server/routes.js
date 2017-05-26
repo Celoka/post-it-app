@@ -1,25 +1,20 @@
 const express = require('express'),
   firebase = require('firebase'),
-  apiRouter = express.Router();
+  router = express.Router();
 
 const config = {
-  apiKey: 'AIzaSyAxE27GJgpO5FCHhp6iTOu_s0UWTgkopVI',
-  authDomain: 'post-it-aa825.firebaseapp.com',
-  databaseURL: 'https://post-it-aa825.firebaseio.com',
-  projectId: 'post-it-aa825',
-  storageBucket: 'post-it-aa825.appspot.com',
-  messagingSenderId: '310778448957'
+  apiKey: 'AIzaSyAejYE9GO5kC-DIwE1sJBbFfE1mT5kR_-M',
+  authDomain: 'post-it-6c005.firebaseapp.com',
+  databaseURL: 'https://post-it-6c005.firebaseio.com',
+  projectId: 'post-it-6c005',
+  storageBucket: 'post-it-6c005.appspot.com',
+  messagingSenderId: '13317391785'
 };
 firebase.initializeApp(config);
-const myDataBase = firebase.database();
-const userRef = myDataBase.ref('user');
+const db = firebase.database();
+const userRef = db.ref('user');
 
-// apiRouter.use((req, res, next) => {
-//   console.log('Welcome to Post it!');
-//   next();
-// });
-
-apiRouter.post('/user/signup', (req, res) => {
+router.post('/user/signup', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const username = req.body.username;
@@ -41,15 +36,15 @@ apiRouter.post('/user/signup', (req, res) => {
     });
 });
 // -----------------------------------------Signin Route---------
-apiRouter.post('/user/signin', (req, res) => {
+router.post('/user/signin', (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
   firebase.auth().signInWithEmailAndPassword(email, password)
 
     .then(() => {
       userRef.push({
-        userEmail: email,
-        userPassword: password
+        userPassword: password,
+        userEmail: email
       });
       res.send({
         message: 'User Signed in!'
@@ -61,37 +56,38 @@ apiRouter.post('/user/signin', (req, res) => {
       if (errorCode === 'auth/wrong password') {
         res.send('Wrong password or email');
       } else {
-        res.send(errorMessage);
+        res.send({
+          message: `Enter valid email and password${errorMessage}`
+        });
       }
     });
 });
 // ------------------------------------------------Group Route---------
-apiRouter.post('/group', (req, res) => {
-  const username = req.body.username;
-  const groupname = req.body.groupname;
-
+router.post('/group', (req, res) => {
+  const groupName = req.body.groupname;
+// checking if user is signed in
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      firebase.database.ref('Group').child(groupname).push({
-        userName: username,
-        userGroup: groupname,
+      const userId = user.uid;
+      db.ref().child('group').push({
+        groupname: groupName,
+        groupOwner: userId,
       });
       res.send({
-        message: 'User group created'
+        message: 'Group created successfully'
       });
     } else {
-    // No user is signed in.
       res.send({
-        message: 'No user signed in'
+        message: 'Not signed in..'
       });
     }
   });
 });
-
-// apiRouter.post('/group/groupid/user', (req, res) => {
-
-//   const groupname = req.body.name;
-//   const groupid = req.body.name;
-//   const groupcreator = req.body.name;
-// })
-module.exports = apiRouter;
+// ----------addUserToGroup-----------
+router.post('/group/:groupId/user', (req, res) => {
+  const groupKey = req.params.groupId;
+  firebase.database().ref(`Groups/${groupKey}/groupMembers/`)
+  .push({ user: req.body.mail });
+  res.send('user added');
+});
+module.exports = router;
