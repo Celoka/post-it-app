@@ -39,17 +39,11 @@ router.post('/user/signup', (req, res) => {
 router.post('/user/signin', (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-
-    .then(() => {
-      userRef.push({
-        userPassword: password,
-        userEmail: email
-      });
-      res.send({
-        message: 'User Signed in!'
-      });
-    })
+  firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+    res.send({
+      message: 'User Signed in!'
+    });
+  })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -57,7 +51,7 @@ router.post('/user/signin', (req, res) => {
         res.send('Wrong password or email');
       } else {
         res.send({
-          message: `Enter valid email and password${errorMessage}`
+          message: `Enter valid email and password ${errorMessage}`
         });
       }
     });
