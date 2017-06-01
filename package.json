@@ -29,6 +29,9 @@
   },
   "devDependencies": {
     "babel-watch": "^2.0.6",
-    "jshint": "^2.9.4"
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2",
+    "should": "^11.2.1",
+    "supertest": "^3.0.0"
   }
 }

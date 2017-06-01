@@ -1,11 +1,8 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import routes from './routesconfig/routes';
-
-
-const app = express();
-const port = process.env.PORT || 8080;
-
+const express = require('express'),
+  app = express(),
+  port = process.env.PORT || 8080,
+  bodyParser = require('body-parser'),
+  routes = require('./routesconfig/routes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -13,6 +10,6 @@ app.get('/', (req, res) => {
   res.send('Welcome to Post IT!');
 });
 
-app.use('/', routes);
+app.use(routes);
 app.listen(port);
 console.log(`listening on ${port}`);
