@@ -6,15 +6,6 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 const routes = express.Router();
 
-// router.get('/',function(req,res){
-//   res.json({"error" : false, "message" : "Hello !"});
-// });
-
-// routes.post('/add', (req, res) => {
-// res.json({ error: false, message:
-//  'success', data: req.body.num1 + req.body.num2 });
-// });
-
 routes.route('/user/signup', (req, res) => {
   res.json({ error: false, message: 'User created!' });
 });
