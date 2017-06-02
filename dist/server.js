@@ -13,3 +13,5 @@ app.get('/', (req, res) => {
 app.use(routes);
 app.listen(port);
 console.log(`listening on ${port}`);
+
+module.exports = app;

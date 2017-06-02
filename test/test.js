@@ -2,6 +2,7 @@ const supertest = require('supertest');
 const server = require('../dist/server');
 
 // UNIT test begin
+
 describe('API route unit test', () => {
   it('should create a new user', (done) => {
 // Calling Signup API
@@ -18,12 +19,9 @@ describe('API route unit test', () => {
   it('should sign in a user', (done) => {
     supertest(server)
       .post('user/signin')
-      .send({ email: 'andela@yahoo.com', password: 'Luska1' })
+      .set('Accept', 'application/json')
       .expect(200)
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.status.error.should.equal(false);
-        res.body.data.should.equal(email, password);
+      .end((err) => {
         if (err) return done(err);
         done();
       });
@@ -32,10 +30,20 @@ describe('API route unit test', () => {
   it('should sign out a user from account', (done) => {
     supertest(server)
      .post('user/signout')
-      .expect('Signed out!')
+     .set('Accept', 'application/json')
       .expect(200)
       .end((err) => {
         if (err) return done(err);
+        done();
+      });
+  });
+
+  it('should return version number', (done) => {
+    supertest(server)
+      .get('/')
+      .end((err, res) => {
+        res.body.version.to.be.ok;
+        res.statusCode.to.equal(200);
         done();
       });
   });

@@ -1,7 +1,7 @@
 const express = require('express'),
   firebase = require('firebase'),
   routes = express.Router();
-  
+
 const db = require('./config');
 
 
@@ -18,7 +18,7 @@ routes.route('/user/signup')
       userPassword: password,
       userName: username
     });
-    res.send({
+    res.status(200).send({
       message: 'User account created successfully'
     });
   })
