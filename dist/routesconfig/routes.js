@@ -1,7 +1,7 @@
 const express = require('express'),
   firebase = require('firebase'),
   routes = express.Router();
-
+  
 const db = require('./config');
 
 
@@ -83,7 +83,7 @@ routes.route('/group')
     }
   });
 });
-// -----------------------------addUserToGroup-----------------------------
+// -----------------------------addUserToGroup----------------------
 
 routes.route('/group/groupId/user')
 .post((req, res) => {
