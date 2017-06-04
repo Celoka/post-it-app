@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "run start": "webpack-dev-server --hot",
     "start": "node ./dist/server.js",
     "build": "babel server/ -d dist"
   },
@@ -24,7 +25,9 @@
     "express": "^4.15.3",
     "firebase": "^4.0.0",
     "firebase-admin": "^5.0.0",
-    "webpack": "^2.6.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   },
   "devDependencies": {
