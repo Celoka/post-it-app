@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot",
     "start": "node ./dist/server.js",
     "build": "babel server/ -d dist"
   },
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Celoka/post-it-app#readme",
   "dependencies": {
+    "babel-loader": "^7.0.0",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
