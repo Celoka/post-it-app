@@ -15,8 +15,7 @@ import { browserHistory, Router } from 'react-router';
 injectTapEventPlugin();
 
 ReactDom.render((
-  <MuiThemeProvider muiTheme={getMuiTheme()}>
-    <Route path = "/" component = {App}></Route>
+   <MuiThemeProvider muiTheme={getMuiTheme()}>
     <Router history={browserHistory} routes={routes} />
   </MuiThemeProvider>
-  ), document.getElementById('app'));
+  ), document.getElementById('react-app'));
