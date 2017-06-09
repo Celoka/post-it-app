@@ -1,6 +1,6 @@
 import keyMirror from 'keymirror';
 
-module.exports = keyMirror({
+export default keyMirror({
   LOGIN_USER: null,
   REGISTRATION_FAILURE: null,
   SIGN_OUT: null,
