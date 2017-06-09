@@ -1,6 +1,6 @@
 const express = require('express'),
   app = express(),
-  port = process.env.PORT || 8080,
+  port = process.env.PORT || 6969,
   bodyParser = require('body-parser'),
   routes = require('./routesconfig/routes');
 
