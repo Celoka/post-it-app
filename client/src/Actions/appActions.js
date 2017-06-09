@@ -49,4 +49,4 @@ const ViewActions = {
   }
 };
 
-module.exports = ViewActions;
+export default ViewActions;
