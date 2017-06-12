@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import SignUpForm from './Components/SignUpForm.jsx';
+import SignUpForm from '../Components/SignUpForm';
 
 
 class SignUpPage extends React.Component {
@@ -10,7 +10,9 @@ class SignUpPage extends React.Component {
   constructor(props) {
     super(props);
 
-    // set the initial component state
+    /* 
+    * set the initial component state
+    */
     this.state = {
       errors: {},
       user: {
