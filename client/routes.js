@@ -1,9 +1,9 @@
-import HomePage from './Components/HomePage.jsx';
-import IndexPage from './Components/IndexPage.jsx';
-import LoginPage from './Container/LoginPage.jsx';
-import SignUpPage from './Container/SignUpPage.jsx';
+import HomePage from './src/Components/HomePage.jsx';
+import IndexPage from './src/Components/IndexPage.jsx';
+import LoginPage from './src/Container/LoginPage.jsx';
+import SignUpPage from './src/Container/SignUpPage.jsx';
 
-const routes = {
+const Routes = {
   // base component (wrapper for the whole application).
   component: IndexPage,
   childRoutes: [
@@ -14,16 +14,16 @@ const routes = {
     },
 
     {
-      path: '/login',
+      path: '/user/signin',
       component: LoginPage
     },
 
     {
-      path: '/signup',
+      path: '/user/signup',
       component: SignUpPage
     }
 
   ]
 };
 
-export default routes;
+export default Routes;

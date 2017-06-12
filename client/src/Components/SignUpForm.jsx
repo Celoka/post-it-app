@@ -40,18 +40,18 @@ const SignUpForm = ({
 
       <div className="field-line">
         <TextField
-          floatingLabelText="Name"
-          username="username"
-          errorText={errors.name}
+          floatingLabelText="Username"
+          user="username"
+          errorText={errors.username}
           onChange={onChange}
-          value={user.name}
+          value={user.username}
         />
       </div>
       <div className="button-line">
         <RaisedButton type="submit" label="Create New Account" primary />
       </div>
 
-      <CardText>Already have an account? <Link to={'/login'}>Log in</Link></CardText>
+      <CardText>Already have an account? <Link to={'/user/signin'}>Log in</Link></CardText>
     </form>
   </Card>
 );
