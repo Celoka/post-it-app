@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --hot",
     "server": "node ./dist/server.js",
-    "build": "babel server/ -d dist"
+    "build": "babel server/ -d dist",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
