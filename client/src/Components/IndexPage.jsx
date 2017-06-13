@@ -19,6 +19,7 @@ const IndexPage = ({ children }) => (
     {children}
 
   </div>
+
 );
 
 Base.propTypes = {
