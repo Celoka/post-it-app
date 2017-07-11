@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
-import Clock from '../components/Clock.test';
+import Clock from '../Clock.test';
 
 describe('Clock', () => {
     it('renders without crashing', () => {
