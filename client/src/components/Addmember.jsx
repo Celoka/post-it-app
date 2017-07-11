@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import '../../css/icon.css';
+
 
 
 class AddMember extends React.Component {
@@ -43,13 +43,13 @@ class AddMember extends React.Component {
     const memberDetails = {
       email: this.state.email,
       password: this.state.password,
-      group: this.state.group,
-      member: this.state.member
+      groupName: this.state.groupName,
+      groupMember: this.state.groupMember
     };
-    axios.post('/group/member', memberDetails)
+    axios.post('/group/groupId/user', memberDetails)
       .then((response) => {
         alert(response.data.message);
-        this.props.history.push('/broadcastboard');
+        this.props.history.push('/Broadcastboard');
       })
       .catch((error) => {
         if (error.response) {
