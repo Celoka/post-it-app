@@ -38,8 +38,6 @@ class Signup extends React.Component {
 				 <div className="col-md-5 col-md-offset-1">
 					<div className='row'>
 						<div className='col-md-12'>
-							<h3>Create an account</h3>
-						<br />
 							<form onSubmit={this.onSubmit}>
 								<div className="form-group">
 									<label htmlFor='email'>Email</label>

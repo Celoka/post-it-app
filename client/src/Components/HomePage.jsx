@@ -12,7 +12,13 @@ class Home extends React.Component {
 			        <div className='col-md-6'>
 				        <h4>Welcome to <strong>Post It</strong>, where high level of interaction and information exchange is guaranteed.</h4>
 				    </div>
-				    <Signup />
+                    <div className="container">
+                        <div className="row">
+                            <div className='col-md-12'>
+				                <Signup />
+                            </div>
+                        </div>
+                    </div>    
 			    </div>
 			</div>
         </div>
