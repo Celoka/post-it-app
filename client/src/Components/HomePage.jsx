@@ -2,7 +2,7 @@ import React from 'react';
 import Signup from '../components/Signup.jsx';
 import Signin from '../components/Signin.jsx';
 
-class Home extends React.Component {
+class Homepage extends React.Component {
   
   render() {
     return (
@@ -25,5 +25,5 @@ class Home extends React.Component {
     );
   }
 }
-// Export Home
-export default Home;
+
+export default Homepage;
