@@ -1,13 +1,13 @@
 import React from 'react';
 import Navbar from '../components/Navbar.jsx';
-import Homepage from '../components/Homepage.jsx';
+import Footer from '../components/Footer.jsx';
 
 
 class App extends React.Component {
    render() {
       return (
          <div>
-            <Homepage />
+            <Footer />
             <Navbar />
          </div>
       );
