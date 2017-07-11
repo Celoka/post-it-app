@@ -1,0 +1,36 @@
+body{
+    margin-top:30px
+}
+
+form{
+    width:250%;
+    margin:auto;
+    background: #f4f4f4;
+    padding: 0 20px 20px 20px;
+    border: 1px #ccc solid;
+    border-radius: 10px;
+    position: fixed;
+    top:50%;
+    left:50%;
+
+}
+h4{
+    
+    width:100%;
+    margin:auto;
+    background: #f4f4f4;
+    padding: 0 20px 20px 20px;
+    border: 1px #ccc solid;
+    border-radius: 10px;
+    margin-top:60px;
+    text-align:center;
+}
+#scontainer{
+    margin-top:100px;
+    width:300%;
+    margin:auto;
+    background: #f4f4f4;
+    padding: 0 20px 20px 20px;
+    border: 1px #ccc solid;
+    border-radius: 10px;
+}

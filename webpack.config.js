@@ -1,20 +1,20 @@
 const path = require('path');
 
 const config = {
-  entry: './client/main.jsx',
+  entry: './client/src/index.js',
 
   output: {
 
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'js'),
     publicPath: '/',
     filename: 'bundle.js',
   },
 
   devServer: {
-    contentBase: './public',
+    contentBase: './client/app/js',
     inline: true,
     hot: true,
-    port: 8080
+    port: 8081
   },
 
   module: {
