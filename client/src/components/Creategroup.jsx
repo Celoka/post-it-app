@@ -10,8 +10,9 @@ class CreateGroup extends React.Component {
     this.state = {
       email: '',
       password: '',
-      group: '',
-    };
+      groupname: '',
+		};
+		
 	
   render() {
     return (

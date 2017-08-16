@@ -1,11 +1,11 @@
 const path = require('path');
 
 const config = {
-  entry: './client/src/index.js',
+  entry: path.join(__dirname, 'client/src/index.js'),
 
   output: {
 
-    path: path.join(__dirname, 'js'),
+    path: path.join(__dirname, 'client/app/js'),
     publicPath: '/',
     filename: 'bundle.js',
   },
@@ -14,7 +14,8 @@ const config = {
     contentBase: './client/app/js',
     inline: true,
     hot: true,
-    port: 8081
+    port: 8081,
+    historyApiFallback: true
   },
 
   module: {
