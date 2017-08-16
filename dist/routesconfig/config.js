@@ -1,14 +1,14 @@
 const firebase = require('firebase');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 
-dotenv.config();
+// dotenv.config();
 const config = {
-  apiKey: 'AIzaSyAejYE9GO5kC-DIwE1sJBbFfE1mT5kR_-M',
-  authDomain: 'post-it-6c005.firebaseapp.com',
-  databaseURL: 'https://post-it-6c005.firebaseio.com',
-  projectId: 'post-it-6c005',
-  storageBucket: 'post-it-6c005.appspot.com',
-  messagingSenderId: '13317391785'
+  apiKey: 'AIzaSyD0-vDDGz3053Lq2cerjyVySKtgRU1A7Rc',
+  authDomain: 'eloka-667be.firebaseapp.com',
+  databaseURL: 'https://eloka-667be.firebaseio.com',
+  projectId: 'eloka-667be',
+  storageBucket: 'eloka-667be.appspot.com',
+  messagingSenderId: '333745271095'
 };
 const db = firebase.initializeApp(config);
-module.exports = db;
+export default db;

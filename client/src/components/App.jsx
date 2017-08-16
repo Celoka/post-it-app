@@ -1,15 +1,18 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from '../Routes.jsx';
 import Navbar from '../components/Navbar.jsx';
-import Footer from '../components/Footer.jsx';
-
+import Broadcastboard from '../components/Broadcastboard.jsx';
+import newComponent from './newComponent.jsx';
 
 class App extends React.Component {
-   render() {
-      return (
-         <div>
-            <Footer />
-            <Navbar />
-         </div>
+  render() {
+    return (
+      <div>
+         <Router>
+          <Routes />
+        </Router>  
+      </div>
       );
    }
 }

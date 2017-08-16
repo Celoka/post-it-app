@@ -1,36 +1,195 @@
+*,
+*:before,
+*after {
+    box-sizing: border-box;
+}
+form {
+    background-color: white;
+    border: 1px solid #c6c7ce;
+    border-radius: 5px;
+    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    height: 370px;
+    padding: 10px 35px 10px 20px;
+    width: inherit;
+    position: relative;
+}
+
+#signup-btn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#signin-btn{
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+}
 body{
-    margin-top:30px
+    background: #293f50;
+    color: #888;
+    font: 300 16px/22px "Lato", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+section {
+  float: auto; 
+  margin: 0 1.5%;
+  width: 63%;
+  text-align: center;
+  padding: 0;
+}
+h2,header {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+}
+/* fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+} */
+input {
+    border-radius: 5px;
+    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+.account-info {
+    padding: 0px;
+}
+.account-info label {
+    color: #395870;
+    display:block;
+    font-weight:bold;
+    margin-bottom: 20px;
+}
+.account-info input {
+    background: #fff;
+    border: 1px solid #c6c7cc;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+    color:#636466;
+    padding:6px;
+    margin-top: 6px;
+    width: 100%;
+}
+.account-action {
+    background: #f0f0f2;
+    border-top: 1px solid #c6c7cc;
+    padding: 20px;
+}
+.account-action .btn {
+    background: linear-gradient(#49708f, #293f50);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    float: left;
+    padding: 8px 16px;
+}
+.account-action label{
+    color: #7c7c80;
+    font-size: 12px;
+    float:left;
+    margin: 10px 0 0 20px;
+}
+#signup{
+    width: 300px;
+    margin: 150px auto 0px auto;
+}
+#signin{
+    width: 300px;
+    margin: 150px auto 0px auto;
+}
+//*
+------------
+Links
+------------
+*//
+a {
+  float: right;
+  color: grey;
+}
+ a:hover {
+  color: #a9b2b9;
+} 
+
+//*
+-----------
+Buttons
+-----------
+*//
+/* .btn {
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  letter-spacing: .5px;
+  margin: 0;
+  text-transform: uppercase;
+} */
+/* .btn-alt {
+  border: 1px solid #fff;
+  padding: 10px 30px;
+  color: grey;
+}  */
+h1 {
+  font-size: 36px;
+  line-height: 44px;
+  margin: auto;
+  text-align: center;
+}
+h2 {
+  font-size: 24px;
+  line-height: 44px;
+}
+p{
+    color: white;
 }
 
-form{
-    width:250%;
-    margin:auto;
-    background: #f4f4f4;
-    padding: 0 20px 20px 20px;
-    border: 1px #ccc solid;
-    border-radius: 10px;
-    position: fixed;
-    top:50%;
-    left:50%;
+/*
+----------------------------
+REGISTER BUTTON
+----------------------------
+  */
+.register {
+  border-radius: 4px;
+  background-color:greenyellow;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
 
+.register span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
 }
-h4{
-    
-    width:100%;
-    margin:auto;
-    background: #f4f4f4;
-    padding: 0 20px 20px 20px;
-    border: 1px #ccc solid;
-    border-radius: 10px;
-    margin-top:60px;
-    text-align:center;
+
+.register span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
 }
-#scontainer{
-    margin-top:100px;
-    width:300%;
-    margin:auto;
-    background: #f4f4f4;
-    padding: 0 20px 20px 20px;
-    border: 1px #ccc solid;
-    border-radius: 10px;
+
+.register:hover span {
+  padding-right: 25px;
+}
+
+.register:hover span:after {
+  opacity: 1;
+  right: 0;
 }

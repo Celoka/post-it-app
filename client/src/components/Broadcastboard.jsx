@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { BrowserRouter, Link, browserHistory } from 'react-router-dom';
 import axios from 'axios';
-import BroadNavBar from './BroadCastNavBar.jsx';
-import BroadcastgroupList from './userBroadCastBoardGroupList.jsx';
+import BoardNavBar from '../components/BoardNavBar.jsx';
+// import BroadcastgroupList from './userBroadCastBoardGroupList.jsx';
 
 
 class Broadcastboard extends React.Component {
@@ -13,10 +13,9 @@ class Broadcastboard extends React.Component {
       message: ''
     };
     this.onChange = this.onChange.bind(this);
-		
     this.onSubmit = this.onSubmit.bind(this);
-		
-    this.onClick = this.onClick.bind(this);
+    // this.onClick = this.onClick.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   onChange(message) {
@@ -34,44 +33,45 @@ class Broadcastboard extends React.Component {
       alert('message sent');
     });
   }
-	
-  onClick() {
-    axios.post('/signout').then((response) => {
-      alert(response.data.message);
-      this.props.history.push('/');
-    }).catch((error) => {
-      if (error.response) {
-      }
-    });
+
+  logout(event) {
+    event.preventDefault();
+    localStorage.removeItem('user');
+    browserHistory.replace('/');
+    location.reload();
   }
+	
+  // onClick() {
+  //   axios.post('/signout').then((response) => {
+  //     alert(response.data.message);
+  //     this.props.history.push('/');
+  //   }).catch((error) => {
+  //     if (error.response) {
+  //     }
+  //   });
+  // }
 	
   render() {
     return (
 			<div>
-        <nav className="navbar navbar-inverse navabar-fixed-top"
-					role="navigation">
+        <nav className="navbar navbar-default">
 					<div className="container">
 						<div className="navbar-header">
 							<button type="button" className="navbar-toggle"
 								data-toggle="collapse" data-target=".navbar-collapse">
-								<span className="sr-only">Toggle navigation</span>
-								<span className="icon-bar"></span>
-								<span className="icon-bar"></span>
-								<span className="icon-bar"></span>
+								 <span className="sr-only">Toggle navigation</span>
 							</button>
-							<Link className="navbar-brand" to="/">
-                PostIt<small>App</small>
+							<Link to='/broadcastboard'className="navbar-brand">
+                Post It
               </Link>
 						</div>
 						<div className="collapse navbar-collapse">
 							<ul className="nav navbar-nav">
 							</ul>
 							<ul className="nav navbar-nav navbar-right">
-								<li><Link to="/">Home</Link></li>
-								<li className="active">
-									<Link to="/broadcastboard">ChatRoom</Link>
-								</li>
-								<li onClick={this.onClick}><Link to="#">Sign out</Link></li>
+								{/* <li onClick={this.logout}><Link to='/user/signout'>Sign out</Link></li> */}
+                <li><span className="glyphicons glyphicons-user"></span></li>
+                <li><Link to='/user/signout' onClick={this.logout}>Sign Out</Link></li>
 							</ul>
 						</div>
 					</div>
@@ -82,8 +82,6 @@ class Broadcastboard extends React.Component {
 						<div className="row board">
 							<div className="col-md-3">
 								<h5 className="text-center para">Groups</h5>
-								<br />
-								<BoardgroupList />
 							</div>
 						</div>
 					</div>

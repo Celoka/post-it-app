@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-class BroadCastNav extends React.Component {
+class BoardNavBar extends React.Component {
 
   render() {
     return (
@@ -28,4 +28,4 @@ class BroadCastNav extends React.Component {
   }
 }
 
-export default BroadCastNav;
+export default BoardNavBar;

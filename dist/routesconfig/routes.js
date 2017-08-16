@@ -24,7 +24,7 @@ routes.route('/user/signup')
     });
   })
   .catch(() => {
-    res.status(404).send({
+    res.status(400).send({
       message: 'User already registered'
     });
   });
@@ -35,9 +35,10 @@ routes.route('/user/signin')
       const email = req.body.email;
       const password = req.body.password;
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((user) => {
           res.send({
-            message: 'User Signed in!'
+            message: 'User Signed in!',
+            user
           });
         })
         .catch(() => {
@@ -56,7 +57,7 @@ routes.route('/user/signout')
         });
       })
       .catch(() => {
-        res.status(404).send({
+        res.status(400).send({
           message: 'Network Error'
         });
       });
