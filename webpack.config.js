@@ -5,6 +5,7 @@ const config = {
 
   entry: [
     path.join(__dirname, 'client/src/index.js'),
+    'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
   output: {
