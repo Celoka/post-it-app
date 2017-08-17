@@ -27801,20 +27801,6 @@ var RequireAuth = function RequireAuth(_ref) {
   }));
 };
 
-var RestrictedPage = function RestrictedPage(_ref2) {
-  var Component = _ref2.component,
-      rest = _objectWithoutProperties(_ref2, ['component']);
-
-  return _react2.default.createElement(_reactRouterDom.Route, _extends({}, rest, {
-    render: function render(props) {
-      return localStorage.getItem('token') ? _react2.default.createElement(Component, props) : _react2.default.createElement(_reactRouterDom.Redirect, { to: {
-          pathname: '/broadcastboard',
-          state: { from: props.location }
-        }
-      });
-    }
-  }));
-};
 var Routes = function Routes() {
   return _react2.default.createElement(
     'main',
@@ -27822,7 +27808,6 @@ var Routes = function Routes() {
     _react2.default.createElement(
       _reactRouterDom.Switch,
       null,
-      _react2.default.createElement(RestrictedPage, { exact: true, path: '/', component: _Home2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', component: _Signup2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/signin', component: _Signin2.default }),

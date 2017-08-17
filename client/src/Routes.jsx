@@ -24,26 +24,10 @@ const RequireAuth = ({ component: Component, ...rest }) => (
   />
 );
 
-const RestrictedPage = ({ component: Component, ...rest }) => (
-<Route
-{...rest}
-render={props => (
-  localStorage.getItem('token') ? (
-    <Component {...props} />
-  ) : (
-    <Redirect to={{
-      pathname: '/broadcastboard',
-      state: { from: props.location }
-    }}
-    />
-  )
-)}
-/>
-);
+
 const Routes = () => (
   <main>
      <Switch>
-      <RestrictedPage exact path='/' component={Home} />
       <Route exact path="/" component={Home} />
       <Route path="/signup" component={Signup} />
       <Route path="/signin" component={Signin} />
