@@ -18,13 +18,17 @@ export function registerUser(user) {
  */
 export function loginUser(user) {
   return axios.post('/user/signin', user).then((response) => {
+    const token = response.data.user.email;
+    localStorage.setItem('token', JSON.stringify(token));
+    console.log(localStorage);
     dispatcher({
       type: LOGIN_USER,
       user: response.data.user
     });
   }).catch((error) => {
     if (error.response) {
-      alert(`${error.response.data.message}.`);
+      console.log(error.response);
+      // alert(`${error.response.data.message}.`);
     }
   });
 }

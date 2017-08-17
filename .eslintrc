@@ -4,7 +4,22 @@
   "env": {
     "node": true,
     "es6": true,
-    "jasmine": true
+    "jasmine": true,
+    "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "parser": "babel-eslint",
+  "globals": {
+    "localStorage": true
   },
   "rules": {
     "max-len":["error", 80, 2],

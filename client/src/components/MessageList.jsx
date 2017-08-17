@@ -14,18 +14,16 @@ class MessageList extends React.Component {
     };
   }
   render() {
-    const messageNodes=this.state.messages.map((message) => {
-      return (
+    const messageNodes = this.state.messages.map((message) => (
         <Message message={message} />
-      );
-    });
+      ));
     return (
       <div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <input type= "text" className="form control" ref="text" placeholder="please type a message....."/>
         </form>
+        { messageNodes }
       </div>
-        {messageNodes}
     );
   }
 }
