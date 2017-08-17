@@ -1,5 +1,5 @@
 import path from 'path';
-
+import webpack from 'webpack';
 
 const config = {
 
@@ -14,7 +14,11 @@ const config = {
     publicPath: '/',
     filename: 'bundle.js',
   },
-
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
   devServer: {
     contentBase: './client/app/js',
     inline: true,
@@ -22,34 +26,19 @@ const config = {
     port: 8081,
     historyApiFallback: true
   },
-
   module: {
     loaders: [
       {
-        test: /\.(js)$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-
-        query: {
-          presets: ['es2015']
-        }
-      },
-      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader',
-          'babel-loader']
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          'url-loader?limit=10000',
-          'img-loader'
+        loader: [
+          'react-hot-loader',
+          'babel-loader'
         ]
+      },
+      {
+        test: /\.css?$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
