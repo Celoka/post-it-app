@@ -3,13 +3,13 @@ import React from 'react';
 import Group from '../components/Group.jsx';
 import UserList from '../components/UserList.jsx';
 import MessageBoard from '../components/MessageBoard.jsx';
-import NavigationB from '../components/NavigationB.jsx';
+import BoardNavigation from '../components/BoardNavigation.jsx';
 
 class DashBoard extends React.Component {
     render(){
         return(
           <div>
-            <NavigationB />
+            <BoardNavigation />
             <div>
               <div className="container-fluid">
                 <div id= 'profile' className="row">

@@ -13,8 +13,13 @@ class Message extends React.Component {
   constructor(props) {
     super(props);
   }
+  /**
+   *
+   * @returns
+   * @memberof Message
+   */
   render() {
-    return(
+    return (
       <div>{this.props.message}</div>
     );
   }
