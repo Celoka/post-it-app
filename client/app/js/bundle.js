@@ -27760,17 +27760,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(27);
 
-var _SignUp = __webpack_require__(405);
+var _Signup = __webpack_require__(452);
 
-var _SignUp2 = _interopRequireDefault(_SignUp);
+var _Signup2 = _interopRequireDefault(_Signup);
 
 var _Home = __webpack_require__(400);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _SignIn = __webpack_require__(404);
+var _Signin = __webpack_require__(451);
 
-var _SignIn2 = _interopRequireDefault(_SignIn);
+var _Signin2 = _interopRequireDefault(_Signin);
 
 var _NotFoundPage = __webpack_require__(403);
 
@@ -27824,8 +27824,8 @@ var Routes = function Routes() {
       null,
       _react2.default.createElement(RestrictedPage, { exact: true, path: '/', component: _Home2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', component: _SignUp2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/signin', component: _SignIn2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', component: _Signup2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/signin', component: _Signin2.default }),
       _react2.default.createElement(RequireAuth, { exact: true, path: '/broadcastboard', component: _DashBoard2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { component: _NotFoundPage2.default })
     )
@@ -28405,407 +28405,8 @@ exports.default = notFoundPage;
 /* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "NotFoundPage.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }),
-/* 404 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = __webpack_require__(27);
-
-var _AppActions = __webpack_require__(118);
-
-var actions = _interopRequireWildcard(_AppActions);
-
-var _UsersStore = __webpack_require__(121);
-
-var _UsersStore2 = _interopRequireDefault(_UsersStore);
-
-var _Navbar = __webpack_require__(71);
-
-var _Navbar2 = _interopRequireDefault(_Navbar);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- *
- * @class SignIn
- * @extends {React.Component}
- */
-var SignIn = function (_React$Component) {
-  _inherits(SignIn, _React$Component);
-
-  /**
-   * Creates an instance of SignIn.
-   * @param {any} props
-   * @memberof SignIn
-   */
-  function SignIn(props) {
-    _classCallCheck(this, SignIn);
-
-    var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
-
-    _this.state = {
-      email: '',
-      password: '',
-      user: {}
-    };
-    _this.onChange = _this.onChange.bind(_this);
-    _this.onSubmit = _this.onSubmit.bind(_this);
-    _this.getUser = _this.getUser.bind(_this);
-    return _this;
-  }
-  /**
-   *@return
-   * @param {any} event
-   * @memberof SignIn
-   */
-
-
-  _createClass(SignIn, [{
-    key: 'onChange',
-    value: function onChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
-    }
-    /**
-     *
-     * @param {any} event
-     * @memberof SignIn
-     */
-
-  }, {
-    key: 'onSubmit',
-    value: function onSubmit(event) {
-      var _this2 = this;
-
-      event.preventDefault();
-      var SignInDetails = {
-        email: this.state.email,
-        password: this.state.password
-      };
-      actions.loginUser(SignInDetails).then(function () {
-        _UsersStore2.default.on('login_success', _this2.getUser);
-        _this2.props.history.push('/broadcastboard');
-      });
-    }
-    /**
-     *@return
-     * @memberof SignIn
-     */
-
-  }, {
-    key: 'getUser',
-    value: function getUser() {
-      this.setState({ user: _UsersStore2.default.getUser() });
-    }
-    /**
-     *
-     * @returns
-     * @memberof SignIn
-     */
-
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_Navbar2.default, null),
-        _react2.default.createElement(
-          'div',
-          { id: 'signin' },
-          _react2.default.createElement(
-            'h1',
-            null,
-            ' Account Login '
-          ),
-          _react2.default.createElement(
-            'form',
-            { onSubmit: this.onSubmit },
-            _react2.default.createElement(
-              'fieldset',
-              { className: 'account-info' },
-              _react2.default.createElement(
-                'label',
-                null,
-                'Email Address',
-                _react2.default.createElement('input', { value: this.state.email, onChange: this.onChange,
-                  type: 'email', name: 'email', required: true })
-              ),
-              _react2.default.createElement(
-                'label',
-                null,
-                'Password',
-                _react2.default.createElement('input', { value: this.state.password, onChange: this.onChange,
-                  type: 'password', name: 'password' })
-              ),
-              _react2.default.createElement(
-                'h5',
-                null,
-                'Sign in with ',
-                _react2.default.createElement(
-                  _reactRouterDom.Link,
-                  { to: '' },
-                  'google'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'fieldset',
-              { id: 'signin-btn', className: 'account-action' },
-              _react2.default.createElement('input', { className: 'btn', type: 'submit', name: 'submit',
-                value: 'Login' }),
-              _react2.default.createElement(
-                'label',
-                null,
-                _react2.default.createElement('input', { type: 'checkbox', name: 'remember' }),
-                ' Stay signed in.'
-              )
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SignIn;
-}(_react2.default.Component);
-
-exports.default = SignIn;
-
-/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "SignIn.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ }),
-/* 405 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = __webpack_require__(27);
-
-var _AppActions = __webpack_require__(118);
-
-var _UsersStore = __webpack_require__(121);
-
-var _UsersStore2 = _interopRequireDefault(_UsersStore);
-
-var _Navbar = __webpack_require__(71);
-
-var _Navbar2 = _interopRequireDefault(_Navbar);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- *
- * @class SignUp
- * @extends {React.Component}
- */
-var SignUp = function (_React$Component) {
-  _inherits(SignUp, _React$Component);
-
-  /**
-   * Creates an instance of SignUp.
-   * @param {any} props
-   * @memberof SignUp
-   */
-  function SignUp(props) {
-    _classCallCheck(this, SignUp);
-
-    var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
-
-    _this.state = {
-      email: '',
-      username: '',
-      password: '',
-      message: '',
-      registerError: {},
-      registerSuccess: {}
-    };
-    _this.onChange = _this.onChange.bind(_this);
-    _this.getStatus = _this.getStatus.bind(_this);
-    _this.onSubmit = _this.onSubmit.bind(_this);
-    return _this;
-  }
-  /**
-   * @memberof SignUp
-   */
-
-
-  _createClass(SignUp, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      _UsersStore2.default.on('change', this.getStatus);
-    }
-    /**
-     *
-     * @memberof SignUp
-     */
-
-  }, {
-    key: 'getStatus',
-    value: function getStatus() {
-      var status = _UsersStore2.default.getStatus();
-      this.setState({
-        registerError: status.error
-      });
-      console.log(status);
-    }
-    /**
-     * @param {any} event
-     * @memberof SignUp
-     */
-
-  }, {
-    key: 'onChange',
-    value: function onChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
-    }
-    /**
-     *
-     * @param {any} event
-     * @memberof SignUp
-     */
-
-  }, {
-    key: 'onSubmit',
-    value: function onSubmit(event) {
-      var _this2 = this;
-
-      event.preventDefault();
-      console.log(this.state);
-      var user = {
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password
-      };
-      (0, _AppActions.registerUser)(this.state).then(function () {
-        _this2.props.history.push('/signin');
-        alert('User account created! Enter your email and password.');
-      }, function () {
-        //
-      });
-    }
-    /**
-     * @returns
-     * @memberof SignUp
-     */
-
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_Navbar2.default, null),
-        _react2.default.createElement(
-          'div',
-          { id: 'signup' },
-          _react2.default.createElement(
-            'h1',
-            null,
-            'Create Account'
-          ),
-          _react2.default.createElement(
-            'form',
-            { onSubmit: this.onSubmit },
-            _react2.default.createElement(
-              'fieldset',
-              { className: 'account-info' },
-              _react2.default.createElement(
-                'label',
-                null,
-                'Email Address',
-                _react2.default.createElement('input', { value: this.state.email, onChange: this.onChange,
-                  type: 'email',
-                  placeholder: 'name@domain.com', name: 'email', required: true })
-              ),
-              _react2.default.createElement(
-                'label',
-                null,
-                'Username',
-                _react2.default.createElement('input', { value: this.state.username, onChange: this.onChange,
-                  type: 'text', name: 'username' })
-              ),
-              _react2.default.createElement(
-                'label',
-                null,
-                'Password',
-                _react2.default.createElement('input', { value: this.state.password, onChange: this.onChange,
-                  type: 'password', name: 'password' })
-              ),
-              _react2.default.createElement(
-                'h5',
-                null,
-                ' Already a member? Click ',
-                _react2.default.createElement(
-                  _reactRouterDom.Link,
-                  { to: '/signin' },
-                  'here'
-                ),
-                'to sign in.'
-              )
-            ),
-            _react2.default.createElement(
-              'fieldset',
-              { id: 'signup-btn', className: 'account-action' },
-              _react2.default.createElement('input', { className: 'btn', type: 'submit', name: 'submit',
-                value: 'Register Now' })
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SignUp;
-}(_react2.default.Component);
-
-exports.default = SignUp;
-
-/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "SignUp.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ }),
+/* 404 */,
+/* 405 */,
 /* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31668,6 +31269,407 @@ var BoardNavigation = function (_React$Component) {
 exports.default = BoardNavigation;
 
 /* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "BoardNavigation.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ }),
+/* 451 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(27);
+
+var _AppActions = __webpack_require__(118);
+
+var actions = _interopRequireWildcard(_AppActions);
+
+var _UsersStore = __webpack_require__(121);
+
+var _UsersStore2 = _interopRequireDefault(_UsersStore);
+
+var _Navbar = __webpack_require__(71);
+
+var _Navbar2 = _interopRequireDefault(_Navbar);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ *
+ * @class SignIn
+ * @extends {React.Component}
+ */
+var SignIn = function (_React$Component) {
+  _inherits(SignIn, _React$Component);
+
+  /**
+   * Creates an instance of SignIn.
+   * @param {any} props
+   * @memberof SignIn
+   */
+  function SignIn(props) {
+    _classCallCheck(this, SignIn);
+
+    var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
+
+    _this.state = {
+      email: '',
+      password: '',
+      user: {}
+    };
+    _this.onChange = _this.onChange.bind(_this);
+    _this.onSubmit = _this.onSubmit.bind(_this);
+    _this.getUser = _this.getUser.bind(_this);
+    return _this;
+  }
+  /**
+   *@return
+   * @param {any} event
+   * @memberof SignIn
+   */
+
+
+  _createClass(SignIn, [{
+    key: 'onChange',
+    value: function onChange(event) {
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
+    }
+    /**
+     *
+     * @param {any} event
+     * @memberof SignIn
+     */
+
+  }, {
+    key: 'onSubmit',
+    value: function onSubmit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      var SignInDetails = {
+        email: this.state.email,
+        password: this.state.password
+      };
+      actions.loginUser(SignInDetails).then(function () {
+        _UsersStore2.default.on('login_success', _this2.getUser);
+        _this2.props.history.push('/broadcastboard');
+      });
+    }
+    /**
+     *@return
+     * @memberof SignIn
+     */
+
+  }, {
+    key: 'getUser',
+    value: function getUser() {
+      this.setState({ user: _UsersStore2.default.getUser() });
+    }
+    /**
+     *
+     * @returns
+     * @memberof SignIn
+     */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_Navbar2.default, null),
+        _react2.default.createElement(
+          'div',
+          { id: 'signin' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            ' Account Login '
+          ),
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this.onSubmit },
+            _react2.default.createElement(
+              'fieldset',
+              { className: 'account-info' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Email Address',
+                _react2.default.createElement('input', { value: this.state.email, onChange: this.onChange,
+                  type: 'email', name: 'email', required: true })
+              ),
+              _react2.default.createElement(
+                'label',
+                null,
+                'Password',
+                _react2.default.createElement('input', { value: this.state.password, onChange: this.onChange,
+                  type: 'password', name: 'password' })
+              ),
+              _react2.default.createElement(
+                'h5',
+                null,
+                'Sign in with ',
+                _react2.default.createElement(
+                  _reactRouterDom.Link,
+                  { to: '' },
+                  'google'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'fieldset',
+              { id: 'signin-btn', className: 'account-action' },
+              _react2.default.createElement('input', { className: 'btn', type: 'submit', name: 'submit',
+                value: 'Login' }),
+              _react2.default.createElement(
+                'label',
+                null,
+                _react2.default.createElement('input', { type: 'checkbox', name: 'remember' }),
+                ' Stay signed in.'
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SignIn;
+}(_react2.default.Component);
+
+exports.default = SignIn;
+
+/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Signin.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ }),
+/* 452 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(27);
+
+var _AppActions = __webpack_require__(118);
+
+var _UsersStore = __webpack_require__(121);
+
+var _UsersStore2 = _interopRequireDefault(_UsersStore);
+
+var _Navbar = __webpack_require__(71);
+
+var _Navbar2 = _interopRequireDefault(_Navbar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ *
+ * @class SignUp
+ * @extends {React.Component}
+ */
+var SignUp = function (_React$Component) {
+  _inherits(SignUp, _React$Component);
+
+  /**
+   * Creates an instance of SignUp.
+   * @param {any} props
+   * @memberof SignUp
+   */
+  function SignUp(props) {
+    _classCallCheck(this, SignUp);
+
+    var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
+
+    _this.state = {
+      email: '',
+      username: '',
+      password: '',
+      message: '',
+      registerError: {},
+      registerSuccess: {}
+    };
+    _this.onChange = _this.onChange.bind(_this);
+    _this.getStatus = _this.getStatus.bind(_this);
+    _this.onSubmit = _this.onSubmit.bind(_this);
+    return _this;
+  }
+  /**
+   * @memberof SignUp
+   */
+
+
+  _createClass(SignUp, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _UsersStore2.default.on('change', this.getStatus);
+    }
+    /**
+     *
+     * @memberof SignUp
+     */
+
+  }, {
+    key: 'getStatus',
+    value: function getStatus() {
+      var status = _UsersStore2.default.getStatus();
+      this.setState({
+        registerError: status.error
+      });
+      console.log(status);
+    }
+    /**
+     * @param {any} event
+     * @memberof SignUp
+     */
+
+  }, {
+    key: 'onChange',
+    value: function onChange(event) {
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
+    }
+    /**
+     *
+     * @param {any} event
+     * @memberof SignUp
+     */
+
+  }, {
+    key: 'onSubmit',
+    value: function onSubmit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      console.log(this.state);
+      var user = {
+        email: this.state.email,
+        username: this.state.username,
+        password: this.state.password
+      };
+      (0, _AppActions.registerUser)(this.state).then(function () {
+        _this2.props.history.push('/signin');
+        alert('User account created! Enter your email and password.');
+      }, function () {
+        //
+      });
+    }
+    /**
+     * @returns
+     * @memberof SignUp
+     */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_Navbar2.default, null),
+        _react2.default.createElement(
+          'div',
+          { id: 'signup' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Create Account'
+          ),
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this.onSubmit },
+            _react2.default.createElement(
+              'fieldset',
+              { className: 'account-info' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Email Address',
+                _react2.default.createElement('input', { value: this.state.email, onChange: this.onChange,
+                  type: 'email',
+                  placeholder: 'name@domain.com', name: 'email', required: true })
+              ),
+              _react2.default.createElement(
+                'label',
+                null,
+                'Username',
+                _react2.default.createElement('input', { value: this.state.username, onChange: this.onChange,
+                  type: 'text', name: 'username' })
+              ),
+              _react2.default.createElement(
+                'label',
+                null,
+                'Password',
+                _react2.default.createElement('input', { value: this.state.password, onChange: this.onChange,
+                  type: 'password', name: 'password' })
+              ),
+              _react2.default.createElement(
+                'h5',
+                null,
+                ' Already a member? Click ',
+                _react2.default.createElement(
+                  _reactRouterDom.Link,
+                  { to: '/signin' },
+                  'here'
+                ),
+                'to sign in.'
+              )
+            ),
+            _react2.default.createElement(
+              'fieldset',
+              { id: 'signup-btn', className: 'account-action' },
+              _react2.default.createElement('input', { className: 'btn', type: 'submit', name: 'submit',
+                value: 'Register Now' })
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SignUp;
+}(_react2.default.Component);
+
+exports.default = SignUp;
+
+/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/andeladeveloper/Desktop/post-it-app/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Signup.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ })
 /******/ ]);
