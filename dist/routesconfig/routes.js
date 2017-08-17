@@ -51,9 +51,10 @@ routes.route('/user/signin')
 routes.route('/user/signout')
   .post((req, res) => {
     firebase.auth().signOut()
-      .then(() => {
+      .then((user) => {
         res.send({
-          message: 'Signed out!'
+          message: 'Signed out!',
+          user
         });
       })
       .catch(() => {
@@ -65,25 +66,60 @@ routes.route('/user/signout')
 // -----------------Route for Create Group----------------------
 routes.route('/group')
 .post((req, res) => {
-  const groupName = req.body.groupname;
 // checking if user is signed in
-  firebase.auth().onAuthStateChanged(() => {
-    const user = firebase.auth().currentUser;
-    const uid = user.uid;
-    if (user !== null) {
-      db.database().ref(`Group/${uid}`).child('group').push({
-        groupname: groupName,
-        groupOwner: uid,
-      });
-      res.send({
-        message: 'Group created successfully'
-      });
-    } else {
-      res.status(404).send({
-        message: 'Not signed in..'
-      });
-    }
-  });
+  // firebase.auth().onAuthStateChanged(() => {
+  //   const groupName = req.body.groupname;
+  //   const user = firebase.auth().currentUser;
+  //   const uid = user.uid;
+  //   if (user !== null) {
+  //     db.database().ref(`Group/${uid}`).push({
+  //       groupname: groupName,
+  //       groupOwner: uid,
+  //     });
+  //     res.send({
+  //       message: 'Group created successfully'
+  //     });
+  //   } else {
+  //     res.status(404).send({
+  //       message: 'Not signed in..'
+  //     });
+  //   }
+  // });
+  if (firebase.auth().currentUser) {
+    const requestBody = req.body;
+    const firebaseDatabase = firebase.database();
+    const newKey = firebaseDatabase.ref('groups/').push({
+      groupName: requestBody.groupName,
+      createdBy: requestBody.createdBy,
+      dateCreated: requestBody.dateCreated
+    }).key;
+    db.ref(`groups/${newKey}/users/`);
+    db.child(requestBody.createdByUserId).set({
+      userId: requestBody.createdByUserId,
+      email: requestBody.createdBy,
+      userName: requestBody.createdByDisplayName
+    })
+     .then(() => {
+       db.ref(`users/${requestBody.createdByUserId}/groups/`);
+       db.child(newKey).set({
+         groupId: newKey,
+         groupName: requestBody.groupName,
+         newMessage: false
+       });
+       res.send({
+         message: 'New group successfully created',
+       });
+     })
+     .catch((error) => {
+       res.status(500).send({
+         message: `Error occurred ${error.message}`,
+       });
+     });
+  } else {
+    res.status(403).send({
+      message: 'Only logged users can create groups'
+    });
+  }
 });
 // ----------------Route for addMemeberToGroup---------------------
 
@@ -91,21 +127,18 @@ routes.route('/group/groupId/user')
 .post((req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const groupName = req.body.group;
-  const groupMember = req.body.user;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      const user = (firebase.auth().currentUser).uid;
-      db.database().ref(`Group/${user}`).child(groupName).push({
-        member: groupMember
-      });
+  const groupMember = req.body.groupMember;
+  firebase.auth().signInWithEmailAndPassword(email, password);
+  db.database().ref('Group/users/').push({
+    userId: groupMember
+  }).then(() => {
+    res.send({
+      message: 'Member added'
+    });
+  })
+    .catch((error) => {
       res.send({
-        message: 'Member added'
-      });
-    })
-    .catch(() => {
-      res.status(401).send({
-        message: 'Invalid command'
+        message: `Invalid command ${error.message}`
       });
     });
 });

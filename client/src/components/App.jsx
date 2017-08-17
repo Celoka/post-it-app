@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Routes from '../Routes.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Broadcastboard from '../components/Broadcastboard.jsx';
@@ -9,12 +9,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
-         <Router>
+         <BrowserRouter>
           <Routes />
-        </Router>  
+        </BrowserRouter>
       </div>
-      );
-   }
+    );
+  }
 }
 
 export default App;

@@ -6,7 +6,8 @@ import * as actions from '../actions/AppActions';
 import UsersStore from '../stores/UsersStore';
 import Header from '../components/Navbar.jsx';
 import db from '../../../dist/routesconfig/config.js';
-class SignIn extends React.Component{
+
+class SignIn extends React.Component {
 
 constructor(props) {
     super(props);
@@ -39,27 +40,27 @@ constructor(props) {
   }
 
   getUser() {
-    this.setState({ user: UsersStore.getUser()});
+    this.setState({ user: UsersStore.getUser() });
   }
 
-  authenticate() {
-    firebase.initializeApp(config);
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('profile');
-    provider.addScope('email');
-    firebase.auth().signInWithPopup(provider)
-      .then((result) => {
-        const token = result.credential.accessToken;
-        const user = result.user;
-        if (user) {
-          firebase.auth().onAuthStateChanged(() => {
-            this.props.history.push('/broadcastboard');
-          });
-        }
-        console.log(token);
-        console.log(user);
-      });
-  }
+  // authenticate() {
+  //   firebase.initializeApp(config);
+  //   const provider = new firebase.auth.GoogleAuthProvider();
+  //   provider.addScope('profile');
+  //   provider.addScope('email');
+  //   firebase.auth().signInWithPopup(provider)
+  //     .then((result) => {
+  //       const token = result.credential.accessToken;
+  //       const user = result.user;
+  //       if (user) {
+  //         firebase.auth().onAuthStateChanged(() => {
+  //           this.props.history.push('/broadcastboard');
+  //         });
+  //       }
+  //       console.log(token);
+  //       console.log(user);
+  //     });
+  // }
   render() {
     return(
       <div>

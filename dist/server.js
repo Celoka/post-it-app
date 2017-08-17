@@ -1,9 +1,22 @@
-const express = require('express'),
-  app = express(),
-  port = process.env.PORT || 8080,
-  bodyParser = require('body-parser'),
-  routes = require('./routesconfig/routes');
-  path = require('path');
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
+import webpack from 'webpack';
+import webpackMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
+
+import routes from './routesconfig/routes';
+import config from '../webpack.config';
+
+const app = express();
+const port = process.env.PORT || 8080;
+const compiler = webpack(config);
+app.use(webpackMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+  stats: { colors: true }
+}));
+app.use(webpackHotMiddleware(compiler));
 
 const publicPath = express.static(path.join(__dirname, '../client/app/js'));
 
