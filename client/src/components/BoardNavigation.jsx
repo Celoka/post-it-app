@@ -1,7 +1,17 @@
 import React from 'react';
 
-class NavigationB extends React.Component {
-  render(){
+/**
+ *
+ * @class BoardNavigation
+ * @extends {React.Component}
+ */
+class BoardNavigation extends React.Component {
+    /**
+     *
+     * @returns
+     * @memberof BoardNavigation
+     */
+  render() {
     return (
       <div>
           <nav className="navbar navbar-default">
@@ -28,4 +38,4 @@ class NavigationB extends React.Component {
     );
   }
 }
-export default NavigationB;
+export default BoardNavigation;
