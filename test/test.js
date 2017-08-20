@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const server = require('../dist/server');
+const server = require('../server/server');
 
 // UNIT test begin for Sign Up route
 describe('API route unit test for SignUp route', () => {

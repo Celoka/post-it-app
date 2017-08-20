@@ -1,6 +1,11 @@
 import React from 'react';
 import Message from './Message.jsx';
 
+/**
+ *
+ * @class MessageList
+ * @extends {React.Component}
+ */
 class MessageList extends React.Component {
   /**
    * Creates an instance of MessageList.
@@ -13,6 +18,10 @@ class MessageList extends React.Component {
       messages: []
     };
   }
+  /**
+   * @returns
+   * @memberof MessageList
+   */
   render() {
     const messageNodes = this.state.messages.map((message) => (
         <Message message={message} />
@@ -20,7 +29,8 @@ class MessageList extends React.Component {
     return (
       <div>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <input type= "text" className="form control" ref="text" placeholder="please type a message....."/>
+          <input type= "text" className="form control" ref="text"
+           placeholder="please type a message....."/>
         </form>
         { messageNodes }
       </div>
