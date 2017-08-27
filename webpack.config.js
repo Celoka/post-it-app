@@ -23,7 +23,6 @@ const config = {
     contentBase: './client/app/js',
     inline: true,
     hot: true,
-    port: 8081,
     historyApiFallback: true
   },
   module: {

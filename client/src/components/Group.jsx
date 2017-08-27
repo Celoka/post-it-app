@@ -1,40 +1,43 @@
 import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
-class Group extends React.Component{
-    render(){
-        return(
-            <div>
-              {/* <ul className='nav nav-pills nav-stacked'> */}
+class Group extends React.Component {
+
+  render() {
+    return (
+            <div id="groupnav" className= "form-group">
                 <div className='dropdown'>
-                  <button className='btn btn-primary dropdown-toggle' type='button'
-                  data-toggle='dropdown'>Groups<span className='caret'></span></button>
+                  <button className='btn btn-primary dropdown-toggle'
+                   type='button'
+                  data-toggle='dropdown'>Groups<span className='caret'></span>
+                  </button>
                   <ul className='dropdown-menu'>
                     <li><a href="#">My Groups</a></li>
                     <li>
-                        <h5 data-toggle="modal" data-target="#creategroup"><a href="#">Create Group</a></h5>
-                        
-                        <div className="modal fade" id="myModal" role="dialog">
-                          <div className="modal-dialog">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-tittle"></h4>
+                        <Modal.Dialog>
+                          <Modal.Header>
+                            <Modal.Title id="create group">Create Group</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                              <div className="form-group">
+                                <label for="groupname">Group Name:</label>
+                                <input type="text" className="form-control"
+                                 id="groupname" placeholder="Enter group name"/>
+                                <label for="groupowner">Created By:</label>
+                                <input type="text" className="form-control"
+                                 id="groupowner" placeholder="Enter text..."/>
                               </div>
-                              <div>
-                                <p> Some text in the modal.</p>
-                              </div>
-                              <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button> 
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <Button>Close</Button>
+                            <Button bsStyle="primary">Submit</Button>
+                          </Modal.Footer>
+                        </Modal.Dialog>
                     </li>
                   </ul>
                 </div>
-              {/* </ul><br/> */}
             </div>
-        );
-    }
+    );
+  }
 }
 export default Group;

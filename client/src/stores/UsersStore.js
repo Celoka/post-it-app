@@ -1,8 +1,5 @@
 import { EventEmitter } from 'events';
-import {
-  GET_ALL_USERS,
-  REGISTER_NEW_USER,
-  LOGIN_USER } from '../constants/constants';
+import AppConstants from '../constants/AppConstants';
 import dispatcher from '../dispatcher/dispatcher';
 
 /**

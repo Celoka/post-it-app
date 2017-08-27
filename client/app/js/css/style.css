@@ -1,5 +1,5 @@
 *,
-*:before,
+ 
 *after {
     box-sizing: border-box;
 }
@@ -14,19 +14,15 @@ form {
     width: inherit;
     position: relative;
 }
+#groupnav{
+   background-color: white;
+   height: 370px;
+   position: relative;
+   padding: 10px 35px 10px 20px;
+   overflow: hidden;
+   border-radius: 5px;
+}
 
-#signup-btn{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-#signin-btn{
-    position: absolute;
-    bottom: 50px;
-    left: 0;
-    right: 0;
-}
 body{
     background: #293f50;
     color: #888;
@@ -47,11 +43,7 @@ h2,header {
     font-size: 100%;
     font: inherit;
 }
-/* fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-} */
+
 input {
     border-radius: 5px;
     font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -103,11 +95,7 @@ input {
     width: 300px;
     margin: 150px auto 0px auto;
 }
-//*
-------------
-Links
-------------
-*//
+
 a {
   float: right;
   color: grey;
@@ -116,26 +104,17 @@ a {
   color: #a9b2b9;
 } 
 
-//*
+/*
 -----------
 Buttons
 -----------
-*//
-/* .btn {
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: 400;
-  letter-spacing: .5px;
-  margin: 0;
-  text-transform: uppercase;
-} */
-/* .btn-alt {
-  border: 1px solid #fff;
-  padding: 10px 30px;
-  color: grey;
-}  */
+*/
+#googlebutton {
+    margin-top: 50px;
+}
+#button {
+    margin-top: 25px;
+}
 h1 {
   font-size: 36px;
   line-height: 44px;
