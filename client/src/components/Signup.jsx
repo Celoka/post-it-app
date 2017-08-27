@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 import { registerUser } from '../actions/AppActions';
 import usersStores from '../stores/UsersStore';
 import Header from '../components/Navbar.jsx';
@@ -16,37 +14,36 @@ class SignUp extends React.Component {
  * @param {any} props
  * @memberof SignUp
  */
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       username: '',
       password: '',
       message: '',
-      registerError: {},
-      registerSuccess: {}
     };
     this.onChange = this.onChange.bind(this);
-    this.getStatus = this.getStatus.bind(this);
+    // this.getStatus = this.getStatus.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 /**
  * @memberof SignUp
  */
   componentDidMount() {
-    usersStores.on('change', this.getStatus);
+    // usersStores.on('change', this.getStatus);
   }
 /**
  *
  * @memberof SignUp
  */
-  getStatus() {
-    const status = usersStores.getStatus();
-    this.setState({
-      registerError: status.error,
-    });
-    console.log(status);
-  }
+  // getStatus() {
+  //   const status = usersStores.getStatus();
+  //   console.log(status, 'oooo');
+  //   this.setState({
+  //     registerError: status.error,
+  //   });
+  //   console.log(status);
+  // }
 /**
  * @param {any} event
  * @memberof SignUp
@@ -63,15 +60,15 @@ class SignUp extends React.Component {
  */
   onSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     const user = {
       email: this.state.email,
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      phoneNumber: this.state.phoneNumber
     };
-    registerUser(this.state).then(() => {
-      this.props.history.push('/signin');
-      alert('User account created! Enter your email and password.');
+    registerUser(user).then(() => {
+      this.setState({ email: '', password: '' });
+      this.props.history.push('/broadcastboard');
     }, () => {
           //
     });
@@ -86,31 +83,31 @@ class SignUp extends React.Component {
         <Header />
         <div id="signup" >
           <h1>Create Account</h1>
-          <form onSubmit={this.onSubmit}>
+          <form>
             <fieldset className="account-info">
               <label>
                 Email Address
                 <input value={this.state.email} onChange={this.onChange}
-                type="email"
-                placeholder="name@domain.com" name="email" required />
+                type="email" name="email" required />
               </label>
               <label>
                 Username
-                <input value={this.state.username} onChange={this.onChange}
-                 type="text" name="username" />
+                <input value ={this.state.username} onChange={this.onChange}
+                 type="email" name="username" />
               </label>
               <label>
                 Password
                 <input value ={this.state.password} onChange={this.onChange}
                  type="password" name="password"/>
               </label>
-              <h5> Already a member? Click <Link to="/signin">here</Link>
-               to sign in.</h5>
+              <label>
+                Phonenumber
+                <input value ={this.state.phoneNumber} onChange={this.onChange}
+                 type="number" name="phoneNumber"/>
+              </label>
             </fieldset>
-            <fieldset id="signup-btn" className="account-action">
-              <input className="btn" type="submit" name="submit"
-               value="Register Now" />
-            </fieldset>
+              <button onClick={this.onSubmit} type="submit" name="submit"
+              >Register Now </button>
           </form>
         </div>
       </div>

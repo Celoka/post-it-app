@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GoogleButton from 'react-google-button';
 import * as actions from '../actions/AppActions';
 import UsersStore from '../stores/UsersStore';
 import Header from '../components/Navbar.jsx';
@@ -82,15 +83,17 @@ class SignIn extends React.Component {
                   <input value ={this.state.password} onChange={this.onChange}
                    type="password" name="password" />
                 </label>
-                  <h5>Sign in with <Link to="">google</Link></h5>
+                  <h5>Sign in with google </h5>
               </fieldset>
-              <fieldset id="signin-btn" className="account-action">
-                <input className="btn" type="submit" name="submit"
-                 value="Login" />
-                <label>
+              <GoogleButton id= "googlebutton" onClick={() => {
+                console.log('button clicked');
+              }} />
+              <button id= "button" onClick={this.onSubmit}
+               type="submit" name="submit"
+              >Login </button>
+                <label >
                   <input type="checkbox" name="remember" /> Stay signed in.
               </label>
-              </fieldset>
           </form>
         </div>
       </div>
