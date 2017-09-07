@@ -12,7 +12,7 @@ class MessageForm extends React.component {
     return(
       <div>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <input type= "text" className="form control" ref="text" placeholder="please type a message....."/>
+          <input type= "text" className="form control" value="text" placeholder="please type a message....."/>
         </form>
       </div>
     )

@@ -9,7 +9,7 @@ form {
     border-radius: 5px;
     font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow: hidden;
-    height: 370px;
+    height: 450px;
     padding: 10px 35px 10px 20px;
     width: inherit;
     position: relative;
@@ -111,6 +111,7 @@ Buttons
 */
 #googlebutton {
     margin-top: 50px;
+    margin-bottom: 25px;
 }
 #button {
     margin-top: 25px;
@@ -128,12 +129,16 @@ h2 {
 p{
     color: white;
 }
+#sign {
+    background: linear-gradient(#49708f, #293f50);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    float: left;
+    padding: 8px 16px;
+  }
 
-/*
-----------------------------
-REGISTER BUTTON
-----------------------------
-  */
 .register {
   border-radius: 4px;
   background-color:greenyellow;

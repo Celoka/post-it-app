@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import expressValidator from 'express-validator';
 import bodyParser from 'body-parser';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
@@ -30,12 +31,15 @@ app.use((req, res, next) => {
 
 app.use(webpackMiddleware(compiler, {
   publicPath: config.output.publicPath,
+  historyApiFallback: true,
   stats: { colors: true }
 }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
+app.use(bodyParser.json());
 app.use(webpackHotMiddleware(compiler));
 app.use('/', publicPath);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
 app.use(routes);
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/app/js/index.html'));
@@ -43,5 +47,4 @@ app.get('/*', (req, res) => {
 
 app.listen(port);
 console.log(`listening on ${port}`);
-
-module.exports = app;
+export default app;

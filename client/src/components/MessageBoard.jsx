@@ -5,16 +5,10 @@ class MessageBoard extends React.Component {
         return(
           <div className='container-fluid'>
             <div className='row content'>
-                {/* <h4><small> RECENT POSTS</small></h4>
-                <hr/>
-                <h2> I love Food</h2>
-                <h5><span className='glyphicon glypicon-time'></span>Post by Me.</h5>
-                <h5><span className='label label-danger'></span><span
-                className='label-label-primary'
-                ></span></h5> */}
                 <div className='chat_area'>
                   <ul className='list-unstyled'>
                     <li className='left clearfix'>
+                    <p> A message</p>
                       <hr/>
                     </li>
                   </ul>
@@ -24,7 +18,15 @@ class MessageBoard extends React.Component {
                     required></textarea>
                   </div>
                 <button type="submit" className="btn btn-success">Submit</button>
-                <br/><br/>
+                <label className="radio-inline">
+                  <input type="radio" name="optradio"/>Option 1
+                </label>
+                <label className="radio-inline">
+                  <input type="radio" name="optradio"/>Option 2
+                </label>
+                <label className="radio-inline">
+                  <input type="radio" name="optradio"/>Option 3
+                </label>
             </div>
           </div>
         );

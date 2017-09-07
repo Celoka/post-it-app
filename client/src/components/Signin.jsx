@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
-import * as actions from '../actions/AppActions';
-import UsersStore from '../stores/UsersStore';
+import AppActions from '../actions/AppActions';
+import AppStore from '../stores/AppStore';
 import Header from '../components/Navbar.jsx';
-
 /**
  *
  * @class SignIn
@@ -12,7 +11,7 @@ import Header from '../components/Navbar.jsx';
  */
 class SignIn extends React.Component {
 /**
- * Creates an instance of SignIn.
+ *
  * @param {any} props
  * @memberof SignIn
  */
@@ -21,11 +20,10 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      user: {}
+      error: '',
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
 /**
  *@return
@@ -44,13 +42,19 @@ class SignIn extends React.Component {
  */
   onSubmit(event) {
     event.preventDefault();
-    const SignInDetails = {
+    const signInDetails = {
       email: this.state.email,
       password: this.state.password
     };
-    actions.loginUser(SignInDetails).then(() => {
-      UsersStore.on('login_success', this.getUser);
+    AppActions.loginUser(signInDetails)
+    .then(() => {
+      AppStore.on('login_success', this.getUser);
       this.props.history.push('/broadcastboard');
+    }).catch((err) => {
+      const error = err.response.data.message;
+      this.setState({
+        error
+      });
     });
   }
 /**
@@ -58,20 +62,26 @@ class SignIn extends React.Component {
  * @memberof SignIn
  */
   getUser() {
-    this.setState({ user: UsersStore.getUser() });
+    this.setState({
+      user: AppStore.getUser()
+    });
   }
+      
 /**
  *
  * @returns
  * @memberof SignIn
  */
   render() {
+    const { error } = this.state;
     return (
       <div>
         <Header />
         <div id="signin">
           <h1> Account Login </h1>
             <form onSubmit={this.onSubmit}>
+            { error && <center><span className="alert alert-danger">{error}</span>
+            <hr/></center> }
               <fieldset className="account-info">
                 <label>
                   Email Address
@@ -86,10 +96,8 @@ class SignIn extends React.Component {
                   <h5>Sign in with google </h5>
               </fieldset>
               <GoogleButton id= "googlebutton" onClick={() => {
-                console.log('button clicked');
               }} />
-              <button id= "button" onClick={this.onSubmit}
-               type="submit" name="submit"
+              <button id= "sign" type="submit" name="submit"
               >Login </button>
                 <label >
                   <input type="checkbox" name="remember" /> Stay signed in.

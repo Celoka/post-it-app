@@ -2,12 +2,17 @@ import express from 'express';
 import {
   createUser,
   logIn,
-  logOut
+  logOut,
+  googleLogin,
+  resetPassword,
+  getUser
 } from '../controllers/users';
 import {
   createGroup,
   addUser,
-  sendMessage
+  sendMessage,
+  getGroup,
+  getGroupMessages
 } from '../controllers/groups';
 
 const router = express.Router();
@@ -15,8 +20,14 @@ const router = express.Router();
 router.post('/user/signup', createUser);
 router.post('/user/signin', logIn);
 router.post('/user/signout', logOut);
+router.post('/user/passwordreset', resetPassword);
+router.post('/user/googlelogin', googleLogin);
 router.post('/group', createGroup);
 router.post('/group/:groupId/user', addUser);
-router.post('/groupName/message', sendMessage);
+router.post('/groupname/message', sendMessage);
+
+router.get('/user/group', getGroup);
+router.get('/user', getUser);
+router.get('messages/:messagesId/groups/:groupId/users', getGroupMessages);
 
 export default router;

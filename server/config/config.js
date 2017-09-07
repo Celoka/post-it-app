@@ -1,5 +1,8 @@
 import firebase from 'firebase';
+// import admin from 'firebase-admin';
 import dotenv from 'dotenv';
+
+// import serviceAccount from '../../serviceAccountKey.json';
 
 dotenv.config();
 
@@ -12,4 +15,14 @@ const config = {
   messagingSenderId: process.env.messagingSenderId
 };
 const db = firebase.initializeApp(config);
-module.exports = db;
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: 'https://eloka-667be.firebaseio.com'
+// });
+
+// db.auth().onAuthStateChanged((user) => {
+//   console.log(JSON.stringify(user));
+// });
+
+export default db;
