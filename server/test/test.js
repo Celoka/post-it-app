@@ -1,5 +1,7 @@
-const supertest = require('supertest');
-const server = require('../server/server');
+import supertest from 'supertest';
+import server from '../server';
+
+const app = express();
 
 // UNIT test begin for Sign Up route
 describe('API route unit test for SignUp route', () => {

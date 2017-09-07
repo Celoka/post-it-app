@@ -1,64 +1,62 @@
 import axios from 'axios';
-// import Firebase from 'firebase';
 import AppConstants from '../constants/AppConstants';
-import appDispatcher from '../dispatcher/dispatcher';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 
-/**
- * @return {*} user details
- * @param {*} user
- */
-export function registerUser(user) {
-  return axios.post('/user/signup', user).then((response) => {
-    appDispatcher.dispatch({
-      type: REGISTER_NEW_USER,
-      user: response.data.user
+
+const AppActions = {
+
+  registerUser(user) {
+    return axios.post('/user/signup', user)
+      .then((response) => {
+        const { userDetails } = response.data.message;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.REGISTER_USER,
+          userDetails
+        });
+      });
+  },
+
+  loginUser(signInDetails) {
+    return axios.post('user/signin', signInDetails).then((response) => {
+      const token = response.data.token;
+      localStorage.setItem('token', JSON.stringify(token));
+      AppDispatcher.dispatch({
+        actionType: AppConstants.LOGIN_USER,
+        token
+      });
     });
-  });
-}
+  },
 
-/**
- * @return {*} user login
- * @param {*} user
- */
-export function loginUser(user) {
-  return axios.post('/user/signin', user).then((response) => {
-    const token = response.data.user.email;
-    localStorage.setItem('token', JSON.stringify(token));
-    console.log(localStorage);
-    appDispatcher.dispatch({
-      type: LOGIN_USER,
-      user: response.data.user
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
+  createGroup(groupDetail) {
+    return axios.post('group', groupDetail);
+  }
+};
 
-export function createGroup(group) {
-  return axios.post('/group', group).then((response) => {
-    appDispatcher.dispatch({
-      type: CREATE_USER_GROUP,
-      group: response.data.group
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
 
-export function getGroup(group) {
-  return axios.post('/group', group).then((response) => {
-    appDispatcher.dispatch({
-      type: GET_USER_GROUP,
-      group: response.data.group
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
+// // export function createGroup(group) {
+// //   return axios.post('/group', group).then((response) => {
+// //     appDispatcher.dispatch({
+// //       type: CREATE_USER_GROUP,
+// //       group: response.data.group
+//     });
+//   }).catch((error) => {
+//     if (error.response) {
+//       console.log(error.response);
+//     }
+//   });
+// }
 
+// export function getGroup(group) {
+//   return axios.post('/group', group).then((response) => {
+//     appDispatcher.dispatch({
+//       type: GET_USER_GROUP,
+//       group: response.data.group
+//     });
+//   }).catch((error) => {
+//     if (error.response) {
+//       console.log(error.response);
+//     }
+//   });
+// }
+
+export default AppActions;
