@@ -1,42 +1,129 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import toastr from 'toastr';
+import AppActions from '../actions/AppActions';
+import AppStore from '../stores/AppStore';
+import GroupList from './GroupList.jsx';
 
+/**
+ * @class Group
+ * 
+ * @extends {React.Component}
+ */
 class Group extends React.Component {
+  /**
+   * Creates an instance of Group.
+   * 
+   * @memberof Group
+   */
+  constructor() {
+    super();
+    this.state = {
+      userGroupName: '',
+      groupname: []
+    };
+    this.onStoreChange = this.onStoreChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+  /**
+   * @description React life cycle method,
+   * adds listens to change from the app store.
+   * 
+   * @memberof AppComponent
+  */
+  componentDidMount() {
+    AppActions.loadGroups();
+    AppStore.addChangeListener(this.onStoreChange);
+  }
+  /**
+   * @description React life cycle method,
+   * removes change listener.
+   * 
+   * @memberof AppComponent
+   * @returns {void}
+  */
+  componentWillUnmount() {
+    AppStore.removeChangeListener(this.onStoreChange);
+  }
+  /**
+   *
+   * @param {any} event
+   * @memberof Group
+  */
+  onStoreChange() {
+    this.setState({
+      groupname: AppStore.getUserGroup()
+    });
+  }
 
+  onChange(event) {
+    this.setState({
+      userGroupName: event.target.value
+    });
+  }
+
+  /**
+   *
+   * @param {any} event
+   * 
+   * @memberof Group
+   */
+  onClick() {
+    AppActions.createGroup(this.state.userGroupName);
+    toastr.success(`${this.state.userGroupName} created`);
+    AppActions.loadGroups();
+  }
+
+  /**
+   * @memberof Group
+   * 
+   * @returns
+   */
   render() {
     return (
-            <div id="groupnav" className= "form-group">
-                <div className='dropdown'>
-                  <button className='btn btn-primary dropdown-toggle'
-                   type='button'
-                  data-toggle='dropdown'>Groups<span className='caret'></span>
-                  </button>
-                  <ul className='dropdown-menu'>
-                    <li><a href="#">My Groups</a></li>
-                    <li>
-                        <Modal.Dialog>
-                          <Modal.Header>
-                            <Modal.Title id="create group">Create Group</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                              <div className="form-group">
-                                <label for="groupname">Group Name:</label>
-                                <input type="text" className="form-control"
-                                 id="groupname" placeholder="Enter group name"/>
-                                <label for="groupowner">Created By:</label>
-                                <input type="text" className="form-control"
-                                 id="groupowner" placeholder="Enter text..."/>
-                              </div>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button>Close</Button>
-                            <Button bsStyle="primary">Submit</Button>
-                          </Modal.Footer>
-                        </Modal.Dialog>
-                    </li>
-                  </ul>
+      <div>
+        <form onSubmit={this.onSubmit} id='group-form'>
+          <h4><center> Group List</center><hr /></h4>
+          <button id='modal-button' type="button"
+            className="btn btn-success"
+            data-toggle="modal"
+            data-target="#myModal">
+            Create New Group
+              </button>
+          <div className="modal fade"
+            id="myModal"
+            role="dialog">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="close" data-dismiss="modal">&times;</button>
+                  <h4 className="modal-title">Create Group</h4>
                 </div>
+                <div className="modal-body">
+                  <input type="text"
+                    className="form-control"
+                    onChange={this.onChange}
+                    name="groupname"
+                    placeholder="Input groupname...." />
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-danger"
+                    data-dismiss="modal" >Close</button>
+                  <button type="button" className="btn btn-success"
+                    data-dismiss="modal" onClick={this.onClick} type="submit" name="submit">
+                    Create
+                      </button>
+                </div>
+              </div>
             </div>
+          </div>
+          <div id="Style-group">
+            <ul>
+              <h5>{this.state.groupname.map((KeyName, KeyIndex) => (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex} />))} </h5>
+            </ul>
+          </div>
+        </form>
+      </div>
     );
   }
 }

@@ -1,64 +1,100 @@
 import axios from 'axios';
-// import Firebase from 'firebase';
 import AppConstants from '../constants/AppConstants';
-import appDispatcher from '../dispatcher/dispatcher';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 
-/**
- * @return {*} user details
- * @param {*} user
- */
-export function registerUser(user) {
-  return axios.post('/user/signup', user).then((response) => {
-    appDispatcher.dispatch({
-      type: REGISTER_NEW_USER,
-      user: response.data.user
-    });
-  });
-}
 
-/**
- * @return {*} user login
- * @param {*} user
- */
-export function loginUser(user) {
-  return axios.post('/user/signin', user).then((response) => {
-    const token = response.data.user.email;
-    localStorage.setItem('token', JSON.stringify(token));
-    console.log(localStorage);
-    appDispatcher.dispatch({
-      type: LOGIN_USER,
-      user: response.data.user
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
+const AppActions = {
 
-export function createGroup(group) {
-  return axios.post('/group', group).then((response) => {
-    appDispatcher.dispatch({
-      type: CREATE_USER_GROUP,
-      group: response.data.group
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
+  registerUser(userDetails) {
+    return axios
+      .post('/user/signup', userDetails)
+      .then((response) => {
+        const { token } = response.data;
+        localStorage.setItem('token', JSON.stringify(token));
+        const user = response.data.userDetails[0];
+        AppDispatcher.dispatch({
+          actionType: AppConstants.SET_USER,
+          user,
+          token
+        });
+      });
+  },
 
-export function getGroup(group) {
-  return axios.post('/group', group).then((response) => {
-    appDispatcher.dispatch({
-      type: GET_USER_GROUP,
-      group: response.data.group
-    });
-  }).catch((error) => {
-    if (error.response) {
-      console.log(error.response);
-    }
-  });
-}
+  loadGroups() {
+    return axios
+      .get('/groups')
+      .then((response) => {
+        const { userGroups } = response.data;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.SET_GROUP,
+          userGroups
+        });
+      });
+  },
 
+  loginUser(signInDetails) {
+    return axios
+      .post('/user/signin', signInDetails)
+      .then((response) => {
+        const { token } = response.data;
+        const user = response.data.userDetails[0];
+        localStorage.setItem('token', JSON.stringify(token));
+        AppDispatcher.dispatch({
+          actionType: AppConstants.SET_USER,
+          user
+        });
+      });
+  },
+
+  createGroup(groupDetail) {
+    const groupname = { groupname: groupDetail };
+    return axios
+      .post('/group', groupname)
+      .then((response) => {
+        const group = response.data.groupname;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.CREATE_GROUP,
+          group
+        });
+      });
+  },
+  logOut() {
+    return axios
+      .post('/user/signout')
+      .then((response) => {
+        const { token } = response.data;
+        localStorage.removeItem('token', token);
+      });
+  },
+
+  resetPassword(resetEmail) {
+    return axios
+    .post('/user/passwordreset', resetEmail);
+  },
+
+  postMessage(messageDetail, groupId) {
+    return axios
+      .post(`/groups/${groupId}/message`, messageDetail, groupId)
+      .then((response) => {
+        const groupMessage = response.data.message;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.SET_GROUP_MESSAGE,
+          groupMessage
+        });
+      });
+  },
+
+  loadMessage(groupId) {
+    return axios
+      .get(`/group/${groupId}`)
+      .then((response) => {
+        const message = response.data.groupMessage;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.LOAD_GROUP_MESSAGE,
+          message,
+        });
+      });
+  },
+};
+
+export default AppActions;

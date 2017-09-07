@@ -1,18 +1,16 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import AppActions from '../actions/AppActions';
+import AppStore from '../stores/AppStore';
 import Routes from '../Routes.jsx';
 
 /**
- *
+ * 
  * @class App
  * @extends {React.Component}
  */
 class App extends React.Component {
-  /**
-   *
-   * @returns {Routes} Pages rendered via routes.
-   * @memberof App
-   */
+
   render() {
     return (
       <div>

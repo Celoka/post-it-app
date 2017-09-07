@@ -1,86 +1,211 @@
+/**
+ * Module dependencies
+ */
 import firebase from 'firebase';
+import db from '../config/config';
+import Utils from '../utils/index';
 
-const db = require('../config/config');
+/**
+ * @description Creates user group
+ * POST: /group
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} Group object;
+ */
+export const createGroup = (req, res) => {
+  const groupname = req.body.groupname;
+  const userId = req.user.uid;
+  const timestamp = new Date().toString();
 
-export const createGroup = (res, req) => {
-  const groupName = req.body.groupName,
-    createdBy = req.body.createdBy;
-  const groupKey = firebase.database().ref('groups/').push({
-    groupName,
-    createdBy,
+  const groupKey = db.database().ref('/groups').push({
+    groupname,
+    datecreated: timestamp
   }).key;
-  const groupRef = db.database().ref(`groups/${groupKey}/users`);
+
+  const groupRef = db.database().ref(`/groups/${groupKey}/users`);
   groupRef.set({
-    userId,
+    isAdmin: true
   });
-  const userRef = db.database().ref(`users/${user.uid}/groups/`);
+
+  const userRef = db.database().ref(`/users/${userId}/groups`);
   userRef.child(groupKey).set({
-    groupName
+    groupname,
+    isAdmin: true
   }).then(() => {
     res.status(200).send({
-      message: 'Group created!',
+      message: 'User group created successfully',
+      groupname,
+      datecreated: timestamp,
+      groupKey
     });
   })
     .catch((error) => {
-      res.status(500).send({
-        message: error.message,
-      });
+      if (!userId) {
+        res.status(403).json({
+          message: 'Unauthorized operation,please signup/signin',
+        });
+      } else {
+        res.status(500).json({
+          message: error,
+        });
+      }
     });
 };
 
-export const addUser = (res, req) => {
-  const groupId = req.body.groupId,
-    currentUser = firebase.auth().currentUser,
-    userId = req.body.userId;
+/**
+ * @description Adds a member to a group
+ * POST:/group/:groupId/user
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} response object for an added user
+ */
+export const addMember = (req, res) => {
+  const groupId = req.params.groupId;
+  const newUser = req.body.newUser;
+  const user = req.user.uid;
 
-  if (currentUser) {
-    firebase.database()
-        .ref(`group/${groupId}/users`)
-        .update({
-          id: userId,
+  if (user) {
+    const groupRef = db.database().ref(`/groups/${groupId}/users`);
+    groupRef.child(newUser).set({
+      userId: newUser,
+    });
 
+    const userRef = db.database().ref(`/users/${user}/groups`);
+    userRef.child(groupId).update({
+      userId: newUser,
+    })
+      .then(() => {
+        res.status(200).json({
+          message: 'New user added successfully'
         });
-    db.ref(`/users/${userId}/groups`).push(
-      {
-        groupId,
-        userId,
-        isAdmin: false
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
       });
-    firebase.database().then(() => {
-      res.status(200);
-      res.send('New user added ');
-    });
-    firebase.database().catch((error) => {
-      res.status(400);
-      res.send(error.message);
-    });
   } else {
-    res.status(401);
-    res.send('You need to be signed In');
+    res.status(403).send({
+      message: 'Unauthorized operation,please signup/signin'
+    });
+  }
+};
+/**
+ * @description Post message to a group
+ * POST:/groups/:groupId/message
+ *
+ * @param {object} req request object
+ * @param {object} res response
+ *
+ * @return { object } response object
+ */
+export const postMessage = (req, res) => {
+  const { message, priority } = req.body;
+  const groupId = req.params.groupId;
+  const user = req.user.uid;
+  const timestamp = new Date().toString();
+
+  if (user) {
+    const messageKey = db.database().ref('messages/').push({
+    }).key;
+    const messageRef = db.database().ref(`messages/${messageKey}/groups/${groupId}`);
+    messageRef.push({
+      message,
+      priority,
+      timestamp
+    });
+    const groupRef = firebase.database().ref(`groups/${groupId}/messages`);
+    groupRef.push({
+      user,
+      message,
+      priority,
+      timestamp,
+    })
+      .then(() => {
+        res.status(200).json({
+          status: 'Message posted successfully',
+          message,
+          priority,
+          timestamp,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
+      });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation,please signup/signin'
+    });
   }
 };
 
-export const sendMessage = (res, req) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  const groupName = req.body.group;
-  const message = req.body.message;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      const userId = (firebase.auth().currentUser).uid;
-      const groupRef = db.database().ref(`Group/${userId}`).child(groupName);
-      groupRef.orderByKey().on('child_added', (data) => {
-        groupRef.child(data.key).push({
-          memberMessage: message
-        });
-      });
-      res.send({
-        message: 'Message sent'
+/**
+ * @description Get user group
+ * POST:/groups
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return { object } response object user groups
+ */
+export const getGroup = (req, res) => {
+  const user = req.user.uid;
+  if (user) {
+    const userRef = db.database().ref(`/users/${user}/groups`).orderByKey();
+    userRef.once('value', (snapshot) => {
+      const childData = snapshot.val();
+      const userGroups = Utils.normalizeData(childData);
+      return res.status(200).json({
+        status: 'Message retrieved successfully',
+        userGroups
       });
     })
-            .catch(() => {
-              res.status(401).send({
-                message: 'User not a member'
-              });
-            });
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
+      });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation, please signup/signin'
+    });
+  }
+};
+
+/**
+ * @description Get group messages
+ * POST:/group/:groupId
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} response object message
+ */
+export const getGroupMessage = (req, res) => {
+  const groupId = req.params.groupId;
+  const groupMessage = [];
+  const messageRef = db.database().ref(`/groups/${groupId}/messages`);
+  messageRef.once('value', (snap) => {
+    let message = {};
+    snap.forEach((details) => {
+      message = {
+        messageId: details.key,
+        text: details.val().message,
+        time: details.val().timestamp,
+        messagePriority: details.val().priority,
+        user: details.val().user
+      };
+      groupMessage.push(message);
+    });
+    res.status(200).json({
+      status: 'Message retrived succcessfully',
+      groupMessage,
+    });
+  });
 };
