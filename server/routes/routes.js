@@ -3,7 +3,6 @@ import {
   createUser,
   logIn,
   logOut,
-  googleLogin,
   resetPassword,
   getUser
 } from '../controllers/users';
@@ -21,13 +20,12 @@ router.post('/user/signup', createUser);
 router.post('/user/signin', logIn);
 router.post('/user/signout', logOut);
 router.post('/user/passwordreset', resetPassword);
-router.post('/user/googlelogin', googleLogin);
 router.post('/group', createGroup);
 router.post('/group/:groupId/user', addUser);
 router.post('/groupname/message', sendMessage);
 
 router.get('/user/group', getGroup);
 router.get('/user', getUser);
-router.get('messages/:messagesId/groups/:groupId/users', getGroupMessages);
+router.get('/messages/:messagesId/groups/:groupId/users', getGroupMessages);
 
 export default router;

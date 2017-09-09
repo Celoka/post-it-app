@@ -29,7 +29,9 @@ const AppActions = {
 
   createGroup(groupDetail) {
     return axios.post('group', groupDetail);
-  }
+  },
+
+  
 };
 
 

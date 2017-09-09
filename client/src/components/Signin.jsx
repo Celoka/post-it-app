@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
+import { Link } from 'react-router-dom';
+import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import Header from '../components/Navbar.jsx';
@@ -24,6 +25,7 @@ class SignIn extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.googleSignIn = this.googleSignIn.bind(this);
   }
 /**
  *@return
@@ -66,7 +68,32 @@ class SignIn extends React.Component {
       user: AppStore.getUser()
     });
   }
-      
+  /**
+   * @return {*}
+   * @description Create google login function for alternative sign up method.
+   * @param {*}
+   * @memberof SignIn
+   */
+  googleSignIn() {
+    // event.preventDefault();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+    firebase.auth().signInWithPopup(provider)
+      .then((result) => {
+        // const token = result.credential.accessToken;
+        const user = result.user;
+        if (user) {
+          firebase.auth().onAuthStateChanged(() => {
+            this.props.history.push('/broadcastboard');
+          });
+        }
+        // console.log(token);
+        // console.log(user.username);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
 /**
  *
  * @returns
@@ -95,8 +122,7 @@ class SignIn extends React.Component {
                 </label>
                   <h5>Sign in with google </h5>
               </fieldset>
-              <GoogleButton id= "googlebutton" onClick={() => {
-              }} />
+              <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
               <button id= "sign" type="submit" name="submit"
               >Login </button>
                 <label >
