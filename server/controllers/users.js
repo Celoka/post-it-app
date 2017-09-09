@@ -83,11 +83,6 @@ export const logIn = (req, res) => {
   }
 };
 
-
-export const googleLogin = () => {
-};
-
-
 export const resetPassword = (req, res) => {
   const email = req.body.email;
   firebase.auth().sendPasswordResetEmail(email)
@@ -122,17 +117,21 @@ export const logOut = (req, res) => {
 export const getUser = (req, res) => {
   const user = req.user.uid;
   if (user) {
-    const query = db.database().ref(`users/${user}`).orderByKey();
+    const query = db.database().ref(`users/${user}`);
     query.once('value')
     .then((snapshot) => {
+      console.log(snapshot.val);
+      const result = [];
       snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        console.log(childData.val());
-        // const newData = childData[0].msg;
-        return res.status(200).json({
-          childData,
-          user
-        });
+        const value = childSnapshot.val();
+        const key = childSnapshot.key;
+        if (key === 'groups') {
+          result.push(value);
+        }
+      });
+      return res.status(200).json({
+        result,
+        user
       });
     })
     .catch((error) => {

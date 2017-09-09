@@ -91,7 +91,7 @@ export const sendMessage = (req, res) => {
     const messageKey = db.database().ref('messages/').push({
     }).key;
 
-    const messageRef = db.database().ref(`messages/${messageKey}/groups/${groupId}/users/${user}`);
+    const messageRef = db.database().ref(`messages/${messageKey}/groups/${groupId}/users`);
     messageRef.set({
       message,
       priority,

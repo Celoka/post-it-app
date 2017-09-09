@@ -1,5 +1,4 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import AppActions from '../actions/AppActions';
 
 
@@ -32,50 +31,40 @@ class Group extends React.Component {
     });
   }
 
-  render() {
+  render () {
     return (
-            <div id="groupnav" className= "form-group">
-                <div className='dropdown'>
-                  <button className='btn btn-primary dropdown-toggle'
-                   type='button'
-                  data-toggle='dropdown'>Groups<span className='caret'></span>
-                  </button>
-                  <ul className='dropdown-menu'>
-                    <li><a href="#">My Groups</a></li>
-                    <li>
-                        <Modal.Dialog>
-                          <Modal.Header>
-                            <Modal.Title id="create group">Create Group</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                              <div className="form-group">
-                                <label htmlFor="groupname">Group Name:</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  id="groupname"
-                                  name="groupname"
-                                  placeholder="Enter group name"
-                                  value={this.state.groupname}
-                                  onChange={this.onChange}
-                                />
-                                <label htmlFor="groupowner">Created By:</label>
-                                <input type="text" className="form-control"
-                                 id="groupowner" placeholder="Enter text..."/>
-                              </div>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button>Close</Button>
-                            <Button bsStyle="primary"
-                              onClick={this.onClick}
-                            >Submit</Button>
-                          </Modal.Footer>
-                        </Modal.Dialog>
-                    </li>
-                  </ul>
-                </div>
+      <div className="container">
+      <h2>Activate Modal with JavaScript</h2>
+ 
+      <button type="button"
+       className="btn btn-info default"
+       id="myBtn">
+       Open Modal
+       </button>
+
+      <div className="modal fade"
+       id="myModal"
+       role="dialog">
+        <div className="modal-dialog">
+      
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal">&times;</button>
+              <h4 className="modal-title">Modal Header</h4>
             </div>
-    );
+            <div className="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+          </div>
+        </div>
+      </div>
+  
+    )
   }
 }
 export default Group;
