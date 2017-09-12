@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
+import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
 /**
  *
@@ -50,55 +51,48 @@ class SignIn extends React.Component {
     };
     AppActions.loginUser(signInDetails)
     .then(() => {
-      AppStore.on('login_success', this.getUser);
-      this.props.history.push('/broadcastboard');
+      AppStore.on('login_success', this.getCurrentUser);
+      this.props.history.push('/dashboard');
     }).catch((err) => {
-      const error = err.response.data.message;
+      const error = err.response.data;
       this.setState({
         error
       });
     });
   }
 /**
- *@return
+ * @return {void}
  * @memberof SignIn
  */
-  getUser() {
+  getCurrentUser() {
     this.setState({
-      user: AppStore.getUser()
+      user: AppStore.getCurrentUser()
     });
   }
   /**
-   * @return {*}
    * @description Create google login function for alternative sign up method.
-   * @param {*}
+   * @param
+   * @return {void}
    * @memberof SignIn
    */
-  googleSignIn() {
-    // event.preventDefault();
+  googleSignIn(event) {
+    event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
       .then((result) => {
-        // const token = result.credential.accessToken;
         const user = result.user;
         if (user) {
-          firebase.auth().onAuthStateChanged(() => {
-            this.props.history.push('/broadcastboard');
-          });
+          this.props.history.push('/dashboard');
         }
-        // console.log(token);
-        // console.log(user.username);
-      }).catch((error) => {
-        console.log(error);
       });
   }
-/**
- *
- * @returns
- * @memberof SignIn
- */
+  /**
+   *
+   * @return
+   * @memberof SignIn
+   */
   render() {
     const { error } = this.state;
     return (
@@ -107,7 +101,8 @@ class SignIn extends React.Component {
         <div id="signin">
           <h1> Account Login </h1>
             <form onSubmit={this.onSubmit}>
-            { error && <center><span className="alert alert-danger">{error}</span>
+            { error && <center><span className="alert alert-danger">
+              {error}</span>
             <hr/></center> }
               <fieldset className="account-info">
                 <label>
@@ -118,9 +113,9 @@ class SignIn extends React.Component {
                 <label>
                   Password
                   <input value ={this.state.password} onChange={this.onChange}
-                   type="password" name="password" />
+                   type='password' name='password'/>
                 </label>
-                  <h5>Sign in with google </h5>
+                  <Link to='/resetpassword'>Forgot password? Click to reset password</Link>
               </fieldset>
               <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
               <button id= "sign" type="submit" name="submit"

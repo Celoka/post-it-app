@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AppAction from '../actions/AppActions';
 
 /**
  *
@@ -10,17 +11,18 @@ class BoardNavigation extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { isToggleOn: true };
+    this.setState = {
+      error: ''
+    };
 
-    // Binding the click event to enable it work in the callback.
-    this.handleClick = this.handleClick.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
-  handleClick() {
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn
-    }));
+  onClick(event) {
+    event.preventDefault();
+    AppAction.logOut();
   }
+
     /**
      *
      * @returns
@@ -36,13 +38,13 @@ class BoardNavigation extends React.Component {
                   data-toggle="collapse" data-target=".navbar-collapse">
                   <span className="sr-only">Toggle navigation</span>
                 </button>
-                <Link to='/broadcastboard'className="navbar-brand"><h2> Post It </h2></Link>
+                <Link to='/dashboard'className="navbar-brand"><h2> Post It </h2></Link>
               </div>
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav">
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
-                  <li><Link to= '/'><span onClick = {this.handleClick}> {this.state.isToggleOn ? 'Sign Out' : 'Sign out'} </span></Link></li>
+                  <li onClick={this.onClick}><Link to= '/'>Sign Out </Link></li>
                 </ul>
               </div>
             </div>

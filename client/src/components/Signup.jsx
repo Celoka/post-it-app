@@ -27,17 +27,15 @@ class SignUp extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const user = {
+    const userDetails = {
       email: this.state.email,
       password: this.state.password,
       username: this.state.username,
       phonenumber: this.state.phonenumber
     };
-    AppActions.registerUser(user).then(() => {
-      this.setState({ email: '', password: '' });
-      this.props.history.push('/broadcastboard');
+    AppActions.registerUser(userDetails).then(() => {
+      this.props.history.push('/dashboard');
     }).catch((err) => {
-      // display error to user
       const error = err.response.data.message;
       this.setState({
         error

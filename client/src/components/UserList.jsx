@@ -1,23 +1,22 @@
 import React from 'react';
 
 class UserList extends React.Component {
-    render(){
-        return (
-          <div>
-              <h4></h4>
-              <ul className='nav nav-pills nav-stacked'>
-                <li className='active'><a href=''>Users</a></li>
-              </ul><br/>
-              <div className='input-group'>
-                <input type='text' className='form-control' placeholder='search member..' />
-                <span className='input-group-btn'>
-                  <button className='btn btn-default' type='button' >
-                    <span className='glyphicon glyphicon-search'></span>
-                  </button>
-                </span>
+  render() {
+    return (
+        <div>
+          <form id='userlist-form'>
+            <h4><center> Members</center><hr/></h4>
+            <div className="input-group">
+              <input type="text" className="form-control" placeholder="Search"/>
+              <div className="input-group-btn">
+                <button className="btn btn-default" type="submit">
+                  <i className="glyphicon glyphicon-search"></i>
+                </button>
               </div>
-          </div>
-        );
-    }
+            </div>
+          </form>
+      </div>
+    );
+  }
 }
 export default UserList;

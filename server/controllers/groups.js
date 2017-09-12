@@ -3,6 +3,7 @@
  */
 import firebase from 'firebase';
 import db from '../config/config';
+import Utils from '../utils/index';
 
 /**
  * @description create user group controller
@@ -10,7 +11,7 @@ import db from '../config/config';
  * @param {*} res
  */
 export const createGroup = (req, res) => {
-  const groupname = req.body;
+  const groupname = req.body.groupname;
   const userId = req.user.uid;
   const timestamp = new Date().toString();
 
@@ -19,18 +20,21 @@ export const createGroup = (req, res) => {
     datecreated: timestamp
   }).key;
 
-  const groupRef = db.database().ref(`groups/${groupKey}/users/${userId}`);
+  const groupRef = db.database().ref(`groups/${groupKey}/users`);
   groupRef.set({
     administrator: true
   });
 
-  const userRef = db.database().ref(`users/${userId}/groups/`);
+  const userRef = db.database().ref(`users/${userId}/groups`);
   userRef.child(groupKey).set({
     groupname,
     administrator: true
   }).then(() => {
     res.status(200).send({
-      message: 'User group created successfully' });
+      message: 'User group created successfully',
+      groupname,
+      groupKey
+    });
   })
     .catch((error) => {
       if (!userId) {
@@ -51,9 +55,9 @@ export const createGroup = (req, res) => {
  * @param {*} res
  */
 export const addUser = (req, res) => {
-  const groupId = req.params.groupId,
-    newUser = req.body.newUser,
-    user = req.user.uid;
+  const groupId = req.params.groupId;
+  const newUser = req.body.newUser;
+  const user = req.user.uid;
 
   if (user) {
     const groupRef = db.database().ref(`/groups/${groupId}/users`);
@@ -61,8 +65,10 @@ export const addUser = (req, res) => {
       userId: newUser,
     });
 
-    const userRef = db.database().ref(`/users/${newUser}/groups`);
-    userRef.child(groupId).set(true)
+    const userRef = db.database().ref(`/users/${user}/groups`);
+    userRef.child(groupId).update({
+      userId: newUser,
+    })
         .then(() => {
           res.status(200).json({
             message: 'New user added successfully' });
@@ -90,7 +96,6 @@ export const sendMessage = (req, res) => {
   if (user) {
     const messageKey = db.database().ref('messages/').push({
     }).key;
-
     const messageRef = db.database().ref(`messages/${messageKey}/groups/${groupId}/users`);
     messageRef.set({
       message,
@@ -99,8 +104,9 @@ export const sendMessage = (req, res) => {
     });
     const groupRef = firebase.database().ref(`groups/${groupId}/messages`);
     groupRef.set({
+      messageKey,
       user,
-      messageKey
+      message
     })
       .then(() => {
         res.status(200).json({
@@ -119,13 +125,11 @@ export const sendMessage = (req, res) => {
 export const getGroup = (req, res) => {
   const user = req.user.uid;
   if (user) {
-    const query = db.database().ref(`users/${user}/groups/`).orderByKey();
-    query.once('value')
-    .then((snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        return res.status(200).json({ childData });
-      });
+    const query = db.database().ref('/groups').orderByKey();
+    query.once('value', (snapshot) => {
+      const childData = snapshot.val();
+      const userGroups = Utils.normalizeData(childData);
+      return res.status(200).json({ userGroups });
     })
     .catch((error) => {
       res.status(500).json({
@@ -140,17 +144,13 @@ export const getGroup = (req, res) => {
 };
 
 export const getGroupMessages = (req, res) => {
-  const { messagesId, groupId } = req.params;
   const user = req.user.uid;
   if (user) {
-    const query = db.database().ref(`messages/${messagesId}/groups/${groupId}/users/${user}`).orderByKey();
-    query.once('value')
-    .then((snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        console.log(childSnapshot);
-        return res.status(200).json({ childData });
-      });
+    const query = db.database().ref('/groups').orderByKey();
+    query.once('value', (snapshot) => {
+      const childData = snapshot.val();
+      const userGroups = Utils.normalizeData(childData);
+      return res.status(200).json({ userGroups });
     })
     .catch((error) => {
       res.status(500).json({
@@ -163,3 +163,27 @@ export const getGroupMessages = (req, res) => {
     });
   }
 };
+// export const getGroupMessages = (req, res) => {
+//   // const { messagesId, groupId } = req.params;
+//   const user = req.user.uid;
+//   if (user) {
+//     const query = db.database().ref('/messages').orderByKey();
+//     query.once('value')
+//     .then((snapshot) => {
+//       snapshot.forEach((childSnapshot) => {
+//         const childData = childSnapshot.val();
+//         console.log(childSnapshot);
+//         return res.status(200).json({ childData });
+//       });
+//     })
+//     .catch((error) => {
+//       res.status(500).json({
+//         message: error.message
+//       });
+//     });
+//   } else {
+//     res.status(403).json({
+//       message: 'Unauthorized operation, please signup/signin'
+//     });
+//   }
+// };

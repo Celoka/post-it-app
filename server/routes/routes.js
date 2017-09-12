@@ -24,8 +24,8 @@ router.post('/group', createGroup);
 router.post('/group/:groupId/user', addUser);
 router.post('/groupname/message', sendMessage);
 
-router.get('/user/group', getGroup);
+router.get('/groups', getGroup);
 router.get('/user', getUser);
-router.get('/messages/:messagesId/groups/:groupId/users', getGroupMessages);
+router.get('/group/message', getGroupMessages);
 
 export default router;

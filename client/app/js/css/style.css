@@ -95,6 +95,12 @@ input {
     width: 300px;
     margin: 150px auto 0px auto;
 }
+#messageboard {
+    height:120px;
+    width: 500px;
+    margin-top: 50px;
+    margin-left: 40px;
+}
 
 a {
   float: right;
@@ -115,6 +121,12 @@ Buttons
 }
 #button {
     margin-top: 25px;
+}
+#message {
+    margin-top: 400px;
+}
+#text {
+    margin-top: 200px;
 }
 h1 {
   font-size: 36px;
@@ -138,7 +150,15 @@ p{
     float: left;
     padding: 8px 16px;
   }
-
+#userlist-form {
+    margin-top: 100px;
+}
+#group-form {
+    margin-top: 100px;
+}
+#modal-button {
+    margin-top: -15px;
+}
 .register {
   border-radius: 4px;
   background-color:greenyellow;

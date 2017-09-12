@@ -17,8 +17,8 @@ class MessageForm extends React.component {
       </div>
     )
   }
-  onSubmit(e){
-    e.preventDefault();
+  onSubmit(event){
+    event.preventDefault();
 
     this.props.emit('messageAdded', {
       timeStamp: Date.now(),

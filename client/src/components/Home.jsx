@@ -18,7 +18,7 @@ class Home extends React.Component {
     return (
       <div>
         <Navbar />
-          <section className="hero container">
+          <section id='text' className="hero container">
             <br/>
             <h1>Post It Message App</h1>
             <h2><p>Information sharing has just been

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "babel-watch ./server/server.js && webpack -w --hot",
     "build": "babel server/ -d dist",
-    "test": "jest"
+    "test": "jest",
+    "coverall":"NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 15000 --compilers js:babel-register && npm run coverage-report",
+    "coverage-report": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/Celoka/post-it-app#readme",
   "dependencies": {
+    "assert": "^1.4.1",
     "auth0-lock": "^10.16.0",
     "axios": "^0.16.2",
     "babel-core": "^6.24.1",
@@ -31,6 +34,8 @@
     "babel-runtime": "^6.23.0",
     "babel-watch": "^2.0.7",
     "body-parser": "^1.17.2",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "change": "0.0.0",
     "concurrently": "^3.4.0",
     "dotenv": "^4.0.0",
