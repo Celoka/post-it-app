@@ -1,4 +1,5 @@
 import React from 'react';
+import toastr from 'toastr';
 import AppStore from '../stores/AppStore';
 import Header from '../components/Navbar.jsx';
 import AppActions from '../actions/AppActions';
@@ -13,7 +14,7 @@ class SignUp extends React.Component {
       password: '',
       username: '',
       phonenumber: '',
-      error: ''
+      message: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -34,25 +35,26 @@ class SignUp extends React.Component {
       phonenumber: this.state.phonenumber
     };
     AppActions.registerUser(userDetails).then(() => {
+      toastr.success(`Registration successful. Welcome ${this.state.username}`);
       this.props.history.push('/dashboard');
-    }).catch((err) => {
-      const error = err.response.data.message;
+    }).catch((error) => {
+      toastr.error('Registration failed.');
+      const message = error.response.data.message;
       this.setState({
-        error
+        message
       });
     });
   }
 
   render() {
-    const { error } = this.state;
+   
     return (
       <div>
         <Header />
         <div id="signup" >
           <h1>Create Account</h1>
           <form onSubmit = {this.onSubmit} >
-              { error && <center><span className="alert alert-danger">{error}</span><hr/></center> }
-            <fieldset className="account-info">
+            <fieldset id= "signupfieldset"className="account-info">
               <label>
                 Email Address
                 <input value={this.state.email} onChange={this.onChange}

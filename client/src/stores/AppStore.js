@@ -16,6 +16,7 @@ class AppStoreClass extends EventEmitter {
     this.users = {};
     this.error = {};
     this.currentUser = {};
+    this.groups = '';
     this.userGroups = [];
     this.message = [];
   }
@@ -32,9 +33,11 @@ class AppStoreClass extends EventEmitter {
     };
   }
 
-  setGroupMessage(groupMessage) {
-    this.message = groupMessage;
+  setGroupMessage(message) {
+    this.message = message;
+
   }
+  
   getGroupMessage() {
     return this.message;
   }
@@ -61,8 +64,12 @@ class AppStoreClass extends EventEmitter {
    * @param {any} group
    * @memberof AppStoreClass
    */
-  currentGroup(groupDetail) {
-    this.groups = groupDetail;
+  currentGroup(group) {
+    this.groups = group;
+  }
+
+  getCurrentGroup() {
+    return this.groups;
   }
 
 /**
@@ -118,7 +125,7 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
     AppStore.emitChange();
     break;
   case AppConstants.CREATE_GROUP:
-    AppStore.currentGroup(action.groupDetail);
+    AppStore.currentGroup(action.group);
     AppStore.emitChange();
     break;
   case AppConstants.SET_GROUP:
@@ -126,7 +133,7 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
     AppStore.emitChange();
     break;
   case AppConstants.SET_GROUP_MESSAGE:
-    AppStore.setGroupMessage(action.groupMessage);
+    AppStore.setGroupMessage(action.message);
     AppStore.emitChange();
     break;
   default:

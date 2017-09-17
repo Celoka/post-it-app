@@ -1,4 +1,5 @@
 import React from 'react';
+import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import Header from '../components/Navbar.jsx';
 /**
@@ -43,8 +44,17 @@ class ResetPassword extends React.Component {
     const resetEmail = {
       email: this.state.email
     };
-    AppActions.resetPassword(resetEmail);
-    this.state.email = '';
+    AppActions.resetPassword(resetEmail)
+    .then(() => {
+      toastr.success('Password Reset Link sent');
+      this.props.history.push('/signin');
+    }).catch((error) => {
+      toastr.error('Password reset unsuccessful');
+      const message = error;
+      this.setState({
+        message
+      });
+    });
   }
 
 /**
@@ -56,7 +66,7 @@ class ResetPassword extends React.Component {
     return (
     <div>
       <Header />
-      <form onSubmit={this.onSubmit}>
+      <form id = "resetpassword"onSubmit={this.onSubmit}>
           <fieldset className="account-info">
             <label>
               Email Address

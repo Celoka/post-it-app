@@ -1,4 +1,5 @@
 import React from 'react';
+import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
@@ -6,6 +7,7 @@ import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
+
 /**
  *
  * @class SignIn
@@ -52,9 +54,11 @@ class SignIn extends React.Component {
     AppActions.loginUser(signInDetails)
     .then(() => {
       AppStore.on('login_success', this.getCurrentUser);
+      toastr.success('Login Successful');
       this.props.history.push('/dashboard');
     }).catch((err) => {
       const error = err.response.data;
+      toastr.error('Login Unsuccessful');
       this.setState({
         error
       });
@@ -82,9 +86,10 @@ class SignIn extends React.Component {
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
       .then((result) => {
+        toastr.success('Login Successful');
         const user = result.user;
         if (user) {
-          this.props.history.push('/dashboard');
+          return this.props.history.push('/dashboard');
         }
       });
   }
@@ -94,17 +99,13 @@ class SignIn extends React.Component {
    * @memberof SignIn
    */
   render() {
-    const { error } = this.state;
     return (
       <div>
         <Header />
         <div id="signin">
           <h1> Account Login </h1>
             <form onSubmit={this.onSubmit}>
-            { error && <center><span className="alert alert-danger">
-              {error}</span>
-            <hr/></center> }
-              <fieldset className="account-info">
+              <fieldset id="signinfieldset" className="account-info">
                 <label>
                   Email Address
                   <input value={this.state.email} onChange={this.onChange}
@@ -117,12 +118,14 @@ class SignIn extends React.Component {
                 </label>
                   <Link to='/resetpassword'>Forgot password? Click to reset password</Link>
               </fieldset>
-              <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
-              <button id= "sign" type="submit" name="submit"
-              >Login </button>
-                <label >
-                  <input type="checkbox" name="remember" /> Stay signed in.
-              </label>
+              <div id="button-segment">
+                <button id= "sign" type="submit" name="submit"
+                >Login </button>
+                  <label id="checkbox" >
+                    <input type="checkbox" name="remember" /> Stay signed in.
+                </label>
+                <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
+            </div>
           </form>
         </div>
       </div>

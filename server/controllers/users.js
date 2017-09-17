@@ -126,8 +126,7 @@ export const getUser = (req, res) => {
   const user = req.user.uid;
   if (user) {
     const query = db.database().ref(`users/${user}`);
-    query.once('value')
-    .then((snapshot) => {
+    query.once('value').then((snapshot) => {
       const result = [];
       snapshot.forEach((childSnapshot) => {
         const value = childSnapshot.val();
@@ -137,8 +136,7 @@ export const getUser = (req, res) => {
         }
       });
       return res.status(200).json({
-        result,
-        user
+        result
       });
     })
     .catch((error) => {

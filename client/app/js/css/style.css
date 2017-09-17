@@ -22,7 +22,6 @@ form {
    overflow: hidden;
    border-radius: 5px;
 }
-
 body{
     background: #293f50;
     color: #888;
@@ -96,12 +95,35 @@ input {
     margin: 150px auto 0px auto;
 }
 #messageboard {
-    height:120px;
-    width: 500px;
-    margin-top: 50px;
-    margin-left: 40px;
+    height: 130px;
+    width: 595px;
+    margin-top: -435px;
 }
-
+#resetpassword {
+    height:120px;
+    width:300px;
+    margin-top:250px;
+    margin-left: 500px;
+}
+#signinfieldset {
+    margin-top: 40px;
+}
+#signupfieldset {
+    margin-top: 40px;
+}
+#button-segment {
+    margin-top: 20px;
+}
+#checkbox {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+#message-box {
+    margin-left: 15px;
+}
+#priority-class {
+    margin-left: 15px;
+}
 a {
   float: right;
   color: grey;
@@ -123,7 +145,7 @@ Buttons
     margin-top: 25px;
 }
 #message {
-    margin-top: 400px;
+    margin-top: 435px;
 }
 #text {
     margin-top: 200px;
@@ -151,13 +173,31 @@ p{
     padding: 8px 16px;
   }
 #userlist-form {
-    margin-top: 100px;
+    background:#ECE8E7;
+    height:300px;
+    margin-top: 20px;
+    overflow: auto;
 }
 #group-form {
-    margin-top: 100px;
+    height:300px;
+    overflow: auto;
+}
+#MessageForm {
+    margin-top:50px;
+}
+#message-display {
+    margin-top: -1px;
+    margin-left: 16px;
+    height: 490px;
+    overflow: auto;
+    width: 595px;
 }
 #modal-button {
     margin-top: -15px;
+}
+#style-group {
+    color: red;
+    
 }
 .register {
   border-radius: 4px;

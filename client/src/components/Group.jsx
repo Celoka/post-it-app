@@ -1,6 +1,8 @@
 import React from 'react';
+import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
+import GroupList from './GroupList.jsx';
 
 /**
  *
@@ -21,30 +23,29 @@ class Group extends React.Component {
     this.onStoreChange = this.onStoreChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
-    // this.loadGroupMessages = this.loadGroupMessages.bind(this);
   }
-  /**
+/**
  * React life cycle method, adds listens to change from the app store.
  * @returns {*} Listener
  * @memberof AppComponent
- */
+*/
   componentDidMount() {
     AppActions.loadGroups();
     AppStore.addChangeListener(this.onStoreChange);
   }
 /**
-* React life cycle method, removes change listener.
-* @returns {void}
-* @memberof AppComponent
+ * React life cycle method, removes change listener.
+ * @returns {void}
+ * @memberof AppComponent
 */
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
   }
-   /**
-   *
-   * @param {any} event
-   * @memberof Group
-   */
+/**
+ *
+ * @param {any} event
+ * @memberof Group
+*/
   onStoreChange() {
     this.setState({
       groupname: AppStore.getUserGroup()
@@ -64,12 +65,9 @@ class Group extends React.Component {
    */
   onClick() {
     AppActions.createGroup(this.state.userGroupName);
+    toastr.success(`${this.state.userGroupName} created`);
     AppActions.loadGroups();
   }
-
-  // loadGroupMessages(groupName) {
-
-  // }
 
   /**
    *
@@ -77,10 +75,9 @@ class Group extends React.Component {
    * @memberof Group
    */
   render() {
-    const waiting = 'Waiting';
     return (
          <div>
-           <form id='group-form'>
+           <form onSubmit={this.onSubmit}id='group-form'>
               <h4><center> Group List</center><hr/></h4>
               <button id = 'modal-button'type="button"
                className="btn btn-success"
@@ -108,17 +105,17 @@ class Group extends React.Component {
                       <button type="button" className="btn btn-danger"
                        data-dismiss="modal" >Close</button>
                       <button type="button" className="btn btn-success"
-                       data-dismiss="modal" onClick={ this.onClick} type="submit" name="submit">
+                      data-dismiss="modal" onClick={ this.onClick} type="submit" name="submit">
                        Create
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div>
+              <div id="Style-group">
                 <ul>
-                <h5>{this.state.groupname === [] ? waiting : this.state.groupname.map((groupName, i) => <li key={i.toString()}>{groupName}</li>)}</h5>
-                </ul>
+                 <h5>{ this.state.groupname.map((KeyName, KeyIndex) => (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex}/>))} </h5>
+               </ul>
               </div>
            </form>
         </div>

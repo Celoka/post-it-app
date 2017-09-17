@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 
@@ -22,7 +23,7 @@ const AppActions = {
   loadGroups() {
     return axios.get('/groups')
     .then((response) => {
-      const userGroups = response.data.userGroups.map(groups => groups.groupname);
+      const userGroups = response.data.userGroups;
       AppDispatcher.dispatch({
         actionType: AppConstants.SET_GROUP,
         userGroups
@@ -47,25 +48,13 @@ const AppActions = {
     const groupname = { groupname: groupDetail };
     return axios.post('/group', groupname)
     .then((response) => {
-      const group = response.data.group;
+      const group = response.data.groupname;
       AppDispatcher.dispatch({
         actionType: AppConstants.CREATE_GROUP,
         group
       });
     });
   },
-
-  // getGroup(groupDetails) {
-  //   return axios.get('/user/group', groupDetails)
-  //   .then((response) => {
-  //     const group = response.data.group;
-  //     AppDispatcher.dispatch({
-  //       actionType: AppConstants.GET_GROUP,
-  //       group
-  //     });
-  //   });
-  // },
-
   logOut() {
     return axios.post('/user/signout')
     .then((response) => {
@@ -78,41 +67,27 @@ const AppActions = {
     return axios.post('/user/passwordreset', resetEmail);
   },
 
-  postMessage(messageDetail) {
-    return axios.post('/groupname/message', messageDetail)
+  postMessage(messageDetail, groupId) {
+    return axios.post(`/groups/${groupId}/message`, messageDetail, groupId)
     .then((response) => {
-      const groupMessage = response.data.group;
-      console.log(groupMessage);
-      AppDispatcher.dispatch({
-        actionType: AppConstants.POST_MESSAGE,
-        groupMessage
-      });
-    });
-  },
-
-  loadMessages() {
-    return axios.get('/group/message')
-    .then((response) => {
-      const groupMessage = response.data.userGroups.map(groups => groups.messages);
+      const groupMessage = response.data.message;
       AppDispatcher.dispatch({
         actionType: AppConstants.SET_GROUP_MESSAGE,
         groupMessage
       });
     });
   },
-};
 
-// export function getGroup(group) {
-//   return axios.post('/group', group).then((response) => {
-//     appDispatcher.dispatch({
-//       type: GET_USER_GROUP,
-//       group: response.data.group
-//     });
-//   }).catch((error) => {
-//     if (error.response) {
-//       console.log(error.response);
-//     }
-//   });
-// }
+  loadMessage(groupId) {
+    return axios.get(`/group/${groupId}`)
+    .then((response) => {
+      const message = response.data.groupMessage;
+      AppDispatcher.dispatch({
+        actionType: AppConstants.SET_GROUP_MESSAGE,
+        message,
+      });
+    });
+  },
+};
 
 export default AppActions;

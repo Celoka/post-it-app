@@ -3,75 +3,42 @@ import Group from '../components/Group.jsx';
 import UserList from '../components/UserList.jsx';
 import MessageBoard from '../components/MessageBoard.jsx';
 import BoardNavigation from '../components/BoardNavigation.jsx';
-import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 
 
 /**
- *
  * @class DashBoard
  * @extends {React.Component}
  */
 class DashBoard extends React.Component {
-
-  /**
-   * Creates an instance of DashBoard.
-   * @memberof DashBoard
-   */
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      groupname: '',
-      user: AppStore.getStatus()
+      groupId: '',
     };
-    this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.setGroupId = this.setGroupId.bind(this);
   }
 
-  /**
-   *
-   * @param {any} event
-   * @memberof DashBoard
-   */
-  onChange(event) {
+  setGroupId(groupName) {
     this.setState({
-      [event.target.name]: event.target.value
+      groupId: groupName
     });
   }
-  /**
-   *
-   * @memberof DashBoard
-   */
-  onClick() {
-    event.preventDefault();
-    const groupDetail = {
-      groupname: this.state.groupname
-    };
-    AppActions.createGroup(groupDetail);
-  }
-  /**
-   *
-   * @return {BoardNavigation, Group, MessageBoard, UserList}
-   * @memberof DashBoard
-   */
   render() {
     return (
-          <div>
-            <BoardNavigation />
-            <div className="container-fluid">
-                <div id= 'profile' className="row">
-                  <div className="col-md-3 leftsidenav">
-                    <Group/>
-                  </div>
-                  <div className="col-md-6 middleboard">
-                    <MessageBoard />
-                  </div>
-                  <div className="col-md-3 rightsidenav">
-                    <UserList />
-                  </div>
-                </div>
-              </div>
+    <div>
+      <BoardNavigation />
+      <div className="container-fluid">
+          <div id= 'profile' className="row">
+            <div className="col-md-3 leftsidenav">
+              <Group setGroupId={this.setGroupId}/>
+              <UserList />
             </div>
+            <div className="col-md-6 middleboard">
+              <MessageBoard groupId={this.state.groupId}/>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
