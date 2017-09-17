@@ -1,10 +1,13 @@
 import React from 'react';
+import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
+import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
+
 /**
  *
  * @class SignIn
@@ -50,66 +53,59 @@ class SignIn extends React.Component {
     };
     AppActions.loginUser(signInDetails)
     .then(() => {
-      AppStore.on('login_success', this.getUser);
-      this.props.history.push('/broadcastboard');
+      AppStore.on('login_success', this.getCurrentUser);
+      toastr.success('Login Successful');
+      this.props.history.push('/dashboard');
     }).catch((err) => {
-      const error = err.response.data.message;
+      const error = err.response.data;
+      toastr.error('Login Unsuccessful');
       this.setState({
         error
       });
     });
   }
 /**
- *@return
+ * @return {void}
  * @memberof SignIn
  */
-  getUser() {
+  getCurrentUser() {
     this.setState({
-      user: AppStore.getUser()
+      user: AppStore.getCurrentUser()
     });
   }
   /**
-   * @return {*}
    * @description Create google login function for alternative sign up method.
-   * @param {*}
+   * @param
+   * @return {void}
    * @memberof SignIn
    */
-  googleSignIn() {
-    // event.preventDefault();
+  googleSignIn(event) {
+    event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
       .then((result) => {
-        // const token = result.credential.accessToken;
+        toastr.success('Login Successful');
         const user = result.user;
         if (user) {
-          firebase.auth().onAuthStateChanged(() => {
-            this.props.history.push('/broadcastboard');
-          });
+          return this.props.history.push('/dashboard');
         }
-        // console.log(token);
-        // console.log(user.username);
-      }).catch((error) => {
-        console.log(error);
       });
   }
-/**
- *
- * @returns
- * @memberof SignIn
- */
+  /**
+   *
+   * @return
+   * @memberof SignIn
+   */
   render() {
-    const { error } = this.state;
     return (
       <div>
         <Header />
         <div id="signin">
           <h1> Account Login </h1>
             <form onSubmit={this.onSubmit}>
-            { error && <center><span className="alert alert-danger">{error}</span>
-            <hr/></center> }
-              <fieldset className="account-info">
+              <fieldset id="signinfieldset" className="account-info">
                 <label>
                   Email Address
                   <input value={this.state.email} onChange={this.onChange}
@@ -118,16 +114,18 @@ class SignIn extends React.Component {
                 <label>
                   Password
                   <input value ={this.state.password} onChange={this.onChange}
-                   type="password" name="password" />
+                   type='password' name='password'/>
                 </label>
-                  <h5>Sign in with google </h5>
+                  <Link to='/resetpassword'>Forgot password? Click to reset password</Link>
               </fieldset>
-              <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
-              <button id= "sign" type="submit" name="submit"
-              >Login </button>
-                <label >
-                  <input type="checkbox" name="remember" /> Stay signed in.
-              </label>
+              <div id="button-segment">
+                <button id= "sign" type="submit" name="submit"
+                >Login </button>
+                  <label id="checkbox" >
+                    <input type="checkbox" name="remember" /> Stay signed in.
+                </label>
+                <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
+            </div>
           </form>
         </div>
       </div>

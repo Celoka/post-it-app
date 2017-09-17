@@ -10,7 +10,6 @@ export const createUser = (req, res) => {
   req.check('password', 'Password is required').notEmpty();
   req.check('password', 'Password must be a mininum of 4 character')
   .isLength(4, 50);
-  // req.check('phonenumber', 'phonenumber is required').isMobilePhone('en-GB');
 
   const errors = req.validationErrors();
 
@@ -25,11 +24,20 @@ export const createUser = (req, res) => {
           password,
           username,
           phonenumber
-
         });
+        let parsedUser;
+        try {
+          parsedUser = JSON.parse(JSON.stringify(user));
+        } catch (error) {
+          res.status(500).json({
+            error
+          });
+        }
+        const token = parsedUser.stsTokenManager.accessToken;
         res.status(200).json({
           message: 'Registration success',
-          userDetails: user.providerData
+          userDetails: parsedUser.providerData,
+          token
         });
       })
       .catch((error) => {
@@ -88,7 +96,7 @@ export const resetPassword = (req, res) => {
   firebase.auth().sendPasswordResetEmail(email)
     .then((user) => {
       res.status(200).json({
-        message: 'Password reset successful',
+        message: 'Mail sent succesfully',
         user
       });
     })
@@ -118,9 +126,7 @@ export const getUser = (req, res) => {
   const user = req.user.uid;
   if (user) {
     const query = db.database().ref(`users/${user}`);
-    query.once('value')
-    .then((snapshot) => {
-      console.log(snapshot.val);
+    query.once('value').then((snapshot) => {
       const result = [];
       snapshot.forEach((childSnapshot) => {
         const value = childSnapshot.val();
@@ -130,8 +136,7 @@ export const getUser = (req, res) => {
         }
       });
       return res.status(200).json({
-        result,
-        user
+        result
       });
     })
     .catch((error) => {

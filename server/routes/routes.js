@@ -9,9 +9,9 @@ import {
 import {
   createGroup,
   addUser,
-  sendMessage,
+  postMessage,
   getGroup,
-  getGroupMessages
+  getGroupMessage
 } from '../controllers/groups';
 
 const router = express.Router();
@@ -22,10 +22,10 @@ router.post('/user/signout', logOut);
 router.post('/user/passwordreset', resetPassword);
 router.post('/group', createGroup);
 router.post('/group/:groupId/user', addUser);
-router.post('/groupname/message', sendMessage);
+router.post('/groups/:groupId/message', postMessage);
 
-router.get('/user/group', getGroup);
-router.get('/user', getUser);
-router.get('/messages/:messagesId/groups/:groupId/users', getGroupMessages);
+router.get('/groups', getGroup);
+router.get('/user/group', getUser);
+router.get('/group/:groupId', getGroupMessage);
 
 export default router;
