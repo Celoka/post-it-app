@@ -2,10 +2,6 @@
 
 Post-It allows for unprecedented interaction and collaboration amongst its users who are within a particular group. It provides REST API for a group messaging system. It also allows for notification so that group members can read a message when a member shares it in the group. 
 
-# API Documentation
-
-The API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API status and errors. Go to ... documentation.
-
 ## Features
 
 * **Users:** A user created will be able to do the following: 
@@ -37,8 +33,6 @@ Post-It app is built with the following technologies;
 * Install all required dependencies with `$ npm install`
 * Create a `.env` file in your root directory as described in `.env.sample file`
 * Start the app with `npm start`
-
-# Testing
 
 # Contributing
 
