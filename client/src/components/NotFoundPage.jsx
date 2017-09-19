@@ -13,11 +13,11 @@ class notFoundPage extends React.Component {
    */
   render() {
     return (
-        <div>
-          <h1>Page not found</h1>
-          <p>Whoops! There is nothing to see here.</p>
-          <p><Link to="/"> Back to Home</Link></p>
-         </div>
+      <div>
+        <h1>Page not found</h1>
+        <p>Whoops! There is nothing to see here.</p>
+        <p><Link to="/"> Back to Home</Link></p>
+      </div>
     );
   }
 }

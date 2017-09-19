@@ -45,43 +45,39 @@ class ResetPassword extends React.Component {
       email: this.state.email
     };
     AppActions.resetPassword(resetEmail)
-    .then(() => {
-      toastr.success('Password Reset Link sent');
-      this.props.history.push('/signin');
-    }).catch((error) => {
-      toastr.error('Password reset unsuccessful');
-      const message = error;
-      this.setState({
-        message
+      .then(() => {
+        toastr.success('Password Reset Link sent');
+        this.props.history.push('/signin');
+      }).catch((error) => {
+        toastr.error('Password reset unsuccessful');
+        const message = error;
+        this.setState({
+          message
+        });
       });
-    });
   }
 
-/**
- * @returns {void}
- * @memberof ResetPassword
- */
+  /**
+   * @returns {void}
+   * @memberof ResetPassword
+   */
   render() {
-    const { message } = this.state;
     return (
-    <div>
-      <Header />
-      <form id = "resetpassword"onSubmit={this.onSubmit}>
+      <div>
+        <Header />
+        <form id="resetpassword" onSubmit={this.onSubmit}>
           <fieldset className="account-info">
             <label>
               Email Address
               <input value={this.state.email} onChange={this.onChange}
-              type="email" name="email" required />
+                type="email" name="email" required />
             </label>
-         </fieldset>
-         <button name="login"
-          className="btn btn-primary btn-sm">
-          Reset Password
-        </button>
-        { message && <center><span className="alert alert-success">
-        {message}</span><hr/> </center> }
-      </form>
-    </div>
+          </fieldset>
+          <button name="login" className="btn btn-primary btn-sm">
+            Reset Password
+         </button>
+        </form>
+      </div>
     );
   }
 }
