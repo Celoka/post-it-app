@@ -6,9 +6,11 @@ import db from '../config/config';
 import Utils from '../utils/index';
 
 /**
- * @description create user group controller
- * @param {*} req
- * @param {*} res
+ * @description Creates user group
+ * POST: /group
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {object} Group object;
  */
 export const createGroup = (req, res) => {
   const groupname = req.body.groupname;
@@ -51,11 +53,13 @@ export const createGroup = (req, res) => {
 };
 
 /**
- * @description Add member controller
- * @param {*} req
- * @param {*} res
+ * @description Adds a member to a group
+ * POST:/group/:groupId/user
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object for an added user
  */
-export const addUser = (req, res) => {
+export const addMember = (req, res) => {
   const groupId = req.params.groupId;
   const newUser = req.body.newUser;
   const user = req.user.uid;
@@ -70,24 +74,28 @@ export const addUser = (req, res) => {
     userRef.child(groupId).update({
       userId: newUser,
     })
-        .then(() => {
-          res.status(200).json({
-            message: 'New user added successfully' });
-        })
-        .catch((error) => {
-          res.status(500).json({
-            message: error.message });
+      .then(() => {
+        res.status(200).json({
+          message: 'New user added successfully'
         });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
+      });
   } else {
     res.status(403).send({
-      message: 'Unauthorized operation,please signup/signin' });
+      message: 'Unauthorized operation,please signup/signin'
+    });
   }
 };
-
 /**
- * @description post message controller
- * @param {*} req
- * @param {*} res
+ * @description Post message to a group
+ * POST:/groups/:groupId/message
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return { Response } response object
  */
 export const postMessage = (req, res) => {
   const { message, priority } = req.body;
@@ -111,40 +119,50 @@ export const postMessage = (req, res) => {
       priority,
       timestamp,
     })
-    .then(() => {
-      res.status(200).json({
-        status: 'Message posted successfully',
-        message,
-        priority,
-        timestamp,
+      .then(() => {
+        res.status(200).json({
+          status: 'Message posted successfully',
+          message,
+          priority,
+          timestamp,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
       });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: error.message });
-    });
   } else {
     res.status(403).json({
-      message: 'Unauthorized operation,please signup/signin' });
+      message: 'Unauthorized operation,please signup/signin'
+    });
   }
 };
 
+/**
+ * @description Get user group
+ * POST:/groups
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return { Response } response object user groups
+ */
 export const getGroup = (req, res) => {
   const user = req.user.uid;
   if (user) {
-    const query = db.database().ref(`/users/${user}/groups`).orderByKey();
-    query.once('value', (snapshot) => {
+    const userRef = db.database().ref(`/users/${user}/groups`).orderByKey();
+    userRef.once('value', (snapshot) => {
       const childData = snapshot.val();
       const userGroups = Utils.normalizeData(childData);
       return res.status(200).json({
         status: 'Message retrieved successfully',
-        userGroups });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: error.message
+        userGroups
       });
-    });
+    })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message
+        });
+      });
   } else {
     res.status(403).json({
       message: 'Unauthorized operation, please signup/signin'
@@ -152,37 +170,32 @@ export const getGroup = (req, res) => {
   }
 };
 
+/**
+ * @description Get group messages
+ * POST:/group/:groupId
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return { Response } response object message
+ */
 export const getGroupMessage = (req, res) => {
   const groupId = req.params.groupId;
   const groupMessage = [];
-  const users = [];
   const messageRef = db.database().ref(`/groups/${groupId}/messages`);
   messageRef.once('value', (snap) => {
     let message = {};
-    snap.forEach((data) => {
+    snap.forEach((details) => {
       message = {
-        messageId: data.key,
-        text: data.val().message,
-        time: data.val().timestamp,
-        messagePriority: data.val().priority,
-        user: data.val().user
+        messageId: details.key,
+        text: details.val().message,
+        time: details.val().timestamp,
+        messagePriority: details.val().priority,
+        user: details.val().user
       };
       groupMessage.push(message);
     });
-    const userRef = db.database().ref(`/groups/${groupId}/users`);
-    userRef.once('value', (userSnapshot) => {
-      let user = {};
-      userSnapshot.forEach((data) => {
-        user = {
-          userName: data.val()
-        };
-        users.push(user);
-      });
-      res.status(200).json({
-        status: 'Message retrived succcessfully',
-        groupMessage,
-        users
-      });
+    res.status(200).json({
+      status: 'Message retrived succcessfully',
+      groupMessage,
     });
   });
 };
