@@ -1,19 +1,23 @@
 import firebase from 'firebase';
 import db from '../config/config';
 
+/**
+ * @description Register a new user
+ * POST:/user/signup
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
 export const createUser = (req, res) => {
   const { email, password, username, phonenumber } = req.body;
-
   req.check('email', 'Email is required').notEmpty();
   req.check('username', 'Username is required').notEmpty();
   req.check('email', 'Please put a valid email').isEmail();
   req.check('password', 'Password is required').notEmpty();
   req.check('password', 'Password must be a mininum of 4 character')
   .isLength(4, 50);
-  // req.check('phonenumber', 'phonenumber is required').isMobilePhone('en-GB');
 
   const errors = req.validationErrors();
-
   if (errors) {
     const message = errors[0].msg;
     res.status(400).json({ message });
@@ -25,15 +29,23 @@ export const createUser = (req, res) => {
           password,
           username,
           phonenumber
-
         });
+        let parsedUser;
+        try {
+          parsedUser = JSON.parse(JSON.stringify(user));
+        } catch (error) {
+          res.status(500).json({
+            error
+          });
+        }
+        const token = parsedUser.stsTokenManager.accessToken;
         res.status(200).json({
           message: 'Registration success',
-          userDetails: user.providerData
+          userDetails: parsedUser.providerData,
+          token
         });
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorCode === 'auth/email-already-in-use') {
@@ -47,6 +59,13 @@ export const createUser = (req, res) => {
   }
 };
 
+/**
+ * @description User sign In
+ * POST:/user/signin
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   req.check('email', 'Email is required').notEmpty();
@@ -83,12 +102,19 @@ export const logIn = (req, res) => {
   }
 };
 
+/**
+ * @description User reset password
+ * POST:/user/passwordreset
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
   firebase.auth().sendPasswordResetEmail(email)
     .then((user) => {
       res.status(200).json({
-        message: 'Password reset successful',
+        message: 'Mail sent succesfully',
         user
       });
     })
@@ -99,6 +125,14 @@ export const resetPassword = (req, res) => {
     });
 };
 
+
+/**
+ * @description User sign out
+ * POST:/user/signoutt
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
 export const logOut = (req, res) => {
   firebase.auth().signOut()
     .then((user) => {
@@ -114,13 +148,18 @@ export const logOut = (req, res) => {
     });
 };
 
+/**
+ * @description get a user in a group
+ * POST:/user/group
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
 export const getUser = (req, res) => {
   const user = req.user.uid;
   if (user) {
     const query = db.database().ref(`users/${user}`);
-    query.once('value')
-    .then((snapshot) => {
-      console.log(snapshot.val);
+    query.once('value').then((snapshot) => {
       const result = [];
       snapshot.forEach((childSnapshot) => {
         const value = childSnapshot.val();
@@ -130,8 +169,7 @@ export const getUser = (req, res) => {
         }
       });
       return res.status(200).json({
-        result,
-        user
+        result
       });
     })
     .catch((error) => {
@@ -142,6 +180,28 @@ export const getUser = (req, res) => {
   } else {
     res.status(403).json({
       message: 'Unauthorized operation, please signup/signin'
+    });
+  }
+};
+
+/**
+ * @description get all registered users
+ * POST:/user/group
+ * @param {object} req request object
+ * @param {object} res response object
+ * @return {Response} response object;
+ */
+export const getAllUsers = (req, res) => {
+  const { uid } = req.user;
+  if (uid) {
+    db.database()
+    .ref('users')
+    .once('value', (snapshot) => {
+      const userNames = [];
+      snapshot.forEach((user) => {
+        userNames.push(user.val().userNames);
+      });
+      return res.status(200).json(userNames);
     });
   }
 };

@@ -1,133 +1,130 @@
 import React from 'react';
+import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
+import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
+
 /**
  *
  * @class SignIn
  * @extends {React.Component}
  */
 class SignIn extends React.Component {
-/**
- *
- * @param {any} props
- * @memberof SignIn
- */
+  /**
+   * @return {void}
+   * @param {any} props
+   * @memberof SignIn
+   */
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
+      user: '',
       error: '',
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
   }
-/**
- *@return
- * @param {any} event
- * @memberof SignIn
- */
+  /**
+   * @return {void}
+   * @param {any} event
+   * @memberof SignIn
+   */
   onChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-/**
- *
- * @param {any} event
- * @memberof SignIn
- */
+  /**
+   * @description method fires an action to sign in a user
+   * @param {any} event
+   * @memberof SignIn
+   */
   onSubmit(event) {
     event.preventDefault();
-    const signInDetails = {
-      email: this.state.email,
-      password: this.state.password
-    };
+    const signInDetails = { ...this.state };
     AppActions.loginUser(signInDetails)
-    .then(() => {
-      AppStore.on('login_success', this.getUser);
-      this.props.history.push('/broadcastboard');
-    }).catch((err) => {
-      const error = err.response.data.message;
-      this.setState({
-        error
+      .then(() => {
+        AppStore.on('login_success', this.getCurrentUser);
+        toastr.success('Login Successful');
+        this.props.history.push('/dashboard');
+      }).catch((err) => {
+        const error = err.response.data;
+        toastr.error('Login Unsuccessful');
+        this.setState({
+          error
+        });
       });
-    });
   }
-/**
- *@return
- * @memberof SignIn
- */
-  getUser() {
+  /**
+   * @description gets the current user
+   * @return {void}
+   * @memberof SignIn
+   */
+  getCurrentUser() {
     this.setState({
-      user: AppStore.getUser()
+      user: AppStore.getCurrentUser()
     });
   }
   /**
-   * @return {*}
    * @description Create google login function for alternative sign up method.
-   * @param {*}
+   * @param {any} Event 
+   * @return {void}
    * @memberof SignIn
    */
-  googleSignIn() {
-    // event.preventDefault();
+  googleSignIn(event) {
+    event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
       .then((result) => {
-        // const token = result.credential.accessToken;
-        const user = result.user;
+        toastr.success('Login Successful');
+        const { user } = result;
         if (user) {
-          firebase.auth().onAuthStateChanged(() => {
-            this.props.history.push('/broadcastboard');
-          });
+          return this.props.history.push('/dashboard');
         }
-        // console.log(token);
-        // console.log(user.username);
-      }).catch((error) => {
-        console.log(error);
       });
   }
-/**
- *
- * @returns
- * @memberof SignIn
- */
+  /**
+   *
+   * @return
+   * @memberof SignIn
+   */
   render() {
-    const { error } = this.state;
     return (
       <div>
-        <Header />
+          <Header />
         <div id="signin">
           <h1> Account Login </h1>
-            <form onSubmit={this.onSubmit}>
-            { error && <center><span className="alert alert-danger">{error}</span>
-            <hr/></center> }
-              <fieldset className="account-info">
-                <label>
-                  Email Address
+          <form onSubmit={this.onSubmit}>
+            <fieldset id="signinfieldset" className="account-info">
+              <label>
+                Email Address
                   <input value={this.state.email} onChange={this.onChange}
-                   type="email" name="email" required />
-                </label>
-                <label>
-                  Password
-                  <input value ={this.state.password} onChange={this.onChange}
-                   type="password" name="password" />
-                </label>
-                  <h5>Sign in with google </h5>
-              </fieldset>
-              <GoogleButton id= "googlebutton" onClick={this.googleSignIn} />
-              <button id= "sign" type="submit" name="submit"
-              >Login </button>
-                <label >
-                  <input type="checkbox" name="remember" /> Stay signed in.
+                  type="email" name="email" required />
               </label>
+              <label>
+                Password
+                  <input value={this.state.password} onChange={this.onChange}
+                  type='password' name='password' />
+              </label>
+              <Link to='/resetpassword'>Forgot password? Click to reset password</Link>
+            </fieldset>
+            <div id="button-segment">
+              <button id="sign" type="submit" name="submit"
+              >Login </button>
+              <label id="checkbox" >
+                <input type="checkbox" name="remember" /> Stay signed in.
+                </label>
+              <GoogleButton id="googlebutton" onClick={this.googleSignIn} />
+            </div>
           </form>
         </div>
       </div>

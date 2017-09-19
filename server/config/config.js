@@ -1,7 +1,5 @@
 import firebase from 'firebase';
 
-// import serviceAccount from '../../serviceAccountKey.json';
-
 const config = {
   apiKey: 'AIzaSyD0-vDDGz3053Lq2cerjyVySKtgRU1A7Rc',
   authDomain: 'eloka-667be.firebaseapp.com',
@@ -12,7 +10,5 @@ const config = {
 };
 
 const db = firebase.initializeApp(config);
-// export const firebaseAuth = firebase.auth;
-// export const ref = firebase.database().ref();
 
 export default db;

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "babel-watch ./server/server.js && webpack -w --hot",
     "build": "babel server/ -d dist",
-    "test": "jest"
+    "test": "jest",
+    "coverall": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 15000 --compilers js:babel-register && npm run coverage-report",
+    "coverage-report": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/Celoka/post-it-app#readme",
   "dependencies": {
+    "assert": "^1.4.1",
     "auth0-lock": "^10.16.0",
     "axios": "^0.16.2",
     "babel-core": "^6.24.1",
@@ -31,6 +34,8 @@
     "babel-runtime": "^6.23.0",
     "babel-watch": "^2.0.7",
     "body-parser": "^1.17.2",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "change": "0.0.0",
     "concurrently": "^3.4.0",
     "dotenv": "^4.0.0",
@@ -46,10 +51,15 @@
     "flux-constants": "^0.2.2",
     "history": "^4.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "keymirror": "^0.1.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.18.3",
+    "moment": "^2.18.1",
+    "nexmo": "^2.0.2",
+    "nodemailer": "^4.1.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
@@ -66,6 +76,7 @@
     "react-tap-event-plugin": "^2.0.1",
     "superagent": "^3.5.2",
     "supertest": "^3.0.0",
+    "toastr": "^2.1.2",
     "trim": "0.0.1",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "^1.12.0",
