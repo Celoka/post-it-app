@@ -7,20 +7,30 @@ import BoardNavigation from '../components/BoardNavigation.jsx';
 
 /**
  * @class DashBoard
+ * 
  * @extends {React.Component}
  */
 class DashBoard extends React.Component {
+  /**
+   * @description Creates an instance of DashBoard.
+   * 
+   * @param {any} props 
+   * 
+   * @memberof DashBoard
+   */
   constructor(props) {
     super(props);
     this.state = {
-      groupId: '',
+      groupId: null,
+      groupname: ''
     };
     this.setGroupId = this.setGroupId.bind(this);
   }
 
-  setGroupId(groupName) {
+  setGroupId(groupId, groupname) {
     this.setState({
-      groupId: groupName
+      groupId,
+      groupname
     });
   }
   render() {
@@ -34,7 +44,11 @@ class DashBoard extends React.Component {
               <UserList />
             </div>
             <div className="col-md-6 middleboard">
-              <MessageBoard groupId={this.state.groupId}/>
+              {
+                (this.state.groupId === null) ?
+                <h1>WELCOME TO POSTIT</h1>:
+                <MessageBoard groupId={this.state.groupId} groupname={this.state.groupname}/>
+              }
             </div>
           </div>
         </div>

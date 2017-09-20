@@ -5,11 +5,13 @@ import MessageForm from '../components/MessageForm.jsx';
 /**
  *
  * @class MessageBoard
+ * 
  * @extends {React.Component}
  */
 class MessageBoard extends React.Component {
   /**
-   * Creates an instance of MessageBoard.
+   * @description Creates an instance of MessageBoard
+   * 
    * @memberof MessageBoard
    */
   constructor() {
@@ -25,7 +27,6 @@ class MessageBoard extends React.Component {
   }
 
   /**
-   * 
    * 
    * @memberof MessageBoard
    */
@@ -43,8 +44,10 @@ class MessageBoard extends React.Component {
   }
 
   /**
-   * @description this receives props from the parent component 
+   * @description this receives props from the parent component
+   * 
    * @param {any} nextProps 
+   * 
    * @memberof MessageBoard
    */
   componentWillReceiveProps(nextProps) {
@@ -63,7 +66,8 @@ class MessageBoard extends React.Component {
     });
   }
   /**
-   * @param {any} event 
+   * @param {any} event
+   *  
    * @memberof MessageBoard
    */
   handlePriority(event) {
@@ -73,6 +77,7 @@ class MessageBoard extends React.Component {
   }
   /**
    * @param {any} event 
+   * 
    * @memberof MessageBoard
    */
   onChange(event) {
@@ -81,7 +86,8 @@ class MessageBoard extends React.Component {
     });
   }
   /**
-   * @param {any} event 
+   * @param {any} event
+   *  
    * @memberof MessageBoard
    */
   onSubmit(event) {
@@ -100,8 +106,9 @@ class MessageBoard extends React.Component {
     }
   }
   /**
-   * @returns {any} This returns the rendered component
    * @memberof MessageBoard
+   * 
+   * @returns {any} This returns the rendered component
    */
   render() {
     const messageList = this.state.groupMessage.map((groupMessage, index) =>
@@ -111,7 +118,7 @@ class MessageBoard extends React.Component {
     );
     return (
       <div>
-        <MessageForm messageList={messageList} />
+        <MessageForm groupname={this.props.groupname} messageList={messageList} />
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
             <div className='row content'>

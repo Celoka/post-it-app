@@ -7,9 +7,11 @@ class UserList extends React.Component {
     return (
       <div onClick={() => {
         AppActions.loadMessage(this.props.KeyName.groupId);
-        this.props.setGroupId(this.props.KeyName.groupId);
+        this.props.setGroupId(this.props.KeyName.groupId,
+         this.props.KeyName.groupname);
       }}>
-        <li><a>{this.props.KeyName.groupname}</a></li>
+          <li><a>{this.props.KeyName.groupname}</a></li>
+
       </div>
     );
   }

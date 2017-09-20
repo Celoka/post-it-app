@@ -10,32 +10,6 @@ import Routes from '../Routes.jsx';
  * @extends {React.Component}
  */
 class App extends React.Component {
-/**
- * React life cycle method, adds listens to change from the app store.
- * @returns {*} Listener
- * @memberof AppComponent
- */
-  componentDidMount() {
-    AppStore.addChangeListener(this.onChange);
-  }
-
-/**
- * React life cycle method, removes change listener.
- * @returns {void}
- * @memberof AppComponent
- */
-  componentUnmount() {
-    AppStore.removeChangeListener(this.onChange);
-  }
-
-/**
- * Updates view state when change is received.
- * @returns {*}
- * @memberof AppComponent
- */
-  onChange() {
-    // this.setState(getAppState());
-  }
 
   render() {
     return (

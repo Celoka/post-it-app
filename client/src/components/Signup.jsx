@@ -32,6 +32,7 @@ class SignUp extends React.Component {
 
   /**
    * @param {any} event 
+   * 
    * @memberof SignUp
    */
   onChange(event) {
@@ -42,7 +43,9 @@ class SignUp extends React.Component {
 
   /**
    * @description method fires an action to register user
+   * 
    * @param {any} event 
+   * 
    * @memberof SignUp
    */
   onSubmit(event) {

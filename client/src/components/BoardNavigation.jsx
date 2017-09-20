@@ -14,15 +14,12 @@ class BoardNavigation extends React.Component {
     this.setState = {
       error: ''
     };
-
     this.onClick = this.onClick.bind(this);
   }
 
   onClick(event) {
-    event.preventDefault();
     AppAction.logOut();
   }
-
     /**
      *
      * @returns
@@ -38,7 +35,7 @@ class BoardNavigation extends React.Component {
                   data-toggle="collapse" data-target=".navbar-collapse">
                   <span className="sr-only">Toggle navigation</span>
                 </button>
-                <Link to='/dashboard'className="navbar-brand"><h2> Post It </h2></Link>
+                <Link to='/dashboard'className="navbar-brand"><h1> Post It </h1></Link>
               </div>
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav">

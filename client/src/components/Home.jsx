@@ -5,13 +5,14 @@ import Navbar from './Navbar.jsx';
 /**
  *
  * @class Home
+ * 
  * @extends {React.Component}
  */
 class Home extends React.Component {
+
   /**
-   *
-   * @returns
    * @memberof Home
+   * @returns
    */
 
   render() {

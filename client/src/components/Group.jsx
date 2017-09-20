@@ -5,13 +5,14 @@ import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
 
 /**
- *
  * @class Group
+ * 
  * @extends {React.Component}
  */
 class Group extends React.Component {
   /**
    * Creates an instance of Group.
+   * 
    * @memberof Group
    */
   constructor() {
@@ -25,8 +26,9 @@ class Group extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
   /**
-   * React life cycle method, adds listens to change from the app store.
-   * @returns {*} Listener
+   * @description React life cycle method,
+   * adds listens to change from the app store.
+   * 
    * @memberof AppComponent
   */
   componentDidMount() {
@@ -34,9 +36,11 @@ class Group extends React.Component {
     AppStore.addChangeListener(this.onStoreChange);
   }
   /**
-   * React life cycle method, removes change listener.
-   * @returns {void}
+   * @description React life cycle method,
+   * removes change listener.
+   * 
    * @memberof AppComponent
+   * @returns {void}
   */
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
@@ -61,6 +65,7 @@ class Group extends React.Component {
   /**
    *
    * @param {any} event
+   * 
    * @memberof Group
    */
   onClick() {
@@ -70,9 +75,9 @@ class Group extends React.Component {
   }
 
   /**
-   *
-   * @returns
    * @memberof Group
+   * 
+   * @returns
    */
   render() {
     return (

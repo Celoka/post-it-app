@@ -1,13 +1,20 @@
 language: node_js
+
 node_js:
-  - "7"
+  - "6"
 services:
   
-before_script:
-  
+before_install:
+  -travis_wait npm install
+
+cache:
+- node_modules
+
 script: 
-  - npm install
   - npm run test
-  - npm run coverage
+
+env:
+ CODECLIMATE_REPO_TOKEN: e27d7f10e79aeba198ada77becd8d02279d810cba99d3f70c0bf879ee3532f3f
+
 after_success:
   - npm run coveralls
