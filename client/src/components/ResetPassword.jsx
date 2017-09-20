@@ -3,14 +3,18 @@ import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import Header from '../components/Navbar.jsx';
 /**
- * @return {void}
  * @class ResetPassword
+ * 
  * @extends {React.Component}
+ * 
+ * @return {void}
  */
 class ResetPassword extends React.Component {
   /**
    * Creates an instance of ResetPassword.
+   * 
    * @param {any} props
+   * 
    * @memberof ResetPassword
    */
   constructor(props) {
@@ -24,9 +28,12 @@ class ResetPassword extends React.Component {
   }
   /**
    * Creates an on change event method
-   * @return {void}
+   * 
    * @param {any} event
+   * 
    * @memberof ResetPassword
+   * 
+   * @return {void}
    */
   onChange(event) {
     this.setState({
@@ -58,8 +65,9 @@ class ResetPassword extends React.Component {
   }
 
   /**
-   * @returns {void}
    * @memberof ResetPassword
+   * 
+   * @returns {void}
    */
   render() {
     return (

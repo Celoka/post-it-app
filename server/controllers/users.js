@@ -4,9 +4,11 @@ import db from '../config/config';
 /**
  * @description Register a new user
  * POST:/user/signup
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object;
  */
 export const createUser = (req, res) => {
   const { email, password, username, phonenumber } = req.body;
@@ -14,8 +16,8 @@ export const createUser = (req, res) => {
   req.check('username', 'Username is required').notEmpty();
   req.check('email', 'Please put a valid email').isEmail();
   req.check('password', 'Password is required').notEmpty();
-  req.check('password', 'Password must be a mininum of 4 character')
-  .isLength(4, 50);
+  req.check('password', 'Password must be a mininum of 6 character')
+  .isLength(6, 50);
 
   const errors = req.validationErrors();
   if (errors) {
@@ -49,11 +51,11 @@ export const createUser = (req, res) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorCode === 'auth/email-already-in-use') {
-          res.status(400).json({
+          res.status(401).json({
             message: 'email already in use.'
           });
         } else {
-          res.status(400).json(errorMessage);
+          res.status(500).json(errorMessage);
         }
       });
   }
@@ -62,13 +64,16 @@ export const createUser = (req, res) => {
 /**
  * @description User sign In
  * POST:/user/signin
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object;
  */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   req.check('email', 'Email is required').notEmpty();
+  req.check('email', 'Please put a valid email').isEmail();
   req.check('password', 'Password is required').notEmpty();
 
   const errors = req.validationErrors();
@@ -105,12 +110,17 @@ export const logIn = (req, res) => {
 /**
  * @description User reset password
  * POST:/user/passwordreset
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object;
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
+  req.check('email', 'auth/invalid-email').notEmpty();
+  req.check('email', 'auth/invalid-email').isEmail();
+
   firebase.auth().sendPasswordResetEmail(email)
     .then((user) => {
       res.status(200).json({
@@ -129,9 +139,11 @@ export const resetPassword = (req, res) => {
 /**
  * @description User sign out
  * POST:/user/signoutt
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object;
  */
 export const logOut = (req, res) => {
   firebase.auth().signOut()
@@ -151,9 +163,11 @@ export const logOut = (req, res) => {
 /**
  * @description get a user in a group
  * POST:/user/group
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object;
  */
 export const getUser = (req, res) => {
   const user = req.user.uid;
@@ -187,9 +201,11 @@ export const getUser = (req, res) => {
 /**
  * @description get all registered users
  * POST:/user/group
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object;
+ *
+ * @return {object} response object
  */
 export const getAllUsers = (req, res) => {
   const { uid } = req.user;

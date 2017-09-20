@@ -11,6 +11,7 @@ import Header from '../components/Navbar.jsx';
 /**
  *
  * @class SignIn
+ * 
  * @extends {React.Component}
  */
 class SignIn extends React.Component {
@@ -32,9 +33,11 @@ class SignIn extends React.Component {
     this.googleSignIn = this.googleSignIn.bind(this);
   }
   /**
-   * @return {void}
    * @param {any} event
+   * 
    * @memberof SignIn
+   * 
+   * @return {void}
    */
   onChange(event) {
     this.setState({
@@ -43,7 +46,9 @@ class SignIn extends React.Component {
   }
   /**
    * @description method fires an action to sign in a user
+   * 
    * @param {any} event
+   * 
    * @memberof SignIn
    */
   onSubmit(event) {
@@ -64,8 +69,10 @@ class SignIn extends React.Component {
   }
   /**
    * @description gets the current user
-   * @return {void}
+   *
    * @memberof SignIn
+   * 
+   * @return {void}
    */
   getCurrentUser() {
     this.setState({
@@ -73,10 +80,14 @@ class SignIn extends React.Component {
     });
   }
   /**
-   * @description Create google login function for alternative sign up method.
+   * @description Create google login function 
+   * for alternative sign up method.
+   * 
    * @param {any} Event 
-   * @return {void}
+   * 
    * @memberof SignIn
+   * 
+   * @return {void}
    */
   googleSignIn(event) {
     event.preventDefault();
@@ -93,8 +104,6 @@ class SignIn extends React.Component {
       });
   }
   /**
-   *
-   * @return
    * @memberof SignIn
    */
   render() {

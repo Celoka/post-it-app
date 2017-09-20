@@ -2,12 +2,16 @@ import React from 'react';
 
 /**
  * @class Message
+ * 
  * @extends {React.Component}
  */
 class Message extends React.Component {
+  
   /**
-   * Creates an instance of Message.
+   * @description Creates an instance of Message
+   * 
    * @param {any} props
+   * 
    * @memberof Message
    */
   constructor(props) {
@@ -20,7 +24,9 @@ class Message extends React.Component {
    */
   render() {
     return (
-      <div>{this.props.message}</div>
+      <div>
+        {this.props.message}
+      </div>
     );
   }
 }

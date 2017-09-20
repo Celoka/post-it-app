@@ -23,7 +23,9 @@ class AppStoreClass extends EventEmitter {
   }
    /**
    * @param {any} message
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
   setGroupMessage(message) {
@@ -32,15 +34,20 @@ class AppStoreClass extends EventEmitter {
 
   /**
    * @description This returns an array of group messages
+   *
    * @memberof AppStoreClass
+   *
    * @returns {Array} Returns an array of group messages
    */
   getGroupMessage() {
     return this.message;
   }
+
   /**
    * @param {any} user
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
   setCurrentUser(user) {
@@ -49,6 +56,7 @@ class AppStoreClass extends EventEmitter {
 
   /**
    * @memberof AppStoreClass
+   *
    * @returns {Object} current user object is returned
    */
   getCurrentUser() {
@@ -56,17 +64,21 @@ class AppStoreClass extends EventEmitter {
   }
 
   /**
-   * @returns {void}
    * @param {any} group
+   *
    * @memberof AppStoreClass
+   *
+   * @returns {void}
    */
   currentGroup(group) {
     this.groups = group;
   }
 
   /**
-   * @returns {Object} group object
+   *
    * @memberof AppStoreClass
+   *
+   * @returns {Object} group object
    */
   getCurrentGroup() {
     return this.groups;
@@ -75,7 +87,9 @@ class AppStoreClass extends EventEmitter {
 /**
   *
   * @param {Object} userGroups
+
   * @memberof AppStoreClass
+
   * @returns {Object} user groups
   */
   setUserGroup(userGroups) {
@@ -85,7 +99,9 @@ class AppStoreClass extends EventEmitter {
  /**
   *
   * @param {Object} groupNames
+
   * @memberof AppStoreClass
+
   * @returns {Object} user groups
   */
   getUserGroup() {
@@ -94,25 +110,35 @@ class AppStoreClass extends EventEmitter {
 
   /**
    * @description Store emits event change
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
   emitChange() {
     this.emit(CHANGE_EVENT);
   }
+
   /**
    * @description Store change listener
+   *
    * @param {any} callback
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
+
   /**
    * @description Remove chnage listener
+   *
    * @param {any} callback
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
   removeChangeListener(callback) {

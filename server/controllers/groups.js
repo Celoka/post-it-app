@@ -8,8 +8,10 @@ import Utils from '../utils/index';
 /**
  * @description Creates user group
  * POST: /group
+ *
  * @param {object} req request object
  * @param {object} res response object
+ *
  * @return {object} Group object;
  */
 export const createGroup = (req, res) => {
@@ -55,9 +57,11 @@ export const createGroup = (req, res) => {
 /**
  * @description Adds a member to a group
  * POST:/group/:groupId/user
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return {Response} response object for an added user
+ *
+ * @return {object} response object for an added user
  */
 export const addMember = (req, res) => {
   const groupId = req.params.groupId;
@@ -93,9 +97,11 @@ export const addMember = (req, res) => {
 /**
  * @description Post message to a group
  * POST:/groups/:groupId/message
+ *
  * @param {object} req request object
- * @param {object} res response object
- * @return { Response } response object
+ * @param {object} res response
+ *
+ * @return { object } response object
  */
 export const postMessage = (req, res) => {
   const { message, priority } = req.body;
@@ -142,9 +148,11 @@ export const postMessage = (req, res) => {
 /**
  * @description Get user group
  * POST:/groups
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return { Response } response object user groups
+ *
+ * @return { object } response object user groups
  */
 export const getGroup = (req, res) => {
   const user = req.user.uid;
@@ -173,9 +181,11 @@ export const getGroup = (req, res) => {
 /**
  * @description Get group messages
  * POST:/group/:groupId
+ *
  * @param {object} req request object
  * @param {object} res response object
- * @return { Response } response object message
+ *
+ * @return {object} response object message
  */
 export const getGroupMessage = (req, res) => {
   const groupId = req.params.groupId;
