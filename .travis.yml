@@ -11,7 +11,7 @@ cache:
   - node_modules
 
 script: 
-  - npm run test
+  - npm test
 
 env:
  CODECLIMATE_REPO_TOKEN: e27d7f10e79aeba198ada77becd8d02279d810cba99d3f70c0bf879ee3532f3f
