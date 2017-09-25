@@ -34,7 +34,7 @@ export const createGroup = (req, res) => {
     groupname,
     isAdmin: true
   }).then(() => {
-    res.status(200).send({
+    res.status(201).send({
       message: 'User group created successfully',
       groupname,
       datecreated: timestamp,
@@ -43,7 +43,7 @@ export const createGroup = (req, res) => {
   })
     .catch((error) => {
       if (!userId) {
-        res.status(403).json({
+        res.status(401).json({
           message: 'Unauthorized operation,please signup/signin',
         });
       } else {
@@ -89,7 +89,7 @@ export const addMember = (req, res) => {
         });
       });
   } else {
-    res.status(403).send({
+    res.status(401).send({
       message: 'Unauthorized operation,please signup/signin'
     });
   }
@@ -139,7 +139,7 @@ export const postMessage = (req, res) => {
         });
       });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized operation,please signup/signin'
     });
   }
@@ -172,7 +172,7 @@ export const getGroup = (req, res) => {
         });
       });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized operation, please signup/signin'
     });
   }

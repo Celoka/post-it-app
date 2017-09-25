@@ -192,7 +192,7 @@ export const getUser = (req, res) => {
       });
     });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized operation, please signup/signin'
     });
   }
