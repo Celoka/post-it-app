@@ -90,7 +90,7 @@ const AppActions = {
       .then((response) => {
         const message = response.data.groupMessage;
         AppDispatcher.dispatch({
-          actionType: AppConstants.LOAD_GROUP_MESSAGE,
+          actionType: AppConstants.SET_GROUP_MESSAGE,
           message,
         });
       });

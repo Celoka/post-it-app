@@ -66,16 +66,6 @@ class MessageBoard extends React.Component {
     });
   }
   /**
-   * @param {any} event
-   *  
-   * @memberof MessageBoard
-   */
-  handlePriority(event) {
-    this.setState({
-      priority: event.target.value
-    });
-  }
-  /**
    * @param {any} event 
    * 
    * @memberof MessageBoard
@@ -92,11 +82,11 @@ class MessageBoard extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    const { text, type } = this.refs;
     const messageDetail = {
       message: this.state.message,
       priority: this.refs.type.value,
     };
+    const { text, type } = this.refs;
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
@@ -111,6 +101,7 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
+   
     const messageList = this.state.groupMessage.map((groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-md-12"><div className="well"><p id="message-text">{groupMessage.text}</p></div></div>
