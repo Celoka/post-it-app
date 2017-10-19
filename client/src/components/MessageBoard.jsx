@@ -39,7 +39,6 @@ class MessageBoard extends React.Component {
    * @memberof MessageBoard
    */
   componentWillUnmount() {
-    this.initialState = this.state;
     AppStore.removeChangeListener(this.onStoreChange);
   }
 
@@ -60,9 +59,9 @@ class MessageBoard extends React.Component {
    * @description gets the message from the store
    * @memberof MessageBoard
    */
-  onStoreChange() {
+  onStoreChange = () => {
     this.setState({
-      groupMessage: AppStore.getGroupMessage()
+      groupMessage: AppStore.getAllMessages(),
     });
   }
   /**
@@ -100,7 +99,6 @@ class MessageBoard extends React.Component {
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
-      AppActions.loadMessage(groupId);
       text.value = '';
       type.value = 'Normal';
     }
@@ -111,9 +109,15 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
-    const messageList = this.state.groupMessage.map((groupMessage, index) =>
+    const messageList = this.state.groupMessage.map( (groupMessage, index) =>
       <div key={index} className="row">
-        <div className="col-md-12"><div className="well"><p id="message-text">{groupMessage.text}</p></div></div>
+        <div className="col-md-12">
+          <div className="well">
+            <p id="message-text">{groupMessage.message}</p>
+            <time id="time-tag">{groupMessage.time}</time>
+           
+          </div>
+        </div>
       </div>
     );
     return (

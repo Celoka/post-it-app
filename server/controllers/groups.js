@@ -2,6 +2,9 @@
  * Module dependencies
  */
 import firebase from 'firebase';
+import nodemailer from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
+import Nexmo from 'nexmo';
 import db from '../config/config';
 import Utils from '../utils/index';
 
@@ -18,29 +21,35 @@ export const createGroup = (req, res) => {
   const groupname = req.body.groupname;
   const userId = req.user.uid;
   const timestamp = new Date().toString();
+  req.check('groupname', 'Groupname is required').notEmpty();
 
-  const groupKey = db.database().ref('/groups').push({
-    groupname,
-    datecreated: timestamp
-  }).key;
-
-  const groupRef = db.database().ref(`/groups/${groupKey}/users`);
-  groupRef.set({
-    isAdmin: true
-  });
-
-  const userRef = db.database().ref(`/users/${userId}/groups`);
-  userRef.child(groupKey).set({
-    groupname,
-    isAdmin: true
-  }).then(() => {
-    res.status(200).send({
-      message: 'User group created successfully',
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(401).json({ message });
+  } else {
+    const groupKey = db.database().ref('/groups').push({
       groupname,
-      datecreated: timestamp,
-      groupKey
+      datecreated: timestamp
+    }).key;
+
+    const groupRef = db.database().ref(`/groups/${groupKey}/users`);
+    groupRef.set({
+      isAdmin: true
     });
-  })
+
+    const userRef = db.database().ref(`/users/${userId}/groups`);
+    userRef.child(groupKey).set({
+      groupname,
+      isAdmin: true
+    }).then(() => {
+      res.status(200).send({
+        message: 'User group created successfully',
+        groupname,
+        datecreated: timestamp,
+        groupKey
+      });
+    })
     .catch((error) => {
       if (!userId) {
         res.status(403).json({
@@ -52,6 +61,7 @@ export const createGroup = (req, res) => {
         });
       }
     });
+  }
 };
 
 /**
@@ -64,34 +74,50 @@ export const createGroup = (req, res) => {
  * @return {object} response object for an added user
  */
 export const addMember = (req, res) => {
-  const groupId = req.params.groupId;
-  const newUser = req.body.newUser;
+  const { groupId, userId, newUser } = req.body;
   const user = req.user.uid;
+  req.check('newUser', 'Username is required').notEmpty();
 
-  if (user) {
-    const groupRef = db.database().ref(`/groups/${groupId}/users`);
-    groupRef.child(newUser).set({
-      userId: newUser,
-    });
-
-    const userRef = db.database().ref(`/users/${user}/groups`);
-    userRef.child(groupId).update({
-      userId: newUser,
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).json({ message });
+  } else if (user) {
+    db.database().ref(`/users/${userId}`)
+    .once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        const { username, email, phonenumber } = snapshot.val();
+        db.database().ref(`groups/${groupId}`)
+        .once('value', (snap) => {
+          const groupname = snap.val().groupname;
+          db.database().ref(`/users/${userId}/groups/${groupId}`)
+        .update({
+          userId,
+          newUser,
+          groupname
+        });
+        });
+        db.database().ref(`groups/${groupId}/groupname`)
+        .once('value', (groupSnapshot) => {
+          if (groupSnapshot.exists()) {
+            db.database().ref(`groups/${groupId}/users/username`)
+              .set(username);
+            db.database().ref(`groups/${groupId}/email`).push(email);
+            db.database().ref(`groups/${groupId}/phonenumber`).push(phonenumber);
+          } else {
+            res.status(403).json({ message: "Group dosen't exists" });
+          }
+        })
+        .then(() => {
+          res.status(201).json({ message: 'User added successfully' });
+        });
+      } else {
+        res.status(403).json({ message: "The User dosen't exist" });
+      }
     })
-      .then(() => {
-        res.status(200).json({
-          message: 'New user added successfully'
-        });
-      })
       .catch((error) => {
-        res.status(500).json({
-          message: error.message
-        });
+        res.status(500).json({ message: error });
       });
-  } else {
-    res.status(403).send({
-      message: 'Unauthorized operation,please signup/signin'
-    });
   }
 };
 /**
@@ -118,7 +144,7 @@ export const postMessage = (req, res) => {
       priority,
       timestamp
     });
-    const groupRef = firebase.database().ref(`groups/${groupId}/messages`);
+    const groupRef = db.database().ref(`groups/${groupId}/messages`);
     groupRef.push({
       user,
       message,
@@ -196,9 +222,9 @@ export const getGroupMessage = (req, res) => {
     snap.forEach((details) => {
       message = {
         messageId: details.key,
-        text: details.val().message,
+        message: details.val().message,
         time: details.val().timestamp,
-        messagePriority: details.val().priority,
+        priority: details.val().priority,
         user: details.val().user
       };
       groupMessage.push(message);

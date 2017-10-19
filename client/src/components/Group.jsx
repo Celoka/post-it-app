@@ -19,12 +19,10 @@ class Group extends React.Component {
     super();
     this.state = {
       userGroupName: '',
-      groupname: []
+      groupName: []
     };
-    this.onStoreChange = this.onStoreChange.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
+
   /**
    * @description React life cycle method,
    * adds listens to change from the app store.
@@ -50,13 +48,13 @@ class Group extends React.Component {
    * @param {any} event
    * @memberof Group
   */
-  onStoreChange() {
+  onStoreChange =()=> {
     this.setState({
-      groupname: AppStore.getUserGroup()
+      groupName: AppStore.getUserGroup()
     });
   }
 
-  onChange(event) {
+  onChange=(event)=> {
     this.setState({
       userGroupName: event.target.value
     });
@@ -68,9 +66,8 @@ class Group extends React.Component {
    * 
    * @memberof Group
    */
-  onClick() {
+  onClick=()=> {
     AppActions.createGroup(this.state.userGroupName);
-    toastr.success(`${this.state.userGroupName} created`);
     AppActions.loadGroups();
   }
 
@@ -117,10 +114,11 @@ class Group extends React.Component {
               </div>
             </div>
           </div>
-          <div id="Style-group">
-            <ul>
-              <h5>{this.state.groupname.map((KeyName, KeyIndex) => (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex} />))} </h5>
-            </ul>
+          <div >
+            <div className="list-group">
+              {this.state.groupName.map((KeyName, KeyIndex) =>
+                 (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex} />))}
+            </div>
           </div>
         </form>
       </div>

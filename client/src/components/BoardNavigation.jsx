@@ -14,10 +14,9 @@ class BoardNavigation extends React.Component {
     this.setState = {
       error: ''
     };
-    this.onClick = this.onClick.bind(this);
   }
 
-  onClick(event) {
+  onClick=(event)=> {
     AppAction.logOut();
   }
     /**

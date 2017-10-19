@@ -24,15 +24,15 @@ class DashBoard extends React.Component {
       groupId: null,
       groupname: ''
     };
-    this.setGroupId = this.setGroupId.bind(this);
   }
 
-  setGroupId(groupId, groupname) {
+  setGroupId = (groupId, groupname) => {
     this.setState({
       groupId,
       groupname
     });
   }
+
   render() {
     return (
     <div>

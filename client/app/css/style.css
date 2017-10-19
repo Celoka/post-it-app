@@ -1,5 +1,3 @@
-*,
- 
 *after {
     box-sizing: border-box;
 }
@@ -103,16 +101,19 @@ input {
     margin: 150px auto 0px auto;
 }
 
-#signin{
+#signin {
     width: 300px;
     margin: 150px auto 0px auto;
 }
 
 #messageboard {
     height: 130px;
+    /* margin-top: -435px; */
     width: 595px;
 }
-
+#message {
+    /* margin-top: 435px; */
+}
 #resetpassword {
     height:120px;
     margin-left: 500px;
@@ -146,7 +147,7 @@ input {
 }
 
 a {
-  float: right;
+  float: left;
   color: grey;
 }
  a:hover {
@@ -226,7 +227,7 @@ p{
 }
 
 #style-group {
-    color: red;
+    text-align: center;
     
 }
 
@@ -271,4 +272,7 @@ p{
 .register:hover span:after {
   opacity: 1;
   right: 0;
+}
+#time-tag{
+    font-size: 30px;
 }

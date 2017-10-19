@@ -22,7 +22,7 @@ router.post('/user/signin', logIn);
 router.post('/user/signout', logOut);
 router.post('/user/passwordreset', resetPassword);
 router.post('/group', createGroup);
-router.post('/group/:groupId/user', addMember);
+router.post('/group/groupId/user', addMember);
 router.post('/groups/:groupId/message', postMessage);
 
 router.get('/user/getusers', getAllUsers);

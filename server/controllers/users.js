@@ -1,3 +1,6 @@
+/**
+ * Module dependencies
+ */
 import firebase from 'firebase';
 import db from '../config/config';
 
@@ -99,9 +102,9 @@ export const logIn = (req, res) => {
           token
         });
       })
-      .catch(() => {
+      .catch((error) => {
         res.status(401).send({
-          message: 'Wrong password or email'
+          message: `${error.message}`
         });
       });
   }

@@ -201,12 +201,12 @@ describe('POST IT', () => {
     });
     });
 
-  it('should expect user login to be unsuccessful', (done) => {
-    const authenticatedUser = {
-      email: 'an@yahoo.com',
-      password: 'andela24344'
-    };
-    chai.request(server)
+    it('should expect user login to be unsuccessful', (done) => {
+      const authenticatedUser = {
+        email: 'an@yahoo.com',
+        password: 'andela24344'
+      };
+      chai.request(server)
     .post('/user/signin')
     .send(authenticatedUser)
     .end((err, res) => {
@@ -217,14 +217,14 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should require a user email', (done) => {
-    const authenticatedUser = {
-      email: '',
-      password: 'andela24344'
-    };
-    chai.request(server)
+    it('should require a user email', (done) => {
+      const authenticatedUser = {
+        email: '',
+        password: 'andela24344'
+      };
+      chai.request(server)
     .post('/user/signin')
     .send(authenticatedUser)
     .end((err, res) => {
@@ -235,14 +235,14 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should require a user password', (done) => {
-    const authenticatedUser = {
-      email: 'andela2@yahoo.com',
-      password: ''
-    };
-    chai.request(server)
+    it('should require a user password', (done) => {
+      const authenticatedUser = {
+        email: 'andela2@yahoo.com',
+        password: ''
+      };
+      chai.request(server)
     .post('/user/signin')
     .send(authenticatedUser)
     .end((err, res) => {
@@ -253,13 +253,13 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should successfully send a password reset link to a registered user', (done) => {
-    const userEmail = {
-      email: 'andela2@yahoo.com',
-    };
-    chai.request(server)
+    it('should successfully send a password reset link to a registered user', (done) => {
+      const userEmail = {
+        email: 'andela2@yahoo.com',
+      };
+      chai.request(server)
     .post('/user/passwordreset')
     .send(userEmail)
     .end((err, res) => {
@@ -270,13 +270,13 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should require a user email', (done) => {
-    const userEmail = {
-      email: '',
-    };
-    chai.request(server)
+    it('should require a user email', (done) => {
+      const userEmail = {
+        email: '',
+      };
+      chai.request(server)
     .post('/user/passwordreset')
     .send(userEmail)
     .end((err, res) => {
@@ -287,13 +287,13 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should require a valid user email', (done) => {
-    const userEmail = {
-      email: 'andela2com',
-    };
-    chai.request(server)
+    it('should require a valid user email', (done) => {
+      const userEmail = {
+        email: 'andela2com',
+      };
+      chai.request(server)
     .post('/user/passwordreset')
     .send(userEmail)
     .end((err, res) => {
@@ -304,10 +304,10 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
-  it('should sign out a user from account', (done) => {
-    chai.request(server)
+    it('should sign out a user from account', (done) => {
+      chai.request(server)
       .post('/user/signout')
       .end((err, res) => {
         res.status.should.equal(200);
@@ -317,10 +317,10 @@ describe('POST IT', () => {
         if (err) return done();
         done();
       });
-  });
+    });
 
-  it('should get a user in group', (done) => {
-    chai.request(server)
+    it('should get a user in group', (done) => {
+      chai.request(server)
     .get('/user/group')
     .send(user)
     .end((err, res) => {
@@ -332,7 +332,7 @@ describe('POST IT', () => {
       if (err) return done();
       done();
     });
-  });
+    });
 
 
   // it('should get all registered users', (done) => {
@@ -348,12 +348,12 @@ describe('POST IT', () => {
   //   });
   // });
 
-  it('should allow a registered user create a user group successfully', (done) => {
-    const userGroup = {
-      groupName: 'Gryffindor',
-      userId: '123456789'
-    };
-    chai.request(server)
+    it('should allow a registered user create a user group successfully', (done) => {
+      const userGroup = {
+        groupName: 'Gryffindor',
+        userId: '123456789'
+      };
+      chai.request(server)
     .post('/group')
     .send(userGroup)
     .end((err, res) => {
@@ -365,7 +365,7 @@ describe('POST IT', () => {
       expect(res.body).to.have.property('datecreated');
       done();
     });
-  });
+    });
 
   // it('should allow a registered user get all groups he belongs to', (done) => {
   //   const userId = {

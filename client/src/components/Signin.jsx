@@ -1,5 +1,4 @@
 import React from 'react';
-import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
@@ -25,13 +24,10 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      user: '',
-      error: '',
+      user: [],
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.googleSignIn = this.googleSignIn.bind(this);
   }
+
   /**
    * @param {any} event
    * 
@@ -39,7 +35,7 @@ class SignIn extends React.Component {
    * 
    * @return {void}
    */
-  onChange(event) {
+  onChange=(event )=> {
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -51,34 +47,27 @@ class SignIn extends React.Component {
    * 
    * @memberof SignIn
    */
-  onSubmit(event) {
+  onSubmit=(event)=>{
     event.preventDefault();
-    const signInDetails = { ...this.state };
-    AppActions.loginUser(signInDetails)
-      .then(() => {
-        AppStore.on('login_success', this.getCurrentUser);
-        toastr.success('Login Successful');
-        this.props.history.push('/dashboard');
-      }).catch((err) => {
-        const error = err.response.data;
-        toastr.error('Login Unsuccessful');
-        this.setState({
-          error
-        });
-      });
+    const signInDetails = { ...this.state }
+    AppActions.loginUser(signInDetails).then(() => {
+      AppStore.on('login_success', this.getCurrentUser);
+      this.props.history.push('/dashboard');
+    });
   }
-  /**
+   /**
    * @description gets the current user
    *
    * @memberof SignIn
    * 
    * @return {void}
    */
-  getCurrentUser() {
+  getCurrentUser=()=> {
     this.setState({
       user: AppStore.getCurrentUser()
     });
   }
+
   /**
    * @description Create google login function 
    * for alternative sign up method.
@@ -89,7 +78,7 @@ class SignIn extends React.Component {
    * 
    * @return {void}
    */
-  googleSignIn(event) {
+  googleSignIn=(event)=> {
     event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');

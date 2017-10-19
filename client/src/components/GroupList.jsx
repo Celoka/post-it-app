@@ -6,13 +6,14 @@ class UserList extends React.Component {
   render() {
     return (
       <div onClick={() => {
-        AppActions.loadMessage(this.props.KeyName.groupId);
-        this.props.setGroupId(this.props.KeyName.groupId,
-         this.props.KeyName.groupname);
-      }}>
-          <li><a>{this.props.KeyName.groupname}</a></li>
-
+          AppActions.loadMessage(this.props.KeyName.groupId);
+          console.log(AppActions.loadMessage(this.props.KeyName.groupId));
+          this.props.setGroupId(this.props.KeyName.groupId,
+          this.props.KeyName.groupname);
+        }}>
+          <h5 className="list-group-item" >{this.props.KeyName.groupname}</h5>
       </div>
+     
     );
   }
 }
