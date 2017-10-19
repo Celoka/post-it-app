@@ -52,7 +52,6 @@
     "moment": "^2.18.1",
     "nexmo": "^2.0.2",
     "nodemailer": "^4.1.0",
-    "nodemailer-smtp-transport": "^2.7.4",
     "nyc": "^11.2.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

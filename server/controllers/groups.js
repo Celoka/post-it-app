@@ -1,9 +1,7 @@
 /**
  * Module dependencies
  */
-import firebase from 'firebase';
 import nodemailer from 'nodemailer';
-import smtpTransport from 'nodemailer-smtp-transport';
 import Nexmo from 'nexmo';
 import db from '../config/config';
 import Utils from '../utils/index';
@@ -26,7 +24,7 @@ export const createGroup = (req, res) => {
   const errors = req.validationErrors();
   if (errors) {
     const message = errors[0].msg;
-    res.status(401).json({ message });
+    res.status(400).json({ message });
   } else {
     const groupKey = db.database().ref('/groups').push({
       groupname,
@@ -53,7 +51,7 @@ export const createGroup = (req, res) => {
     .catch((error) => {
       if (!userId) {
         res.status(403).json({
-          message: 'Unauthorized operation,please signup/signin',
+          message: 'Unauthorized operation,please signup/signin'
         });
       } else {
         res.status(500).json({
@@ -83,6 +81,10 @@ export const addMember = (req, res) => {
     const message = errors[0].msg;
     res.status(400).json({ message });
   } else if (user) {
+    db.database().ref(`groups/${groupId}/users/${userId}/`).set({
+      userId,
+      newUser
+    });
     db.database().ref(`/users/${userId}`)
     .once('value', (snapshot) => {
       if (snapshot.exists()) {
@@ -101,18 +103,26 @@ export const addMember = (req, res) => {
         .once('value', (groupSnapshot) => {
           if (groupSnapshot.exists()) {
             db.database().ref(`groups/${groupId}/users/username`)
-              .set(username);
-            db.database().ref(`groups/${groupId}/email`).push(email);
-            db.database().ref(`groups/${groupId}/phonenumber`).push(phonenumber);
+            .set(username);
+            db.database().ref(`groups/${groupId}/email`)
+            .push(email);
+            db.database().ref(`groups/${groupId}/phonenumber`)
+            .push(phonenumber);
           } else {
-            res.status(403).json({ message: "Group dosen't exists" });
+            res.status(403).json({ message:
+               'Group does not exists'
+            });
           }
         })
         .then(() => {
-          res.status(201).json({ message: 'User added successfully' });
+          res.status(201).json({ message:
+             'User added successfully'
+          });
         });
       } else {
-        res.status(403).json({ message: "The User dosen't exist" });
+        res.status(403).json({
+          message: 'This User is not registered or does not exist'
+        });
       }
     })
       .catch((error) => {
@@ -169,6 +179,59 @@ export const postMessage = (req, res) => {
       message: 'Unauthorized operation,please signup/signin'
     });
   }
+  const email = [];
+  db.database().ref(`groups/${groupId}/email`)
+  .once('value', (snap) => {
+    snap.forEach((details) => {
+      email.push(details.val());
+    });
+    const emails = email.join(',');
+
+    if ((priority === 'Urgent') || (priority === 'Critical')) {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'eloka.chima@gmail.com',
+          pass: 'Engrwilliams1989'
+        }
+      });
+      const mailOptions = {
+        from: ' "Post It Admin" <eloka.chima@gmail.com>',
+        to: emails,
+        subject: 'Urgent Message',
+        text: 'Post it App',
+        html: `<h3>An urgent message has been posted to
+         ${groupId} group</h3>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log('Message sent: %s', info);
+      });
+    }
+  });
+
+  const phoneNumber = [];
+  db.database().ref(`groups/${groupId}/phonenumber`)
+  .once('value', (snap) => {
+    snap.forEach((details) => {
+      phoneNumber.push(details.val());
+    });
+    const phoneNumbers = phoneNumber.join(',');
+
+    if (priority === 'Critical') {
+      const nexmo = new Nexmo({
+        apiKey: 'e9f852e1',
+        apiSecret: '390423e2e4fdbb9c'
+      });
+      const from = 'Nexmo';
+      const to = phoneNumbers;
+      const text = 'A text message sent using the Nexmo SMS API';
+
+      nexmo.message.sendSms(from, to, text);
+    }
+  });
 };
 
 /**

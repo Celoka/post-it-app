@@ -39,11 +39,11 @@ class DashBoard extends React.Component {
       <BoardNavigation />
       <div className="container-fluid">
           <div id= 'profile' className="row">
-            <div className="col-md-3 leftsidenav">
+            <div className="col-sm-3 leftsidenav">
               <Group setGroupId={this.setGroupId}/>
               <UserList />
             </div>
-            <div className="col-md-6 middleboard">
+            <div className="col-sm-6 middleboard">
               {
                 (this.state.groupId === null) ?
                 <h1>WELCOME TO POSTIT</h1>:
