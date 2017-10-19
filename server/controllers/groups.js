@@ -71,7 +71,7 @@ export const createGroup = (req, res) => {
  *
  * @return {object} response object for an added user
  */
-export const addMember = (req, res) => {
+export const addMemberToGroup = (req, res) => {
   const { groupId, userId, newUser } = req.body;
   const user = req.user.uid;
   req.check('newUser', 'Username is required').notEmpty();
@@ -294,3 +294,4 @@ export const getGroupMessage = (req, res) => {
     });
   });
 };
+

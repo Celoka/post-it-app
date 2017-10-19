@@ -48,13 +48,13 @@ class Group extends React.Component {
    * @param {any} event
    * @memberof Group
   */
-  onStoreChange =()=> {
+  onStoreChange = ()=> {
     this.setState({
       groupName: AppStore.getUserGroup()
     });
   }
 
-  onChange=(event)=> {
+  onChange = (event)=> {
     this.setState({
       userGroupName: event.target.value
     });
@@ -66,7 +66,7 @@ class Group extends React.Component {
    * 
    * @memberof Group
    */
-  onClick=()=> {
+  onClick = () => {
     AppActions.createGroup(this.state.userGroupName);
     AppActions.loadGroups();
   }

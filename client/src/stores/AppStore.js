@@ -26,7 +26,6 @@ function saveGroupMessage(groupMessage) {
 }
 
 function allGroupMessages(message) {
-  console.log(allMessages, "jhvsdjer")
   allMessages = message;
   return allMessages;
 }

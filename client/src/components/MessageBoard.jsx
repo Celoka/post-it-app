@@ -1,6 +1,5 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 import MessageForm from '../components/MessageForm.jsx';
 /**
  *
@@ -18,28 +17,8 @@ class MessageBoard extends React.Component {
     super();
     this.state = {
       message: '',
-      groupMessage: [],
-      groupId: ''
+      groupId: '',
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onStoreChange = this.onStoreChange.bind(this);
-  }
-
-  /**
-   * 
-   * @memberof MessageBoard
-   */
-  componentDidMount() {
-    AppActions.loadMessage();
-    AppStore.addChangeListener(this.onStoreChange);
-  }
-
-  /**
-   * @memberof MessageBoard
-   */
-  componentWillUnmount() {
-    AppStore.removeChangeListener(this.onStoreChange);
   }
 
   /**
@@ -69,7 +48,7 @@ class MessageBoard extends React.Component {
    *  
    * @memberof MessageBoard
    */
-  handlePriority(event) {
+  handlePriority=(event)=> {
     this.setState({
       priority: event.target.value
     });
@@ -79,7 +58,7 @@ class MessageBoard extends React.Component {
    * 
    * @memberof MessageBoard
    */
-  onChange(event) {
+  onChange=(event)=> {
     this.setState({
       message: event.target.value
     });
@@ -89,7 +68,7 @@ class MessageBoard extends React.Component {
    *  
    * @memberof MessageBoard
    */
-  onSubmit(event) {
+  onSubmit=(event)=> {
     event.preventDefault();
     const { text, type } = this.refs;
     const messageDetail = {
@@ -109,13 +88,12 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
-    const messageList = this.state.groupMessage.map( (groupMessage, index) =>
+    const messageList = this.props.groupMessage.map( (groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-md-12">
           <div className="well">
             <p id="message-text">{groupMessage.message}</p>
             <time id="time-tag">{groupMessage.time}</time>
-           
           </div>
         </div>
       </div>

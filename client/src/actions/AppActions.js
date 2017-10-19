@@ -81,6 +81,16 @@ const AppActions = {
           actionType: AppConstants.SET_GROUP_MESSAGE,
           groupMessage
         });
+        axios
+      .get(`/group/${groupId}`)
+      .then((res) => {
+        const message = res.data.groupMessage;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.LOAD_GROUP_MESSAGE,
+          message,
+        });
+      })
+      .catch(ToastrError);
       })
       .catch(ToastrError);
   },

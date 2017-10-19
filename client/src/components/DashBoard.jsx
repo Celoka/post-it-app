@@ -1,5 +1,6 @@
 import React from 'react';
 import Group from '../components/Group.jsx';
+import AppStore from '../stores/AppStore';
 import UserList from '../components/UserList.jsx';
 import MessageBoard from '../components/MessageBoard.jsx';
 import BoardNavigation from '../components/BoardNavigation.jsx';
@@ -22,8 +23,22 @@ class DashBoard extends React.Component {
     super(props);
     this.state = {
       groupId: null,
-      groupname: ''
+      groupname: '',
+      groupMessage: []
     };
+  }
+  componentDidMount() {
+    AppStore.addChangeListener(this.onStoreChange);
+  }
+
+  componentWillUnmount() {
+    AppStore.removeChangeListener(this.onStoreChange);
+  }
+
+  onStoreChange = () => {
+    this.setState({
+      groupMessage: AppStore.getAllMessages(),
+    });
   }
 
   setGroupId = (groupId, groupname) => {
@@ -46,8 +61,9 @@ class DashBoard extends React.Component {
             <div className="col-sm-6 middleboard">
               {
                 (this.state.groupId === null) ?
-                <h1>WELCOME TO POSTIT</h1>:
-                <MessageBoard groupId={this.state.groupId} groupname={this.state.groupname}/>
+                <h1>WELCOME TO POSTIT</h1> :
+                <MessageBoard groupId={this.state.groupId} groupname={this.state.groupname}
+                groupMessage={this.state.groupMessage}/>
               }
             </div>
           </div>
