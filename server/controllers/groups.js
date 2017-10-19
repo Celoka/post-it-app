@@ -200,8 +200,7 @@ export const postMessage = (req, res) => {
         to: emails,
         subject: 'Urgent Message',
         text: 'Post it App',
-        html: `<h3>An urgent message has been posted to
-         ${groupId} group</h3>`
+        html: `<h3>An urgent message has been posted on post It</h3>`
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -218,17 +217,14 @@ export const postMessage = (req, res) => {
     snap.forEach((details) => {
       phoneNumber.push(details.val());
     });
-    const phoneNumbers = phoneNumber.join(',');
-
     if (priority === 'Critical') {
       const nexmo = new Nexmo({
         apiKey: 'e9f852e1',
         apiSecret: '390423e2e4fdbb9c'
       });
-      const from = 'Nexmo';
-      const to = phoneNumbers;
-      const text = 'A text message sent using the Nexmo SMS API';
-
+      const from = 'Post It Admin';
+      const to = phoneNumber;
+      const text = 'A message has been posted on post it app';
       nexmo.message.sendSms(from, to, text);
     }
   });
