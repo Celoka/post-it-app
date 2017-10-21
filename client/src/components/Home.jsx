@@ -2,18 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 
-/**
- *
- * @class Home
- * 
- * @extends {React.Component}
- */
-class Home extends React.Component {
 
-  /**
-   * @memberof Home
-   * @returns
-   */
+const Home =()=> ({
 
   render() {
     return (
@@ -31,6 +21,6 @@ class Home extends React.Component {
       </div>
     );
   }
-}
+});
 
 export default Home;

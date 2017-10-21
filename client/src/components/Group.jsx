@@ -108,12 +108,18 @@ class Group extends React.Component {
                     placeholder="Input groupname...." />
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-danger"
-                    data-dismiss="modal" >Close</button>
-                  <button type="button" className="btn btn-success"
-                    data-dismiss="modal" onClick={this.onClick} type="submit" name="submit">
+                  <button type="button"
+                    className="btn btn-danger"
+                    data-dismiss="modal" >
+                    Close
+                  </button>
+                  <button type="button"
+                    className="btn btn-success"
+                    data-dismiss="modal"
+                    onClick={this.onClick}
+                    type="submit" name="submit">
                     Create
-                      </button>
+                  </button>
                 </div>
               </div>
             </div>

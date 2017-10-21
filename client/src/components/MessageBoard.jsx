@@ -101,7 +101,8 @@ class MessageBoard extends React.Component {
     );
     return (
       <div>
-        <MessageForm groupname={this.props.groupname} messageList={messageList} />
+        <MessageForm groupname={this.props.groupname}
+          messageList={messageList} />
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
             <div className='row content'>
@@ -118,7 +119,9 @@ class MessageBoard extends React.Component {
                 className="btn btn-success">
                 Submit
               </button>
-              <select ref="type" style={{ color: 'black', float: 'left' }} className="select_btn">
+              <select ref="type"
+               style={{ color: 'black', float: 'left' }}
+                className="select_btn">
                 <option value='Normal'>Normal</option>
                 <option value='Urgent'>Urgent</option>
                 <option value='Critical'>Critical</option>

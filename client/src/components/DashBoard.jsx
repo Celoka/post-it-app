@@ -62,14 +62,17 @@ class DashBoard extends React.Component {
           <div id= 'profile' className="row">
             <div className="col-sm-3 leftsidenav">
               <Group setGroupId={this.setGroupId}/>
-              <UsersInGroup groupId={this.state.groupId} userId={this.state.userId} newMember={this.state.newMember}/>
+              <UsersInGroup groupId={this.state.groupId}
+                userId={this.state.userId}
+                newMember={this.state.newMember}/>
             </div>
             <div className="<col-sm-12></col-sm-12> middleboard">
               {
                 (this.state.groupId === null) ?
                 <h1>WELCOME TO POSTIT</h1> :
-                <MessageBoard groupId={this.state.groupId} groupname={this.state.groupname}
-                groupMessage={this.state.groupMessage}/>
+                <MessageBoard groupId={this.state.groupId}
+                  groupname={this.state.groupname}
+                  groupMessage={this.state.groupMessage}/>
               }
             </div>
           </div>
