@@ -1,5 +1,4 @@
 import React from 'react';
-import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
@@ -79,21 +78,26 @@ class Group extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit} id='group-form'>
+        <form onSubmit={this.onClick} id='group-form'>
           <h4><center> Group List</center><hr /></h4>
-          <button id='modal-button' type="button"
+          <button id='modal-button' 
+            type="button"
             className="btn btn-success"
             data-toggle="modal"
-            data-target="#myModal">
+            data-target=".create1">
             Create New Group
-              </button>
-          <div className="modal fade"
+           </button>
+          <div className="modal fade create1"
             id="myModal"
             role="dialog">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <button type="button" className="close" data-dismiss="modal">&times;</button>
+                  <button type="button"
+                    className="close"
+                    data-dismiss="modal">
+                    &times;
+                  </button>
                   <h4 className="modal-title">Create Group</h4>
                 </div>
                 <div className="modal-body">

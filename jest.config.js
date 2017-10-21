@@ -5,5 +5,8 @@ module.exports = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/test/'
+  ],
+  coveragePathIgnorePatterns: [
+    'localStorage'
   ]
 };

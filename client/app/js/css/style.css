@@ -110,7 +110,6 @@ input {
 
 #messageboard {
     height: 130px;
-    width: 595px;
 }
 
 #resetpassword {
@@ -215,10 +214,10 @@ p{
 
 #message-display {
     height: 490px;
-    margin-left: 16px;
+    margin-right: 13px;
     margin-top: -1px;
-    width: 595px;
     overflow: auto;
+    
 }
 
 #modal-button {
@@ -229,10 +228,13 @@ p{
     color: red;
     
 }
-
+#member-list{
+    color: #797983
+}
 #message-text {
     color: #00008b
 }
+
 
 .register {
   border-radius: 4px;

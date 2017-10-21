@@ -1,15 +1,17 @@
 import { EventEmitter } from 'events';
-import _ from 'lodash';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 
 const CHANGE_EVENT = 'change';
 
-let _currentUser = [];
-let _groups = '';
-let _userGroups = [];
-let newMessage = [];
+let newMember = [];
+let currentUser = [];
+let groups = '';
+let usersGroups = [];
+const newMessage = [];
 let allMessages = [];
+let allUserDetails = [];
+let addRegisteredUser = '';
 
 
   /**
@@ -37,10 +39,21 @@ function allGroupMessages(message) {
    * @returns {void}
    */
 function setCurrentUser(user) {
-  _currentUser = user;
-  return _currentUser;
+  currentUser = user;
+  return currentUser;
 }
-
+function setAllUsers(allUsers) {
+  allUserDetails = allUsers;
+  return allUserDetails;
+}
+function setAddMember(message) {
+  addRegisteredUser = message;
+  return addRegisteredUser;
+}
+function setNewMember (usersDetails) {
+  newMember = usersDetails;
+  return newMember;
+}
  /**
    * @param {any} group
    *
@@ -49,8 +62,8 @@ function setCurrentUser(user) {
    * @returns {void}
    */
 function currentGroup(group) {
-  _groups = group;
-  return _groups;
+  groups = group;
+  return groups;
 }
 
 /**
@@ -62,8 +75,8 @@ function currentGroup(group) {
   * @returns {Object} user groups
   */
 function setUserGroup(userGroups) {
-  _userGroups = userGroups;
-  return _userGroups;
+  usersGroups = userGroups;
+  return usersGroups;
 }
 
 
@@ -127,7 +140,7 @@ class AppStoreClass extends EventEmitter {
    * @returns {Object} current user object is returned
    */
   getCurrentUser() {
-    return _currentUser;
+    return currentUser;
   }
 
   /**
@@ -137,7 +150,7 @@ class AppStoreClass extends EventEmitter {
    * @returns {Object} group object
    */
   getCurrentGroup() {
-    return _groups;
+    return groups;
   }
  /**
   *
@@ -148,10 +161,19 @@ class AppStoreClass extends EventEmitter {
   * @returns {Object} user groups
   */
   getUserGroup() {
-    return _userGroups;
+    return usersGroups;
   }
   getAllMessages() {
     return allMessages;
+  }
+  getAllUsers() {
+    return allUserDetails;
+  }
+  getAddMember() {
+    return addRegisteredUser;
+  }
+  getNewMember() {
+    return newMember;
   }
 }
 
@@ -178,6 +200,18 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       break;
     case AppConstants.LOAD_GROUP_MESSAGE:
       allGroupMessages(action.message);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GET_ALL_USERS:
+      setAllUsers(action.allUsers);
+      AppStore.emitChange();
+      break;
+    case AppConstants.ADD_MEMBER_TO_GROUP:
+      setAddMember(action.message);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GET_NEW_USERS:
+      setNewMember(action.usersDetails);
       AppStore.emitChange();
       break;
     default:

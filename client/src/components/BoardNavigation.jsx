@@ -16,7 +16,7 @@ class BoardNavigation extends React.Component {
     };
   }
 
-  onClick=(event)=> {
+  onClick = (event) => {
     AppAction.logOut();
   }
     /**

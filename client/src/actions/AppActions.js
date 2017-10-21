@@ -92,7 +92,7 @@ const AppActions = {
       })
       .catch(ToastrError);
       })
-      .catch(ToastrError);
+    .catch(ToastrError);
   },
 
   loadMessage(groupId) {
@@ -106,6 +106,46 @@ const AppActions = {
         });
       })
       .catch(ToastrError);
+  },
+
+  getNewUsers(groupId) {
+    return axios
+      .get(`/groups/${groupId}/members`, groupId)
+      .then((res) => {
+        const usersDetails = res.data.users;
+        AppDispatcher.dispatch({
+          actionType: AppConstants.GET_NEW_USERS,
+          usersDetails
+        });
+      })
+      .catch(ToastrError);
+  },
+
+  addUserToGroup(userDetails) {
+    return axios
+    .post('/group/groupId/user', userDetails)
+    .then((response) => {
+      const message = response.data.message;
+      toastr.success(response.data.message);
+      AppDispatcher.dispatch({
+        actionType: AppConstants.ADD_MEMBER_TO_GROUP,
+        message
+      });
+    })
+    .catch(ToastrError);
+  },
+
+  getUsersInGroup() {
+    return axios
+    .get('/user/allusers')
+    .then((response) => {
+      const allUsers = response.data.usersDetails;
+      AppDispatcher.dispatch({
+        actionType: AppConstants.GET_ALL_USERS,
+        allUsers
+      });
+    })
+    .catch(ToastrError);
   },
 
   resetPassword(resetEmail) {

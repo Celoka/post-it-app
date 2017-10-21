@@ -1,11 +1,12 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
 
-class UserList extends React.Component {
+class GroupList extends React.Component {
 
   render() {
     return (
       <div onClick={() => {
+          AppActions.getNewUsers(this.props.KeyName.groupId);
           AppActions.loadMessage(this.props.KeyName.groupId);
           this.props.setGroupId(this.props.KeyName.groupId,
           this.props.KeyName.groupname);
@@ -16,4 +17,4 @@ class UserList extends React.Component {
     );
   }
 }
-export default UserList;
+export default GroupList;

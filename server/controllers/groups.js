@@ -32,8 +32,8 @@ export const createGroup = (req, res) => {
     }).key;
 
     const groupRef = db.database().ref(`/groups/${groupKey}/users`);
-    groupRef.set({
-      isAdmin: true
+    groupRef.push({
+      userNames: userId
     });
 
     const userRef = db.database().ref(`/users/${userId}/groups`);
@@ -55,7 +55,7 @@ export const createGroup = (req, res) => {
         });
       } else {
         res.status(500).json({
-          message: error,
+          message: `An error occured ${error.message}`
         });
       }
     });
@@ -115,8 +115,8 @@ export const addMemberToGroup = (req, res) => {
           }
         })
         .then(() => {
-          res.status(201).json({ message:
-             'User added successfully'
+          res.status(201).json({
+            message: 'User added successfully'
           });
         });
       } else {
@@ -126,7 +126,9 @@ export const addMemberToGroup = (req, res) => {
       }
     })
       .catch((error) => {
-        res.status(500).json({ message: error });
+        res.status(500).json({
+          message: `An error occured ${error.message}`
+        });
       });
   }
 };
@@ -171,7 +173,7 @@ export const postMessage = (req, res) => {
       })
       .catch((error) => {
         res.status(500).json({
-          message: error.message
+          message: `An error occured ${error.message}`
         });
       });
   } else {
@@ -200,7 +202,7 @@ export const postMessage = (req, res) => {
         to: emails,
         subject: 'Urgent Message',
         text: 'Post it App',
-        html: `<h3>An urgent message has been posted on post It</h3>`
+        html: '<h3>An urgent message has been posted on post It</h3>'
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -253,7 +255,7 @@ export const getGroup = (req, res) => {
     })
       .catch((error) => {
         res.status(500).json({
-          message: error.message
+          message: `An error occured ${error.message}`
         });
       });
   } else {
@@ -295,3 +297,34 @@ export const getGroupMessage = (req, res) => {
   });
 };
 
+export const getUserInGroup = (req, res) => {
+  const groupId = req.params.groupId;
+  const user = req.user.uid;
+  if (user) {
+    const users = [];
+    db.database().ref(`/groups/${groupId}/users`)
+    .once('value', (snap) => {
+      let usersInGroup = {};
+      snap.forEach((details) => {
+        usersInGroup = {
+          userName: details.val().newUser,
+          userId: details.val().userId
+        };
+        users.push(usersInGroup);
+      });
+      res.status(200).json({
+        message: 'User retrieved successfully',
+        users
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: `An error occured ${error.message}`
+        });
+      });
+    });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation, please signup/signin'
+    });
+  }
+};
