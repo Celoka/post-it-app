@@ -6,6 +6,7 @@ import Nexmo from 'nexmo';
 import db from '../config/config';
 import Utils from '../utils/index';
 
+require('dotenv').config();
 /**
  * @description Creates user group
  * POST: /group
@@ -193,8 +194,8 @@ export const postMessage = (req, res) => {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'eloka.chima@gmail.com',
-          pass: 'Engrwilliams1989'
+          user: process.env.USER_NAME,
+          pass: process.env.PASSWORD
         }
       });
       const mailOptions = {
@@ -221,8 +222,8 @@ export const postMessage = (req, res) => {
     });
     if (priority === 'Critical') {
       const nexmo = new Nexmo({
-        apiKey: 'e9f852e1',
-        apiSecret: '390423e2e4fdbb9c'
+        apiKey: process.env.API_KEY,
+        apiSecret: process.env.API_SECRET
       });
       const from = 'Post It Admin';
       const to = phoneNumber;
