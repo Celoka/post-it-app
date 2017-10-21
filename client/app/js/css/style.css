@@ -225,8 +225,7 @@ p{
 }
 
 #style-group {
-    color: red;
-    
+    cursor: pointer;
 }
 #member-list{
     color: #797983
@@ -234,6 +233,7 @@ p{
 #message-text {
     color: #00008b
 }
+
 
 
 .register {

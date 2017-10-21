@@ -32,7 +32,6 @@ class DashBoard extends React.Component {
   }
   componentDidMount() {
     AppActions.getUsersInGroup();
-    AppActions.getNewUsers()
     AppStore.addChangeListener(this.onStoreChange);
   }
 
