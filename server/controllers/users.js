@@ -5,13 +5,13 @@ import firebase from 'firebase';
 import db from '../config/config';
 
 /**
- * @description Register a new user
+ * @description This controller creates a news user
  * POST:/user/signup
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an obejct containing a user
  */
 export const createUser = (req, res) => {
   const { email, password, username, phonenumber } = req.body;
@@ -65,13 +65,13 @@ export const createUser = (req, res) => {
 };
 
 /**
- * @description User sign In
+ * @description This controller signs a registered in
  * POST:/user/signin
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a logged in user
  */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
@@ -91,7 +91,9 @@ export const logIn = (req, res) => {
         try {
           parsedUser = JSON.parse(JSON.stringify(user));
         } catch (err) {
-          res.status(500).send('');
+          res.status(401).send({
+            message: 'Please enter a valid login details'
+          });
         }
         const token = parsedUser.stsTokenManager.accessToken;
         const { uid: userId, providerData: userDetails } = parsedUser;
@@ -103,21 +105,21 @@ export const logIn = (req, res) => {
         });
       })
       .catch((error) => {
-        res.status(401).send({
-          message: `An error occured ${error.message}`
+        res.status(500).send({
+          message: `${error.message}`
         });
       });
   }
 };
 
 /**
- * @description User reset password
+ * @description This controller handles a user reset password
  * POST:/user/passwordreset
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a message
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
@@ -140,13 +142,13 @@ export const resetPassword = (req, res) => {
 
 
 /**
- * @description User sign out
- * POST:/user/signoutt
+ * @description This method handles a user sign out
+ * POST:/user/signout
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a message;
  */
 export const logOut = (req, res) => {
   const user = req.user.uid;
@@ -170,13 +172,13 @@ export const logOut = (req, res) => {
 };
 
 /**
- * @description get a user in a group
- * POST:/user/group
+ * @description This controller fetches a user in a group
+ * GET:/user/group
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing the user details;
  */
 export const getUser = (req, res) => {
   const user = req.user.uid;
@@ -208,13 +210,15 @@ export const getUser = (req, res) => {
 };
 
 /**
- * @description get all registered users
- * POST:/user/group
+ * @description This controller fetches all registered
+ * user in the app
+ *
+ * GET:/user/group
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object
+ * @return {object} return all users and users details
  */
 export const getAllUsersInGroup = (req, res) => {
   const user = req.user.uid;
@@ -242,6 +246,17 @@ export const getAllUsersInGroup = (req, res) => {
   }
 };
 
+/**
+ * @description This controller fetches all users
+ * added to a group
+ *
+ * GET:/groups/:groupId/members
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} return all user details
+ */
 export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const user = req.user.uid;

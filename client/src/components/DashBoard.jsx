@@ -8,6 +8,8 @@ import BoardNavigation from '../components/BoardNavigation.jsx';
 
 
 /**
+ * @description creates a class Dashboard as a react component
+ * 
  * @class DashBoard
  * 
  * @extends {React.Component}
@@ -16,7 +18,7 @@ class DashBoard extends React.Component {
   /**
    * @description Creates an instance of DashBoard.
    * 
-   * @param {any} props 
+   * @param { Object } props 
    * 
    * @memberof DashBoard
    */
@@ -30,15 +32,42 @@ class DashBoard extends React.Component {
       newMember: []
     };
   }
+  /**
+   * @description A react life cycle method that listens to change
+   * from the store,then fires an action. When component mounts,
+   * it also fires an actions.
+   * 
+   * @method componentDidMount
+   * 
+   * @return { void }
+   * 
+   * @memberof DashBoard
+   */
   componentDidMount() {
     AppActions.getUsersInGroup();
     AppStore.addChangeListener(this.onStoreChange);
   }
-
+/**
+ * @description A react life cycle method that removes
+ * change listener when component has been unmounted.
+ * 
+ * @method componentWillUnmount
+ * 
+ * @memberof DashBoard
+ */
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
   }
 
+  /**
+   * @description this method gets data from the store and sets to state
+   * 
+   * @method onStoreChange
+   * 
+   * @return { void }
+   * 
+   * @memberof DashBoard
+   */
   onStoreChange = () => {
     this.setState({
       groupMessage: AppStore.getAllMessages(),
@@ -46,7 +75,16 @@ class DashBoard extends React.Component {
       newMember: AppStore.getNewMember()
     });
   }
-
+/**
+ * @description this method sets the groupId and groupName to state
+ * 
+ * @method setGroupId
+ * 
+ * @param { String } groupId
+ * @param { String } groupName
+ * 
+ * @memberof DashBoard
+ */
   setGroupId = (groupId, groupname) => {
     this.setState({
       groupId,

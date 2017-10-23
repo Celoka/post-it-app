@@ -9,7 +9,6 @@ const ToastrError = (error) => {
 };
 
 const AppActions = {
-
   registerUser(userDetails) {
     return axios
       .post('/user/signup', userDetails)

@@ -8,13 +8,13 @@ import Utils from '../utils/index';
 
 require('dotenv').config();
 /**
- * @description Creates user group
+ * @description This controller creates a user group
  * POST: /group
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} Group object;
+ * @return {object} return an object containing group details;
  */
 export const createGroup = (req, res) => {
   const groupname = req.body.groupname;
@@ -42,7 +42,7 @@ export const createGroup = (req, res) => {
       groupname,
       isAdmin: true
     }).then(() => {
-      res.status(200).send({
+      res.status(201).send({
         message: 'User group created successfully',
         groupname,
         datecreated: timestamp,
@@ -64,13 +64,13 @@ export const createGroup = (req, res) => {
 };
 
 /**
- * @description Adds a member to a group
- * POST:/group/:groupId/user
+ * @description This controller adds a member to a group
+ * POST:/group/groupId/user
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object for an added user
+ * @return {object} return an object containg an added user details
  */
 export const addMemberToGroup = (req, res) => {
   const { groupId, userId, newUser } = req.body;
@@ -126,21 +126,21 @@ export const addMemberToGroup = (req, res) => {
         });
       }
     })
-      .catch((error) => {
-        res.status(500).json({
-          message: `An error occured ${error.message}`
-        });
+    .catch((error) => {
+      res.status(500).json({
+        message: `An error occured ${error.message}`
       });
+    });
   }
 };
 /**
- * @description Post message to a group
+ * @description This controller posts message to a group
  * POST:/groups/:groupId/message
  *
  * @param {object} req request object
  * @param {object} res response
  *
- * @return { object } response object
+ * @return { object } return an object message details
  */
 export const postMessage = (req, res) => {
   const { message, priority } = req.body;
@@ -234,13 +234,13 @@ export const postMessage = (req, res) => {
 };
 
 /**
- * @description Get user group
- * POST:/groups
+ * @description This controller fetches a user group
+ * GET:/groups
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return { object } response object user groups
+ * @return { object } return an object containing user groups
  */
 export const getGroup = (req, res) => {
   const user = req.user.uid;
@@ -267,13 +267,13 @@ export const getGroup = (req, res) => {
 };
 
 /**
- * @description Get group messages
- * POST:/group/:groupId
+ * @description This controller fetches a particular group messages
+ * GET:/group/:groupId
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object message
+ * @return {object} return an object containing a particular group message
  */
 export const getGroupMessage = (req, res) => {
   const groupId = req.params.groupId;
@@ -298,6 +298,15 @@ export const getGroupMessage = (req, res) => {
   });
 };
 
+/**
+ * @description This controller fetches a users in a particular group
+ * GET:/group/:groupId/users
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} return an object containing user and userId
+ */
 export const getUserInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const user = req.user.uid;

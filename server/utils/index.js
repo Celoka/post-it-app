@@ -1,3 +1,10 @@
+/**
+ * @description Helper function to resolve data into an array of object
+ *
+ * @param {object} data object
+ *
+ * @return {array} return an array containing an group object details
+ */
 export default {
 
   normalizeData(data) {

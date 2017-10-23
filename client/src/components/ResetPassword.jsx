@@ -2,7 +2,10 @@ import React from 'react';
 import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import Header from '../components/Navbar.jsx';
+
 /**
+ * @description creates a class reset password as a react component
+ * 
  * @class ResetPassword
  * 
  * @extends {React.Component}
@@ -10,13 +13,14 @@ import Header from '../components/Navbar.jsx';
  * @return {void}
  */
 class ResetPassword extends React.Component {
-  /**
-   * Creates an instance of ResetPassword.
-   * 
-   * @param {any} props
-   * 
-   * @memberof ResetPassword
-   */
+
+/**
+ * @description Creates an instance of ResetPassword.
+ * 
+ * @param { Object } props
+ * 
+ * @memberof ResetPassword
+ */
   constructor(props) {
     super(props);
     this.state = {
@@ -24,26 +28,30 @@ class ResetPassword extends React.Component {
       message: ''
     };
   }
-  /**
-   * Creates an on change event method
-   * 
-   * @param {any} event
-   * 
-   * @memberof ResetPassword
-   * 
-   * @return {void}
-   */
+/**
+ *@description Creates an on change event method that
+  * monitors the state of the component
+  * 
+  * @param { String } event
+  * 
+  * @memberof ResetPassword
+  * 
+  * @return { void }
+  */
   onChange = (event)=> {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-  /**
-   * Creates an on submit event that fires a submit action.
-   * @return {void}
-   * @param {any} event
-   * @memberof ResetPassword
-   */
+/**
+ * @description Creates an on submit event that fires a submit action.
+ * 
+ * @return { void }
+ * 
+ * @param { event } event
+ * 
+ * @memberof ResetPassword
+ */
   onSubmit = (event) => {
     event.preventDefault();
     const resetEmail = {
@@ -55,12 +63,7 @@ class ResetPassword extends React.Component {
       })
   }
 
-  /**
-   * @memberof ResetPassword
-   * 
-   * @returns {void}
-   */
-  render() {
+render() {
     return (
       <div>
         <Header />
@@ -74,7 +77,7 @@ class ResetPassword extends React.Component {
           </fieldset>
           <button name="login" className="btn btn-primary btn-sm">
             Reset Password
-         </button>
+          </button>
         </form>
       </div>
     );

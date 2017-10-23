@@ -73,5 +73,14 @@
     "document": true,
     "$": true,
     "jest": true
-  }
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "react"
+  ]
 }

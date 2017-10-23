@@ -10,7 +10,9 @@ const MessageForm = () => ({
     return (
       <div>
         <form id="message-display">
-          <h1>{this.props.groupname}</h1>
+          <h1>
+            {this.props.groupname}
+          </h1>
           {this.props.messageList}
         </form>
       </div>

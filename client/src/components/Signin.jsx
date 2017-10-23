@@ -8,17 +8,22 @@ import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
 
 /**
- *
+ * @description creates a class sign up as a react component
+ * 
  * @class SignIn
  * 
- * @extends {React.Component}
+ * @extends { React.Component }
  */
 class SignIn extends React.Component {
-  /**
-   * @return {void}
-   * @param {any} props
-   * @memberof SignIn
-   */
+
+/**
+ *  
+ * @param {object} props
+ * 
+ * @return {void}
+ * 
+ * @memberof SignIn
+ */
   constructor(props) {
     super(props);
     this.state = {
@@ -28,22 +33,27 @@ class SignIn extends React.Component {
     };
   }
 
-  /**
-   * @param {any} event
-   * 
-   * @memberof SignIn
-   * 
-   * @return {void}
-   */
-  onChange=(event )=> {
+ /**
+ * @description Monitors changes in the components and change the state
+ * 
+ * @param { string } event
+ * 
+ * @method onChange
+ * 
+ * @memberof Signup
+ */
+  onChange = (event )=> {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
+
   /**
    * @description method fires an action to sign in a user
    * 
-   * @param {any} event
+   * @param { object } event
+   * 
+   * @method onSubmit
    * 
    * @memberof SignIn
    */
@@ -55,46 +65,51 @@ class SignIn extends React.Component {
       this.props.history.push('/dashboard');
     });
   }
-   /**
-   * @description gets the current user
-   *
-   * @memberof SignIn
-   * 
-   * @return {void}
-   */
-  getCurrentUser=()=> {
+
+/**
+ * @description This method gets the current user
+ *
+ * @param { void } 
+ * 
+ * @method getCurrentUser
+ * 
+ * @memberof SignIn
+ * 
+ * @return { object } user object from the store is set to state
+ */
+  getCurrentUser = () => {
     this.setState({
       user: AppStore.getCurrentUser()
     });
   }
 
-  /**
-   * @description Create google login function 
-   * for alternative sign up method.
-   * 
-   * @param {any} Event 
-   * 
-   * @memberof SignIn
-   * 
-   * @return {void}
-   */
+/**
+ * @description Create google login function 
+ * for alternative sign up method.
+ * 
+ * @method googleSignIn 
+ * 
+ * @param { Object } Event 
+ * 
+ * @memberof SignIn
+ * 
+ * @return { void }
+ */
   googleSignIn=(event)=> {
     event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
-      .then((result) => {
+      .then((response) => {
         toastr.success('Login Successful');
-        const { user } = result;
+        const { user } = response;
         if (user) {
           return this.props.history.push('/dashboard');
         }
       });
   }
-  /**
-   * @memberof SignIn
-   */
+
   render() {
     return (
       <div>
@@ -113,14 +128,18 @@ class SignIn extends React.Component {
                   <input value={this.state.password} onChange={this.onChange}
                   type='password' name='password' />
               </label>
-              <Link to='/resetpassword'>Forgot password? Click to reset password</Link>
+              <Link to='/resetpassword'>
+                Forgot password? Click to reset password
+              </Link>
             </fieldset>
             <div id="button-segment">
-              <button id="sign" type="submit" name="submit"
-              >Login </button>
+              <button id="sign" type="submit" name="submit">
+                Login
+              </button>
               <label id="checkbox" >
-                <input type="checkbox" name="remember" /> Stay signed in.
-                </label>
+                <input type="checkbox" name="remember" />
+                Stay signed in.
+              </label>
               <GoogleButton id="googlebutton" onClick={this.googleSignIn} />
             </div>
           </form>

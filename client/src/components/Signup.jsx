@@ -6,17 +6,22 @@ import AppActions from '../actions/AppActions';
 
 
 /**@description creates a class sign up as a react component
+ * 
  * @class SignUp
- * @extends {React.Component}
+ * 
+ * @extends { React.Component }
  */
 class SignUp extends React.Component {
 
-  /**
-   * @description Creates an instance of SignUp.
-   * @param {any} props 
-   * @memberof SignUp
-   * @returns {void}
-   */
+/**
+ * @description Creates an instance of MessageBoard 
+ * 
+ * @param { object } props
+ * 
+ * @return { void }
+ * 
+ * @memberof SignIn
+ */
   constructor(props) {
     super(props);
     this.state = {
@@ -28,24 +33,31 @@ class SignUp extends React.Component {
     };
   }
 
-  /**
-   * @param {any} event 
-   * 
-   * @memberof SignUp
-   */
+/**
+ * @description Monitors changes in the components and change the state
+ * 
+ * @param { string } event
+ * 
+ * @method onChange
+ * 
+ * @memberof Signup
+ */
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
-  /**
-   * @description method fires an action to register user
-   * 
-   * @param {any} event 
-   * 
-   * @memberof SignUp
-   */
+/**
+ * @description method fires an action to register a user with email,
+ * phonenumber, username and password
+ * 
+ * @param { object } event 
+ * 
+ * @method onSubmit 
+ * 
+ * @memberof SignUp
+ */
   onSubmit =(event)=> {
     event.preventDefault();
     const userDetails = { ...this.state };

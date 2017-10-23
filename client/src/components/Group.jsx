@@ -4,77 +4,102 @@ import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
 
 /**
+ * @description creates a class group as a react component 
+ * 
  * @class Group
  * 
  * @extends {React.Component}
  */
 class Group extends React.Component {
-  /**
-   * Creates an instance of Group.
-   * 
-   * @memberof Group
-   */
-  constructor() {
-    super();
+
+/**
+ * @param { Object } props
+ * 
+ * @return { void }
+ * 
+ * @memberof Group
+ */
+  constructor(props) {
+    super(props);
     this.state = {
       userGroupName: '',
       groupName: []
     };
   }
 
-  /**
-   * @description React life cycle method,
-   * adds listens to change from the app store.
-   * 
-   * @memberof AppComponent
-  */
+/**
+ * @description React life cycle method,
+ * adds listens to change from the app store and 
+ * fires an action when the component mounts
+ * 
+ * @method componentDidMount
+ * 
+ * @return { void }
+ * 
+ * @memberof Group
+*/
   componentDidMount() {
     AppActions.loadGroups();
     AppStore.addChangeListener(this.onStoreChange);
   }
-  /**
-   * @description React life cycle method,
-   * removes change listener.
-   * 
-   * @memberof AppComponent
-   * @returns {void}
-  */
+/**
+ * @description React life cycle method,
+ * removes change listener.
+ * 
+ * @method componentWillUnmount
+ * 
+ * @returns { void }
+ * 
+ * @memberof Group
+ * 
+*/
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
   }
-  /**
-   *
-   * @param {any} event
-   * @memberof Group
-  */
-  onStoreChange = ()=> {
+/**
+ * @description this method gets all the user groups
+ * from the store
+ * 
+ * @param { void }
+ * 
+ * @method onStoreChange
+ * 
+ * @memberof Group
+*/
+  onStoreChange = () => {
     this.setState({
       groupName: AppStore.getUserGroup()
     });
   }
 
-  onChange = (event)=> {
+/**
+ * @description this method gets all the user groups
+ * from the store
+ * 
+ * @param { String } Object
+ * 
+ * @memberof Group
+*/
+  onChange = (event) => {
     this.setState({
       userGroupName: event.target.value
     });
   }
 
-  /**
-   *
-   * @param {any} event
-   * 
-   * @memberof Group
-   */
+/**
+ * @description This method fires action on button click
+ * 
+ * @param { void }
+ * 
+ * @method onClick
+ * 
+ * @memberof Group
+ */
   onClick = () => {
     AppActions.createGroup(this.state.userGroupName);
     AppActions.loadGroups();
   }
 
-  /**
-   * @memberof Group
-   * 
-   * @returns
-   */
   render() {
     return (
       <div>
@@ -127,7 +152,8 @@ class Group extends React.Component {
           <div >
             <div className="list-group">
               {this.state.groupName.map((KeyName, KeyIndex) =>
-                 (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex} />))}
+                 (<GroupList setGroupId={this.props.setGroupId}
+                  KeyName={KeyName} key={KeyIndex} />))}
             </div>
           </div>
         </form>

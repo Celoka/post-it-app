@@ -1,21 +1,32 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import { expect } from 'chai';
-
+import { shallow } from 'enzyme';
 import GroupList from '../src/components/GroupList.jsx';
+
+const KeyName = {
+  groupId: 'id',
+  groupname: 'name',
+};
+
+const setGroupId = jest.fn();
+const wrapper = shallow(<GroupList KeyName={KeyName} setGroupId={setGroupId} />);
 
 describe('<GroupList/>', () => {
   it('should find a div', () => {
-    const wrapper = shallow(<GroupList />);
-    expect(wrapper.find('div')).to.have.length(1);
+    expect(wrapper.find('div')).toHaveLength(1);
   });
-  it('should have props for GroupId and GroupName', ()=> {
-    const wrapper = shallow(<GroupList/>);
-    expect(wrapper.props().KeyName.groupname).to.be.defined;
-    expect(wrapper.props().KeyName.groupId).to.be.defined;
+  it('should have props for GroupId and GroupName', () => {
+    expect(wrapper.nodes[0].props.onClick).toBeDefined();
   });
-  it('should update the state on click of a button', ()=> {
-    const wrapper = shallow(<GroupList/>);
-    wrapper.find('div').simulate('click')
-  })
+  it('should update the state on click of a button', () => {
+    wrapper.find('div').simulate('click');
+  });
+  it('should have children that matches name to exist', () => {
+    expect(wrapper.node.props.children.props.children).toMatch('name');
+  });
+  it('should have style name to exist', () => {
+    expect(wrapper.node.props.children.props.className).toMatch('list-group-item');
+  });
+  it('should have have the id style to exist', () => {
+    expect(wrapper.node.props.children.props.id).toMatch('style-group');
+  });
 });

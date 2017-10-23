@@ -1,17 +1,20 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import { Link } from 'react-router-dom';
+import { mount } from 'enzyme';
+import { Link, MemoryRouter } from 'react-router-dom';
 import { expect } from 'chai';
 
 import BoardNavigation from '../src/components/BoardNavigation.jsx';
+import mockApiCall from '../__mocks__/axios.js';
 
-describe('<BoardNavigation />', ()=> {
-  it('it should contain link', ()=> {
-    const wrapper = shallow(<BoardNavigation />);
+describe('<BoardNavigation />', () => {
+  beforeEach(() => {
+    jest.mock('axios', () => mockApiCall);
+  });
+  const wrapper = mount(<MemoryRouter><BoardNavigation /></MemoryRouter>);
+  it('it should contain link', () => {
     expect(wrapper.find(Link)).to.have.length(2);
   });
-  it('simulates click event', ()=> {
-    const wrapper = shallow (<BoardNavigation />);
-    wrapper.find('li').simulate('click', { preventDefault() {onclick} });
-  })
+  it('simulates click event', () => {
+    wrapper.find('li').simulate('click');
+  });
 });

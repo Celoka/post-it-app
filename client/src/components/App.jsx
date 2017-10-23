@@ -5,8 +5,10 @@ import AppStore from '../stores/AppStore';
 import Routes from '../Routes.jsx';
 
 /**
+ * @description creates a class app as a react component
  * 
  * @class App
+ * 
  * @extends {React.Component}
  */
 class App extends React.Component {
@@ -15,7 +17,7 @@ class App extends React.Component {
     return (
       <div>
          <BrowserRouter>
-          <Routes />
+            <Routes />
         </BrowserRouter>
       </div>
     );
