@@ -9,21 +9,10 @@ import AppActions from '../actions/AppActions';
  */
 class BoardNavigation extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.setState = {
-      error: ''
-    };
-  }
-
   onClick = (event) => {
     AppActions.logOut();
   }
-    /**
-     *
-     * @returns
-     * @memberof BoardNavigation
-     */
+
   render() {
     return (
       <div>

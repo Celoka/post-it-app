@@ -6,9 +6,8 @@ import { expect } from 'chai';
 import Navbar from '../src/components/Navbar';
 
 describe('<Navbar />', () => {
-    it('', () => {
-        const wrapper = shallow(<Navbar />);
-
-        expect(wrapper.find(Link)).to.have.length(4);
+    it('should contain links', () => {
+      const wrapper = shallow(<Navbar />);
+      expect(wrapper.find(Link)).to.have.length(4);
     });
 });

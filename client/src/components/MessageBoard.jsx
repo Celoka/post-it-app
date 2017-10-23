@@ -88,7 +88,6 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
-    //console.log(this.props.groupMessage)
     const messageList = this.props.groupMessage.map( (groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-sm-12">
