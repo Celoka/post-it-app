@@ -13,165 +13,267 @@ let allMessages = [];
 let allUserDetails = [];
 let addRegisteredUser = '';
 
-
-  /**
-   * @param {any} message
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
-
+/**
+ * @description describes a function that sets a new message
+ * posted to a group
+ *
+ * @function saveGroupMessage
+ *
+ * @param { Object } groupMessage
+ *
+ * @returns { Array } returns message posted to group
+ */
 function saveGroupMessage(groupMessage) {
   newMessage.push(groupMessage);
   return newMessage;
 }
 
+/**
+ * @description describes a function that sets a messages
+ * existing
+ *
+ * @function allGroupMessages
+ *
+ * @param { Object } message
+ *
+ * @returns { Array } returns all messages posted
+ */
 function allGroupMessages(message) {
   allMessages = message;
   return allMessages;
 }
-  /**
-   * @param {any} user
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
+
+/**
+ * @description describes a function that sets a user
+ *
+ * @function setCurrentUser
+ *
+ * @param { Object } user
+ *
+ * @returns { Array } returns an array of object of new user
+ */
 function setCurrentUser(user) {
   currentUser = user;
   return currentUser;
 }
+
+/**
+ * @description describes a function that sets all users details in a group
+ *
+ * @function setAllUsers
+ *
+ * @param { Object } allUsers
+ *
+ * @returns { Array } returns an array of object of all users
+ */
 function setAllUsers(allUsers) {
   allUserDetails = allUsers;
   return allUserDetails;
 }
+
+/**
+ * @description describes a function that adds member to a group
+ *
+ * @function setAddMember
+ *
+ * @param { String } message
+ *
+ * @returns { String } returns name of added user
+ */
 function setAddMember(message) {
   addRegisteredUser = message;
   return addRegisteredUser;
 }
+
+/**
+ * @description describes a function that fetches a and sets it
+ * member to a group
+ *
+ * @function setNewMember
+ *
+ * @param { Object } usersDetails
+ *
+ * @returns { Array } returns details of a member added to group
+ */
 function setNewMember (usersDetails) {
   newMember = usersDetails;
   return newMember;
 }
  /**
-   * @param {any} group
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
+ * @description describes a function that sets a group
+ *
+ * @function setNewMember
+ *
+ * @param { String } group
+ *
+ * @returns { String } returns name of group as string
+ */
 function currentGroup(group) {
   groups = group;
   return groups;
 }
 
 /**
-  *
-  * @param {Object} userGroups
-
-  * @memberof AppStoreClass
-
-  * @returns {Object} user groups
-  */
+ * @description describes a function that fetches a and sets it
+ * member to a group
+ *
+ * @function setUserGroup
+ *
+ * @param { Object } userGroups
+ *
+ * @returns { Array } returns details of a member added to group
+ */
 function setUserGroup(userGroups) {
   usersGroups = userGroups;
   return usersGroups;
 }
 
-
 /**
+ *
  * @class AppStoreClass
+ *
  * @extends {EventEmitter}
  */
 class AppStoreClass extends EventEmitter {
 
-    /**
-   * @description Store emits event change
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
+/**
+ * @description AppStore emit event change
+ *
+ * @memberof AppStoreClass
+ *
+ * @method emitChange
+ *
+ * @returns { void }
+ */
   emitChange() {
     this.emit(CHANGE_EVENT);
   }
 
-  /**
-   * @description Store change listener
-   *
-   * @param {any} callback
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
+/**
+ * @description AppStore change listener. Listens to change from the store
+ * with respect to the listener in the component
+ *
+ * @param { Object } callback
+ *
+ * @method addChangeListener
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns {void}
+ */
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
 
-  /**
-   * @description Remove chnage listener
-   *
-   * @param {any} callback
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {void}
-   */
+/**
+ * @description Remove AppStore change listener
+ *
+ * @param { Object } callback
+ *
+ * @method removeChangeListener
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { void }
+ */
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-  /**
-   * @description This returns an array of group messages
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {Array} Returns an array of group messages
-   */
+/**
+ * @description This returns an array of group messages
+ *
+ * @method getGroupMessage
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array } Returns an array of group messages
+ */
   getGroupMessage() {
     return newMessage;
   }
 
-  /**
-   * @memberof AppStoreClass
-   *
-   * @returns {Object} current user object is returned
-   */
+/**
+ * @description describes a method that gets a set current user
+ * for listening in the component
+ *
+ * @method getCurrentUser
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns {Array} Returns an array of group messages
+ */
   getCurrentUser() {
     return currentUser;
   }
 
-  /**
-   *
-   * @memberof AppStoreClass
-   *
-   * @returns {Object} group object
-   */
+/**
+ * @description describes a method that gets set groups
+ * in app
+ *
+ * @method getCurrentGroup
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { String } Returns all group names
+ */
   getCurrentGroup() {
     return groups;
   }
- /**
-  *
-  * @param {Object} groupNames
-
-  * @memberof AppStoreClass
-
-  * @returns {Object} user groups
-  */
+/**
+ * @description describes a method that gets
+ * a registered users groups
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Object } Returns group details
+ */
   getUserGroup() {
     return usersGroups;
   }
+
+/**
+ * @description describes a method that gets all messages in app
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array} Returns an array of all messages
+ */
   getAllMessages() {
     return allMessages;
   }
+
+/**
+ * @description describes a method that gets all users in a group
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array } Returns an array of users
+ */
   getAllUsers() {
     return allUserDetails;
   }
+
+/**
+ * @description describes a method that gets names of rmembers
+ * added to groups
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { String } Returns a string of user names
+ */
   getAddMember() {
     return addRegisteredUser;
   }
+
+/**
+ * @description describes a method that gets the full user details of
+ * a new member of a group
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array } Returns an array of users and their details
+ */
   getNewMember() {
     return newMember;
   }

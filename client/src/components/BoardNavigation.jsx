@@ -11,22 +11,25 @@ import AppActions from '../actions/AppActions';
  * @extends {React.Component}
  */
 class BoardNavigation extends React.Component {
-  constructor(){
-    super();
-    this.logOut = this.logOut.bind(this);
-  }
+
 /**
- * @param { Object } event
- *
  * @method onClick
+ *
+ * @return { void }
  *
  * @memberof BoardNavigation
  */
-
-  logOut(event) {
+  logOut = () => {
     AppActions.logOut();
   }
 
+/**
+ * @method render
+ *
+ * @returns { Jsx } rendered jsx element
+ *
+ * @memberof BoardNavigation
+ */
   render() {
     return (
       <div>

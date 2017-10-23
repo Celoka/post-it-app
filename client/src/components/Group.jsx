@@ -4,19 +4,19 @@ import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
 
 /**
- * @description creates a class group as a react component 
- * 
+ * @description creates a class group as a react component
+ *
  * @class Group
- * 
+ *
  * @extends {React.Component}
  */
 class Group extends React.Component {
 
 /**
  * @param { Object } props
- * 
+ *
  * @return { void }
- * 
+ *
  * @memberof Group
  */
   constructor(props) {
@@ -29,13 +29,13 @@ class Group extends React.Component {
 
 /**
  * @description React life cycle method,
- * adds listens to change from the app store and 
+ * adds listens to change from the app store and
  * fires an action when the component mounts
- * 
+ *
  * @method componentDidMount
- * 
+ *
  * @return { void }
- * 
+ *
  * @memberof Group
 */
   componentDidMount() {
@@ -45,13 +45,13 @@ class Group extends React.Component {
 /**
  * @description React life cycle method,
  * removes change listener.
- * 
+ *
  * @method componentWillUnmount
- * 
+ *
  * @returns { void }
- * 
+ *
  * @memberof Group
- * 
+ *
 */
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
@@ -59,11 +59,11 @@ class Group extends React.Component {
 /**
  * @description this method gets all the user groups
  * from the store
- * 
- * @param { void }
- * 
+ *
  * @method onStoreChange
- * 
+ *
+ * @return { Array } array of user groups
+ *
  * @memberof Group
 */
   onStoreChange = () => {
@@ -75,9 +75,11 @@ class Group extends React.Component {
 /**
  * @description this method gets all the user groups
  * from the store
- * 
- * @param { String } Object
- * 
+ *
+ * @param { String } event
+ *
+ * @returns { String } returns string for usergroup name
+ *
  * @memberof Group
 */
   onChange = (event) => {
@@ -88,24 +90,29 @@ class Group extends React.Component {
 
 /**
  * @description This method fires action on button click
- * 
- * @param { void }
- * 
+ *
+ *
  * @method onClick
- * 
+ *
+ * @return { void }
+ *
  * @memberof Group
  */
   onClick = () => {
     AppActions.createGroup(this.state.userGroupName);
     AppActions.loadGroups();
   }
-
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof Group
+ */
   render() {
     return (
       <div>
         <form onSubmit={this.onClick} id='group-form'>
           <h4><center> Group List</center><hr /></h4>
-          <button id='modal-button' 
+          <button id='modal-button'
             type="button"
             className="btn btn-success"
             data-toggle="modal"

@@ -5,7 +5,7 @@ import MessageForm from '../src/components/MessageForm.jsx';
 
 describe('<MessageForm/>', () => {
   const props = {
-    groupname: '',
+    groupname: 'name',
     messageList: [{ hello: '1234' }, { eloka: '3333' }]
   };
   const wrapper = mount(<MessageForm props={ props }/>);
@@ -16,8 +16,7 @@ describe('<MessageForm/>', () => {
     expect(wrapper.find('h1')).toHaveLength(1);
   });
   it('should have a all props', () => {
-    
-    expect(wrapper.props().groupname)
-    .toEqual(expect.stringContaining('name'));
+    expect(wrapper.props().groupname).toBeUndefined();
+    expect(wrapper.props().messageList).toBeUndefined();
   });
 });

@@ -9,17 +9,17 @@ import BoardNavigation from '../components/BoardNavigation.jsx';
 
 /**
  * @description creates a class Dashboard as a react component
- * 
+ *
  * @class DashBoard
- * 
+ *
  * @extends {React.Component}
  */
 class DashBoard extends React.Component {
   /**
    * @description Creates an instance of DashBoard.
-   * 
-   * @param { Object } props 
-   * 
+   *
+   * @param { Object } props
+   *
    * @memberof DashBoard
    */
   constructor(props) {
@@ -36,11 +36,11 @@ class DashBoard extends React.Component {
    * @description A react life cycle method that listens to change
    * from the store,then fires an action. When component mounts,
    * it also fires an actions.
-   * 
+   *
    * @method componentDidMount
-   * 
+   *
    * @return { void }
-   * 
+   *
    * @memberof DashBoard
    */
   componentDidMount() {
@@ -50,24 +50,26 @@ class DashBoard extends React.Component {
 /**
  * @description A react life cycle method that removes
  * change listener when component has been unmounted.
- * 
+ *
  * @method componentWillUnmount
- * 
+ *
+ * @return { void }
+ *
  * @memberof DashBoard
  */
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
   }
 
-  /**
-   * @description this method gets data from the store and sets to state
-   * 
-   * @method onStoreChange
-   * 
-   * @return { void }
-   * 
-   * @memberof DashBoard
-   */
+/**
+ * @description this method gets data from the store and sets to state
+ *
+ * @method onStoreChange
+ *
+ * @return { void }
+ *
+ * @memberof DashBoard
+ */
   onStoreChange = () => {
     this.setState({
       groupMessage: AppStore.getAllMessages(),
@@ -75,14 +77,17 @@ class DashBoard extends React.Component {
       newMember: AppStore.getNewMember()
     });
   }
+
 /**
  * @description this method sets the groupId and groupName to state
- * 
+ *
  * @method setGroupId
- * 
+ *
  * @param { String } groupId
- * @param { String } groupName
- * 
+ * @param { String } groupname
+ *
+ * @return { void }
+ *
  * @memberof DashBoard
  */
   setGroupId = (groupId, groupname) => {
@@ -91,7 +96,11 @@ class DashBoard extends React.Component {
       groupname
     });
   }
-
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof DashBoard
+ */
   render() {
     return (
     <div>

@@ -9,19 +9,19 @@ import Header from '../components/Navbar.jsx';
 
 /**
  * @description creates a class sign up as a react component
- * 
+ *
  * @class SignIn
- * 
+ *
  * @extends { React.Component }
  */
 class SignIn extends React.Component {
 
 /**
- *  
+ *
  * @param {object} props
- * 
+ *
  * @return {void}
- * 
+ *
  * @memberof SignIn
  */
   constructor(props) {
@@ -35,14 +35,16 @@ class SignIn extends React.Component {
 
  /**
  * @description Monitors changes in the components and change the state
- * 
+ *
  * @param { string } event
- * 
+ *
  * @method onChange
- * 
+ *
+ * @return { void }
+ *
  * @memberof Signup
  */
-  onChange = (event )=> {
+  onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -50,16 +52,18 @@ class SignIn extends React.Component {
 
   /**
    * @description method fires an action to sign in a user
-   * 
+   *
    * @param { object } event
-   * 
+   *
    * @method onSubmit
-   * 
+   *
+   * @return { void }
+   *
    * @memberof SignIn
    */
-  onSubmit=(event)=>{
+  onSubmit= (event) => {
     event.preventDefault();
-    const signInDetails = { ...this.state }
+    const signInDetails = { ...this.state };
     AppActions.loginUser(signInDetails).then(() => {
       AppStore.on('login_success', this.getCurrentUser);
       this.props.history.push('/dashboard');
@@ -69,12 +73,10 @@ class SignIn extends React.Component {
 /**
  * @description This method gets the current user
  *
- * @param { void } 
- * 
  * @method getCurrentUser
- * 
+ *
  * @memberof SignIn
- * 
+ *
  * @return { object } user object from the store is set to state
  */
   getCurrentUser = () => {
@@ -84,32 +86,35 @@ class SignIn extends React.Component {
   }
 
 /**
- * @description Create google login function 
+ * @description Create google login function
  * for alternative sign up method.
- * 
- * @method googleSignIn 
- * 
- * @param { Object } Event 
- * 
+ *
+ * @method googleSignIn
+ *
+ * @param { Object } event
+ *
  * @memberof SignIn
- * 
+ *
  * @return { void }
  */
-  googleSignIn=(event)=> {
+  googleSignIn= (event) => {
     event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
       .then((response) => {
-        toastr.success('Login Successful');
         const { user } = response;
         if (user) {
           return this.props.history.push('/dashboard');
         }
       });
   }
-
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof SignIn
+ */
   render() {
     return (
       <div>

@@ -6,13 +6,19 @@ import Routes from '../Routes.jsx';
 
 /**
  * @description creates a class app as a react component
- * 
+ *
  * @class App
- * 
+ *
  * @extends {React.Component}
  */
 class App extends React.Component {
 
+/**
+ *
+ * @returns { void } jsx
+ *
+ * @memberof App
+ */
   render() {
     return (
       <div>

@@ -3,12 +3,30 @@ import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 
+
+/**
+ * @function ToastrError
+ *
+ * @return { object } error message
+ *
+ * @param { * } error
+ */
 const ToastrError = (error) => {
   const status = error.response.data.message;
   toastr.error(status);
 };
 
 const AppActions = {
+
+  /**
+   * @description describes an action that makes
+   * API call to the server for a post request
+   * to register a user
+   *
+   * @param { Object } userDetails
+   *
+   * @returns { Object } returns registered user registration details
+   */
   registerUser(userDetails) {
     return axios
       .post('/user/signup', userDetails)
@@ -26,7 +44,15 @@ const AppActions = {
       .catch(ToastrError);
   },
 
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a post request to sign in
+ * a user
+ *
+ * @param { Object } signInDetails
+ *
+ * @returns { Object } returns registered user details
+ */
   loginUser(signInDetails) {
     return axios
       .post('/user/signin', signInDetails)
@@ -42,7 +68,15 @@ const AppActions = {
       })
       .catch(ToastrError);
   },
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a post request to create
+ * a user group
+ *
+ * @param { Object } groupDetail
+ *
+ * @returns { Object } returns created group details
+ */
   createGroup(groupDetail) {
     const groupname = { groupname: groupDetail };
     return axios
@@ -58,6 +92,14 @@ const AppActions = {
       .catch(ToastrError);
   },
 
+/**
+ * @description describes an action that makes
+ * API call to the server for a get request to fetch
+ * all user groups
+ *
+ *
+ * @returns { Object } returns all user groups group details
+ */
   loadGroups() {
     return axios
       .get('/groups')
@@ -71,6 +113,16 @@ const AppActions = {
       .catch(ToastrError);
   },
 
+/**
+ * @description describes an action that makes
+ * API call to the server for a post/get request to post
+ * a message to user group and fetch group messages
+ *
+ * @param { Object } messageDetail
+ * @param {String } groupId
+ *
+ * @returns { Object } returns group message and details
+ */
   postMessage(messageDetail, groupId) {
     return axios
       .post(`/groups/${groupId}/message`, messageDetail, groupId)
@@ -106,7 +158,15 @@ const AppActions = {
       })
       .catch(ToastrError);
   },
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a get request to fetch users
+ * added to user group
+ *
+ * @param {String } groupId
+ *
+ * @returns { Object } returns user details of added member
+ */
   getNewUsers(groupId) {
     return axios
       .get(`/groups/${groupId}/members`, groupId)
@@ -120,6 +180,16 @@ const AppActions = {
       .catch(ToastrError);
   },
 
+/**
+ * @description describes an action that makes
+ * API call to the server for a post request to add
+ * a member to a user group
+ *
+ * @param { Object } userDetails
+ *
+ * @returns { Object } returns user details and a message
+ *
+ */
   addUserToGroup(userDetails) {
     return axios
     .post('/group/groupId/user', userDetails)
@@ -133,7 +203,14 @@ const AppActions = {
     })
     .catch(ToastrError);
   },
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a get request to fetch
+ * all users in agroup
+ *
+ * @returns { Object } returns details of users in a group
+ *
+ */
   getUsersInGroup() {
     return axios
     .get('/user/allusers')
@@ -146,7 +223,16 @@ const AppActions = {
     })
     .catch(ToastrError);
   },
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a post request to send
+ * reset password link to a registered user
+ *
+ * @param { Object } resetEmail
+ *
+ * @returns { Object } returns email and success message
+ *
+ */
   resetPassword(resetEmail) {
     return axios
     .post('/user/passwordreset', resetEmail)
@@ -156,7 +242,14 @@ const AppActions = {
     })
     .catch(ToastrError);
   },
-
+/**
+ * @description describes an action that makes
+ * API call to the server for a post request to
+ * sign out a user
+ *
+ * @returns { Object } returns a user object
+ *
+ */
   logOut() {
     return axios
       .post('/user/signout')

@@ -5,21 +5,22 @@ import Header from '../components/Navbar.jsx';
 import AppActions from '../actions/AppActions';
 
 
-/**@description creates a class sign up as a react component
- * 
+/**
+ * @description creates a class sign up as a react component
+ *
  * @class SignUp
- * 
+ *
  * @extends { React.Component }
  */
 class SignUp extends React.Component {
 
 /**
- * @description Creates an instance of MessageBoard 
- * 
+ * @description Creates an instance of MessageBoard
+ *
  * @param { object } props
- * 
+ *
  * @return { void }
- * 
+ *
  * @memberof SignIn
  */
   constructor(props) {
@@ -35,11 +36,13 @@ class SignUp extends React.Component {
 
 /**
  * @description Monitors changes in the components and change the state
- * 
+ *
  * @param { string } event
- * 
+ *
  * @method onChange
- * 
+ *
+ * @return { void }
+ *
  * @memberof Signup
  */
   onChange = (event) => {
@@ -51,21 +54,27 @@ class SignUp extends React.Component {
 /**
  * @description method fires an action to register a user with email,
  * phonenumber, username and password
- * 
- * @param { object } event 
- * 
- * @method onSubmit 
- * 
+ *
+ * @param { object } event
+ *
+ * @method onSubmit
+ *
+ * @return {void }
+ *
  * @memberof SignUp
  */
-  onSubmit =(event)=> {
+  onSubmit = (event) => {
     event.preventDefault();
     const userDetails = { ...this.state };
     AppActions.registerUser(userDetails).then(() => {
       this.props.history.push('/dashboard');
     });
   }
-
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof SignUp
+ */
   render() {
     return (
       <div>

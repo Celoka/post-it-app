@@ -1,22 +1,23 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
+import AppStore from '../stores/AppStore.js';
 import MessageForm from '../components/MessageForm.jsx';
 
 /**
  * @description  creates a class message board as a react component
- * 
+ *
  * @class MessageBoard
- * 
+ *
  * @extends {React.Component}
  */
 class MessageBoard extends React.Component {
 /**
  * @description Creates an instance of MessageBoard
- * 
+ *
  * @param { object } props
- * 
+ *
  * @return { void }
- * 
+ *
  * @memberof MessageBoard
  */
   constructor() {
@@ -24,18 +25,20 @@ class MessageBoard extends React.Component {
     this.state = {
       message: '',
       groupId: '',
-      groupname:'',
+      groupname: '',
       groupMessage: []
     };
   }
 
 /**
  * @description this receives props from the parent component(dashboard)
- * 
- * @param { String } nextProps 
- * 
+ *
+ * @param { String } nextProps
+ *
  * @method componentWillReceiveProps
- * 
+ *
+ * @return { void }
+ *
  * @memberof MessageBoard
  */
   componentWillReceiveProps(nextProps) {
@@ -48,11 +51,13 @@ class MessageBoard extends React.Component {
 
 /**
  * @description gets the message from the store
- * 
- * @param { void } 
- * 
+ *
+ * @param { void } f
+ *
  * @method onStoreChange
- * 
+ *
+ * @return { void }
+ *
  * @memberof MessageBoard
  */
   onStoreChange = () => {
@@ -64,28 +69,32 @@ class MessageBoard extends React.Component {
 /**
  * @description this changes the state of the component
  * for a controlled input
- * 
+ *
  * @param { String } event
- *  
+ *
  * @method handlePriority
- * 
+ *
+ * @return { void }
+ *
  * @memberof MessageBoard
  */
-  handlePriority=(event)=> {
+  handlePriority= (event) => {
     this.setState({
       priority: event.target.value
     });
   }
 /**
- * @description changes the state of the component on input 
- * 
- * @param { String } event 
- * 
+ * @description changes the state of the component on input
+ *
+ * @param { String } event
+ *
  * @method onChange
- * 
+ *
+ * @return { void }
+ *
  * @memberof MessageBoard
  */
-  onChange=(event)=> {
+  onChange = (event) => {
     this.setState({
       message: event.target.value
     });
@@ -93,11 +102,13 @@ class MessageBoard extends React.Component {
 
 /**
  * @description fires an action on click of a button
- * 
+ *
  * @param { Object } event
- *  
+ *
  * @method onSubmit
- * 
+ *
+ * @return { void }
+ *
  * @memberof MessageBoard
  */
   onSubmit = (event) => {
@@ -114,8 +125,13 @@ class MessageBoard extends React.Component {
       type.value = 'Normal';
     }
   }
-render() {
-    const messageList = this.state.groupMessage.map((groupMessage,index) =>
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof MessageBoard
+ */
+  render() {
+    const messageList = this.state.groupMessage.map((groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-sm-12">
           <div className="well">
@@ -125,7 +141,7 @@ render() {
         </div>
       </div>
     );
-  return (
+    return (
       <div>
         <MessageForm groupname={this.state.groupname}
           messageList={messageList} />

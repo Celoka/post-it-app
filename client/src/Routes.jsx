@@ -32,7 +32,7 @@ const Routes = () => (
       <Route path='/signup' component={ SignUp } />
       <Route path='/signin' component={ SignIn } />
       <Route exact path ='/resetpassword' component={ ResetPassword } />
-      <RequireAuth  path='/dashboard' component={ DashBoard } />
+      <RequireAuth path='/dashboard' component={ DashBoard } />
       <Route component={notFoundPage} />
     </Switch>
   </main>

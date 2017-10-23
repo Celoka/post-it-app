@@ -1,9 +1,14 @@
 import React from 'react';
+
 /**
  * @description a stateless component
- *  that is a child of message board
- * 
- * @returns {void}
+ * that is a child of message board. The
+ * message list and groupname are rendered to the screen
+ * in this component
+ *
+ * @return { void }
+ *
+ * @function MessageForm
  */
 const MessageForm = () => ({
   render() {

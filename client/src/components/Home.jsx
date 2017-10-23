@@ -2,9 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 
-
-const Home =()=> ({
-
+/**
+ * @description a stateless component
+ * that is a child of message board. The
+ * message list and groupname are rendered to the screen
+ * in this component
+ *
+ * @return { void }
+ *
+ * @function MessageForm
+ */
+const Home = () => ({
   render() {
     return (
       <div>

@@ -8,7 +8,8 @@ const KeyName = {
 };
 
 const setGroupId = jest.fn();
-const wrapper = shallow(<GroupList KeyName={KeyName} setGroupId={setGroupId} />);
+const wrapper = shallow(<GroupList KeyName={KeyName}
+setGroupId={setGroupId} />);
 
 describe('<GroupList/>', () => {
   it('should find a div', () => {
@@ -24,7 +25,8 @@ describe('<GroupList/>', () => {
     expect(wrapper.node.props.children.props.children).toMatch('name');
   });
   it('should have style name to exist', () => {
-    expect(wrapper.node.props.children.props.className).toMatch('list-group-item');
+    expect(wrapper.node.props.children.props.className)
+    .toMatch('list-group-item');
   });
   it('should have have the id style to exist', () => {
     expect(wrapper.node.props.children.props.id).toMatch('style-group');

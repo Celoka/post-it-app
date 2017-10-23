@@ -1,8 +1,17 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
 
+/**
+ * @description a stateless component
+ * that is a child of message board. The
+ * message list and groupname are rendered to the screen
+ * in this component
+ *
+ * @return { void }
+ *
+ * @function MessageForm
+ */
 const GroupList = () => ({
-
   render() {
     return (
       <div onClick={() => {
