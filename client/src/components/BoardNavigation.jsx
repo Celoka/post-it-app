@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AppAction from '../actions/AppActions';
+import AppActions from '../actions/AppActions';
 
 /**
  *
@@ -9,22 +9,10 @@ import AppAction from '../actions/AppActions';
  */
 class BoardNavigation extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.setState = {
-      error: ''
-    };
-    this.onClick = this.onClick.bind(this);
+  onClick = (event) => {
+    AppActions.logOut();
   }
 
-  onClick(event) {
-    AppAction.logOut();
-  }
-    /**
-     *
-     * @returns
-     * @memberof BoardNavigation
-     */
   render() {
     return (
       <div>
@@ -35,7 +23,11 @@ class BoardNavigation extends React.Component {
                   data-toggle="collapse" data-target=".navbar-collapse">
                   <span className="sr-only">Toggle navigation</span>
                 </button>
-                <Link to='/dashboard'className="navbar-brand"><h1> Post It </h1></Link>
+                <Link to='/dashboard'className="navbar-brand">
+                  <h1> 
+                    Post It 
+                  </h1>
+                </Link>
               </div>
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav">

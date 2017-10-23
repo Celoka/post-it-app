@@ -1,17 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-/**
- *
- * @class NavBar
- * @extends {React.Component}
- */
-class NavBar extends React.Component {
-  /**
-   *
-   * @returns
-   * @memberof NavBar
-   */
+
+const NavBar =()=> ({
+ 
   render() {
     return (
       <div>
@@ -28,6 +20,6 @@ class NavBar extends React.Component {
       </div>
     );
   }
-}
+});
 
 export default NavBar;

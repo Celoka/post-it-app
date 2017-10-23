@@ -4,73 +4,67 @@ import AppConstants from '../constants/AppConstants';
 
 const CHANGE_EVENT = 'change';
 
-/**
- * @class AppStoreClass
- * @extends {EventEmitter}
- */
-class AppStoreClass extends EventEmitter {
+let newMember = [];
+let currentUser = [];
+let groups = '';
+let usersGroups = [];
+const newMessage = [];
+let allMessages = [];
+let allUserDetails = [];
+let addRegisteredUser = '';
+
 
   /**
-   * Creates an instance of AppStoreClass.
-   * @memberof AppStoreClass
-   */
-  constructor() {
-    super();
-    this.currentUser = {};
-    this.groups = '';
-    this.userGroups = [];
-    this.message = [];
-  }
-   /**
    * @param {any} message
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
-  setGroupMessage(message) {
-    this.message = message;
-  }
 
-  /**
-   * @description This returns an array of group messages
-   * @memberof AppStoreClass
-   * @returns {Array} Returns an array of group messages
-   */
-  getGroupMessage() {
-    return this.message;
-  }
+function saveGroupMessage(groupMessage) {
+  newMessage.push(groupMessage);
+  return newMessage;
+}
+
+function allGroupMessages(message) {
+  allMessages = message;
+  return allMessages;
+}
   /**
    * @param {any} user
+   *
    * @memberof AppStoreClass
+   *
    * @returns {void}
    */
-  setCurrentUser(user) {
-    this.currentUser = user;
-  }
-
-  /**
-   * @memberof AppStoreClass
-   * @returns {Object} current user object is returned
-   */
-  getCurrentUser() {
-    return this.currentUser;
-  }
-
-  /**
-   * @returns {void}
+function setCurrentUser(user) {
+  currentUser = user;
+  return currentUser;
+}
+function setAllUsers(allUsers) {
+  allUserDetails = allUsers;
+  return allUserDetails;
+}
+function setAddMember(message) {
+  addRegisteredUser = message;
+  return addRegisteredUser;
+}
+function setNewMember (usersDetails) {
+  newMember = usersDetails;
+  return newMember;
+}
+ /**
    * @param {any} group
+   *
    * @memberof AppStoreClass
+   *
+   * @returns {void}
    */
-  currentGroup(group) {
-    this.groups = group;
-  }
-
-  /**
-   * @returns {Object} group object
-   * @memberof AppStoreClass
-   */
-  getCurrentGroup() {
-    return this.groups;
-  }
+function currentGroup(group) {
+  groups = group;
+  return groups;
+}
 
 /**
   *
@@ -78,10 +72,84 @@ class AppStoreClass extends EventEmitter {
   * @memberof AppStoreClass
   * @returns {Object} user groups
   */
-  setUserGroup(userGroups) {
-    this.userGroups = userGroups;
+function setUserGroup(userGroups) {
+  usersGroups = userGroups;
+  return usersGroups;
+}
+
+
+/**
+ * @class AppStoreClass
+ * @extends {EventEmitter}
+ */
+class AppStoreClass extends EventEmitter {
+
+    /**
+   * @description Store emits event change
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {void}
+   */
+  emitChange() {
+    this.emit(CHANGE_EVENT);
   }
 
+  /**
+   * @description Store change listener
+   *
+   * @param {any} callback
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {void}
+   */
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
+
+  /**
+   * @description Remove chnage listener
+   *
+   * @param {any} callback
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {void}
+   */
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+
+  /**
+   * @description This returns an array of group messages
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {Array} Returns an array of group messages
+   */
+  getGroupMessage() {
+    return newMessage;
+  }
+
+  /**
+   * @memberof AppStoreClass
+   *
+   * @returns {Object} current user object is returned
+   */
+  getCurrentUser() {
+    return currentUser;
+  }
+
+  /**
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {Object} group object
+   */
+  getCurrentGroup() {
+    return groups;
+  }
  /**
   *
   * @param {Object} groupNames
@@ -89,34 +157,19 @@ class AppStoreClass extends EventEmitter {
   * @returns {Object} user groups
   */
   getUserGroup() {
-    return this.userGroups;
+    return usersGroups;
   }
-
-  /**
-   * @description Store emits event change
-   * @memberof AppStoreClass
-   * @returns {void}
-   */
-  emitChange() {
-    this.emit(CHANGE_EVENT);
+  getAllMessages() {
+    return allMessages;
   }
-  /**
-   * @description Store change listener
-   * @param {any} callback
-   * @memberof AppStoreClass
-   * @returns {void}
-   */
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
+  getAllUsers() {
+    return allUserDetails;
   }
-  /**
-   * @description Remove chnage listener
-   * @param {any} callback
-   * @memberof AppStoreClass
-   * @returns {void}
-   */
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+  getAddMember() {
+    return addRegisteredUser;
+  }
+  getNewMember() {
+    return newMember;
   }
 }
 
@@ -125,19 +178,36 @@ const AppStore = new AppStoreClass();
 AppStore.dispatchToken = AppDispatcher.register((action) => {
   switch (action.actionType) {
     case AppConstants.SET_USER:
-      AppStore.setCurrentUser(action.user);
+      setCurrentUser(action.user);
       AppStore.emitChange();
       break;
     case AppConstants.CREATE_GROUP:
-      AppStore.currentGroup(action.group);
+      currentGroup(action.group);
       AppStore.emitChange();
       break;
     case AppConstants.SET_GROUP:
-      AppStore.setUserGroup(action.userGroups);
+      setUserGroup(action.userGroups);
       AppStore.emitChange();
       break;
     case AppConstants.SET_GROUP_MESSAGE:
-      AppStore.setGroupMessage(action.message);
+      allMessages.push(action.groupMessage);
+      saveGroupMessage(action.groupMessage);
+      AppStore.emitChange();
+      break;
+    case AppConstants.LOAD_GROUP_MESSAGE:
+      allGroupMessages(action.message);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GET_ALL_USERS:
+      setAllUsers(action.allUsers);
+      AppStore.emitChange();
+      break;
+    case AppConstants.ADD_MEMBER_TO_GROUP:
+      setAddMember(action.message);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GET_NEW_USERS:
+      setNewMember(action.usersDetails);
       AppStore.emitChange();
       break;
     default:

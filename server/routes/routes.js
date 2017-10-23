@@ -5,14 +5,16 @@ import {
   logOut,
   resetPassword,
   getUser,
-  getAllUsers
+  getAllUsersInGroup,
+  newUsersInGroup
 } from '../controllers/users';
 import {
   createGroup,
-  addMember,
+  addMemberToGroup,
   postMessage,
   getGroup,
-  getGroupMessage
+  getGroupMessage,
+  getUserInGroup
 } from '../controllers/groups';
 
 const router = express.Router();
@@ -22,12 +24,14 @@ router.post('/user/signin', logIn);
 router.post('/user/signout', logOut);
 router.post('/user/passwordreset', resetPassword);
 router.post('/group', createGroup);
-router.post('/group/:groupId/user', addMember);
+router.post('/group/groupId/user', addMemberToGroup);
 router.post('/groups/:groupId/message', postMessage);
 
-router.get('/user/getusers', getAllUsers);
+router.get('/groups/:groupId/members', newUsersInGroup);
+router.get('/user/allusers', getAllUsersInGroup);
 router.get('/groups', getGroup);
 router.get('/user/group', getUser);
 router.get('/group/:groupId', getGroupMessage);
+router.get('/group/:groupId/users', getUserInGroup);
 
 export default router;

@@ -1,16 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-/**
- * @class notFoundPage
- * @extends {React.Component}
- */
-class notFoundPage extends React.Component {
-  /**
-   *
-   * @returns {void}
-   * @memberof notFoundPage
-   */
+
+const notFoundPage =()=> ({
   render() {
     return (
       <div>
@@ -20,5 +12,5 @@ class notFoundPage extends React.Component {
       </div>
     );
   }
-}
+});
 export default notFoundPage;

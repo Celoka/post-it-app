@@ -26,8 +26,6 @@ class SignUp extends React.Component {
       phonenumber: '',
       message: ''
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /**
@@ -35,7 +33,7 @@ class SignUp extends React.Component {
    * 
    * @memberof SignUp
    */
-  onChange(event) {
+  onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -48,18 +46,11 @@ class SignUp extends React.Component {
    * 
    * @memberof SignUp
    */
-  onSubmit(event) {
+  onSubmit =(event)=> {
     event.preventDefault();
     const userDetails = { ...this.state };
     AppActions.registerUser(userDetails).then(() => {
-      toastr.success(`Registration successful. Welcome ${this.state.username}`);
       this.props.history.push('/dashboard');
-    }).catch((error) => {
-      toastr.error('Registration failed.');
-      const message = error.response.data.message;
-      this.setState({
-        message
-      });
     });
   }
 

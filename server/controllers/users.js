@@ -1,3 +1,6 @@
+/**
+ * Module dependencies
+ */
 import firebase from 'firebase';
 import db from '../config/config';
 
@@ -99,9 +102,9 @@ export const logIn = (req, res) => {
           token
         });
       })
-      .catch(() => {
+      .catch((error) => {
         res.status(401).send({
-          message: 'Wrong password or email'
+          message: `An error occured ${error.message}`
         });
       });
   }
@@ -130,7 +133,7 @@ export const resetPassword = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
-        message: error.code
+        message: `An error occured ${error.message}`
       });
     });
 };
@@ -146,18 +149,24 @@ export const resetPassword = (req, res) => {
  * @return {object} response object;
  */
 export const logOut = (req, res) => {
-  firebase.auth().signOut()
-    .then((user) => {
+  const user = req.user.uid;
+  if (user) {
+    firebase.auth().signOut()
+    .then(() => {
       res.status(200).json({
         message: 'Signed out!',
-        user
       });
     })
     .catch((error) => {
       res.status(500).json({
-        message: error.code
+        message: `An error occured ${error.message}`
       });
     });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation, please signup/signin'
+    });
+  }
 };
 
 /**
@@ -188,7 +197,7 @@ export const getUser = (req, res) => {
     })
     .catch((error) => {
       res.status(500).json({
-        message: error.message
+        message: `An error occured ${error.message}`
       });
     });
   } else {
@@ -207,17 +216,53 @@ export const getUser = (req, res) => {
  *
  * @return {object} response object
  */
-export const getAllUsers = (req, res) => {
-  const { uid } = req.user;
-  if (uid) {
-    db.database()
-    .ref('users')
-    .once('value', (snapshot) => {
-      const userNames = [];
-      snapshot.forEach((user) => {
-        userNames.push(user.val().userNames);
+export const getAllUsersInGroup = (req, res) => {
+  const user = req.user.uid;
+  if (user) {
+    const usersDetails = [];
+    db.database().ref('users')
+    .once('value', (snap) => {
+      let usersInGroup = {};
+      snap.forEach((details) => {
+        usersInGroup = {
+          userId: details.key,
+          userNames: details.val().username
+        };
+        usersDetails.push(usersInGroup);
       });
-      return res.status(200).json(userNames);
+      res.status(200).json({
+        message: 'Users retrieved successfully',
+        usersDetails
+      });
+    });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation, please signup/signin'
+    });
+  }
+};
+
+export const newUsersInGroup = (req, res) => {
+  const groupId = req.params.groupId;
+  const user = req.user.uid;
+  if (user) {
+    const users = [];
+    db.database().ref(`groups/${groupId}/users`)
+    .once('value', (snap) => {
+      let newUsers = {};
+      snap.forEach((details) => {
+        newUsers = {
+          userNames: details.val().newUser
+        };
+        users.push(newUsers);
+      });
+      res.status(200).json({
+        users
+      });
+    });
+  } else {
+    res.status(403).json({
+      message: 'Unauthorized operation, please signup/signin'
     });
   }
 };

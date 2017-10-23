@@ -1,6 +1,8 @@
 import React from 'react';
+import AppActions from '../actions/AppActions';
 import Group from '../components/Group.jsx';
-import UserList from '../components/UserList.jsx';
+import AppStore from '../stores/AppStore';
+import UsersInGroup from '../components/UsersInGroup.jsx';
 import MessageBoard from '../components/MessageBoard.jsx';
 import BoardNavigation from '../components/BoardNavigation.jsx';
 
@@ -22,32 +24,55 @@ class DashBoard extends React.Component {
     super(props);
     this.state = {
       groupId: null,
-      groupname: ''
+      groupname: '',
+      groupMessage: [],
+      userId: [],
+      newMember: []
     };
-    this.setGroupId = this.setGroupId.bind(this);
+  }
+  componentDidMount() {
+    AppActions.getUsersInGroup();
+    AppStore.addChangeListener(this.onStoreChange);
   }
 
-  setGroupId(groupId, groupname) {
+  componentWillUnmount() {
+    AppStore.removeChangeListener(this.onStoreChange);
+  }
+
+  onStoreChange = () => {
+    this.setState({
+      groupMessage: AppStore.getAllMessages(),
+      userId: AppStore.getAllUsers(),
+      newMember: AppStore.getNewMember()
+    });
+  }
+
+  setGroupId = (groupId, groupname) => {
     this.setState({
       groupId,
       groupname
     });
   }
+
   render() {
     return (
     <div>
       <BoardNavigation />
       <div className="container-fluid">
           <div id= 'profile' className="row">
-            <div className="col-md-3 leftsidenav">
+            <div className="col-sm-3 leftsidenav">
               <Group setGroupId={this.setGroupId}/>
-              <UserList />
+              <UsersInGroup groupId={this.state.groupId}
+                userId={this.state.userId}
+                newMember={this.state.newMember}/>
             </div>
-            <div className="col-md-6 middleboard">
+            <div className="<col-sm-12></col-sm-12> middleboard">
               {
                 (this.state.groupId === null) ?
-                <h1>WELCOME TO POSTIT</h1>:
-                <MessageBoard groupId={this.state.groupId} groupname={this.state.groupname}/>
+                <h1>WELCOME TO POSTIT</h1> :
+                <MessageBoard groupId={this.state.groupId}
+                  groupname={this.state.groupname}
+                  groupMessage={this.state.groupMessage}/>
               }
             </div>
           </div>

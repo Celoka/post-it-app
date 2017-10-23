@@ -1,6 +1,5 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 import MessageForm from '../components/MessageForm.jsx';
 /**
  *
@@ -18,29 +17,8 @@ class MessageBoard extends React.Component {
     super();
     this.state = {
       message: '',
-      groupMessage: [],
-      groupId: ''
+      groupId: '',
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onStoreChange = this.onStoreChange.bind(this);
-  }
-
-  /**
-   * 
-   * @memberof MessageBoard
-   */
-  componentDidMount() {
-    AppActions.loadMessage();
-    AppStore.addChangeListener(this.onStoreChange);
-  }
-
-  /**
-   * @memberof MessageBoard
-   */
-  componentWillUnmount() {
-    this.initialState = this.state;
-    AppStore.removeChangeListener(this.onStoreChange);
   }
 
   /**
@@ -60,9 +38,19 @@ class MessageBoard extends React.Component {
    * @description gets the message from the store
    * @memberof MessageBoard
    */
-  onStoreChange() {
+  onStoreChange = () => {
     this.setState({
-      groupMessage: AppStore.getGroupMessage()
+      groupMessage: AppStore.getAllMessages(),
+    });
+  }
+  /**
+   * @param {any} event
+   *  
+   * @memberof MessageBoard
+   */
+  handlePriority=(event)=> {
+    this.setState({
+      priority: event.target.value
     });
   }
   /**
@@ -70,7 +58,7 @@ class MessageBoard extends React.Component {
    * 
    * @memberof MessageBoard
    */
-  onChange(event) {
+  onChange=(event)=> {
     this.setState({
       message: event.target.value
     });
@@ -80,17 +68,16 @@ class MessageBoard extends React.Component {
    *  
    * @memberof MessageBoard
    */
-  onSubmit(event) {
+  onSubmit=(event)=> {
     event.preventDefault();
+    const { text, type } = this.refs;
     const messageDetail = {
       message: this.state.message,
       priority: this.refs.type.value,
     };
-    const { text, type } = this.refs;
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
-      AppActions.loadMessage(groupId);
       text.value = '';
       type.value = 'Normal';
     }
@@ -101,15 +88,20 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
-   
-    const messageList = this.state.groupMessage.map((groupMessage, index) =>
+    const messageList = this.props.groupMessage.map( (groupMessage, index) =>
       <div key={index} className="row">
-        <div className="col-md-12"><div className="well"><p id="message-text">{groupMessage.text}</p></div></div>
+        <div className="col-sm-12">
+          <div className="well">
+            <p id="message-text">{groupMessage.message}</p>
+            <time id="time-tag">{groupMessage.time}</time>
+          </div>
+        </div>
       </div>
     );
     return (
       <div>
-        <MessageForm groupname={this.props.groupname} messageList={messageList} />
+        <MessageForm groupname={this.props.groupname}
+          messageList={messageList} />
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
             <div className='row content'>
@@ -126,7 +118,9 @@ class MessageBoard extends React.Component {
                 className="btn btn-success">
                 Submit
               </button>
-              <select ref="type" style={{ color: 'black', float: 'left' }} className="select_btn">
+              <select ref="type"
+               style={{ color: 'black', float: 'left' }}
+                className="select_btn">
                 <option value='Normal'>Normal</option>
                 <option value='Urgent'>Urgent</option>
                 <option value='Critical'>Critical</option>

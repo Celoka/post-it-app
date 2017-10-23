@@ -23,8 +23,6 @@ class ResetPassword extends React.Component {
       email: '',
       message: ''
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
   /**
    * Creates an on change event method
@@ -35,7 +33,7 @@ class ResetPassword extends React.Component {
    * 
    * @return {void}
    */
-  onChange(event) {
+  onChange = (event)=> {
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -46,22 +44,15 @@ class ResetPassword extends React.Component {
    * @param {any} event
    * @memberof ResetPassword
    */
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     const resetEmail = {
       email: this.state.email
     };
     AppActions.resetPassword(resetEmail)
       .then(() => {
-        toastr.success('Password Reset Link sent');
         this.props.history.push('/signin');
-      }).catch((error) => {
-        toastr.error('Password reset unsuccessful');
-        const message = error;
-        this.setState({
-          message
-        });
-      });
+      })
   }
 
   /**
