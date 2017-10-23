@@ -18,6 +18,8 @@ class MessageBoard extends React.Component {
     this.state = {
       message: '',
       groupId: '',
+      groupname:'',
+      groupMessage: []
     };
   }
 
@@ -31,6 +33,8 @@ class MessageBoard extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       groupId: nextProps.groupId,
+      groupMessage: nextProps.groupMessage,
+      groupname: nextProps.groupname
     });
   }
 
@@ -88,7 +92,7 @@ class MessageBoard extends React.Component {
    * @returns {any} This returns the rendered component
    */
   render() {
-    const messageList = this.props.groupMessage.map( (groupMessage, index) =>
+    const messageList = this.state.groupMessage.map( (groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-sm-12">
           <div className="well">
@@ -100,7 +104,7 @@ class MessageBoard extends React.Component {
     );
     return (
       <div>
-        <MessageForm groupname={this.props.groupname}
+        <MessageForm groupname={this.state.groupname}
           messageList={messageList} />
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
