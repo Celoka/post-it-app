@@ -3,13 +3,11 @@ import AppActions from '../actions/AppActions';
 
 /**
  * @description a stateless component
- * that is a child of message board. The
- * message list and groupname are rendered to the screen
- * in this component
+ * that is a child of group.
  *
- * @return { void }
+ * @return { jsx } rendered jsx element
  *
- * @function MessageForm
+ * @function GroupList
  */
 const GroupList = () => ({
   render() {

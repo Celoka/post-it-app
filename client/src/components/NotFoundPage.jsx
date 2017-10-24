@@ -2,14 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * @description a stateless component
- * that is a child of message board. The
- * message list and groupname are rendered to the screen
- * in this component
+ * @return { jsx } rendered jsx elements
  *
- * @return { void }
- *
- * @function MessageForm
+ * @function notFoundPage
  */
 const notFoundPage = () => ({
   render() {

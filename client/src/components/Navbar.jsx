@@ -2,14 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * @description a stateless component
- * that is a child of message board. The
- * message list and groupname are rendered to the screen
- * in this component
+ * @description describes a stateless component
+ * that controls navigation of app.
  *
  * @return { void }
  *
- * @function MessageForm
+ * @function NavBar
  */
 const NavBar = () => ({
   render() {

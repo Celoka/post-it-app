@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 
 /**
- * @description a stateless component
- * that is a child of message board. The
- * message list and groupname are rendered to the screen
- * in this component
+ * @description describes a stateless component that has
+ * child components
  *
- * @return { void }
+ * @return { jsx } rendered jsx element
  *
- * @function MessageForm
+ * @function Home
  */
 const Home = () => ({
   render() {
