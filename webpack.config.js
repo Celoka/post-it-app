@@ -1,15 +1,18 @@
 import path from 'path';
 import webpack from 'webpack';
+import DotEnvPlugin from 'dotenv-webpack';
 
+const dotEnvPlugin = new DotEnvPlugin({
+  path: './.env',
+});
 const config = {
-
   entry: [
     path.join(__dirname, 'client/src/index.js'),
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
+  devtool: 'eval',
   output: {
-
     path: path.join(__dirname, 'client/app/js'),
     publicPath: '/',
     filename: 'bundle.js',
@@ -17,7 +20,8 @@ const config = {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    dotEnvPlugin
   ],
   devServer: {
     contentBase: './client/app/js',
@@ -57,7 +61,10 @@ const config = {
     extensions: ['*', '.js', '.jsx']
   },
   node: {
-    fs: 'empty'
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
   },
 };
 

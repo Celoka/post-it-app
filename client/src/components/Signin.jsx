@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
-import ResetPassword from './ResetPassword.jsx';
 import Header from '../components/Navbar.jsx';
 
 /**
