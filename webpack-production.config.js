@@ -2,6 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import DotEnvPlugin from 'dotenv-webpack';
 
+const debug = process.env.NODE_ENV !== 'production';
+
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
 });
@@ -11,7 +13,7 @@ const config = {
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
-  devtool: 'source-map',
+  devtool: debug ? 'source-map' : '',
   output: {
     path: path.join(__dirname, 'client/app/js'),
     publicPath: '/',
