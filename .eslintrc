@@ -86,7 +86,6 @@
     "import/resolver": "node"
   },
   "globals": {
-    "document": true,
     "jest": true,
     "no-unused-vars": false,
     "localStorage": true

@@ -27,7 +27,7 @@ describe('<MessageBoard/>', () => {
     wrapper.setState({ groupId: 'eafeafa' });
     const postMessageSpy = jest.spyOn(AppActions, 'postMessage');
     wrapper.find('form').at(1).simulate('submit');
-    expect(postMessageSpy).toHaveBeenCalled();
+    expect(postMessageSpy).toHaveBeenCalledTimes(1);
   });
   it('should have a textarea for message input', () => {
     expect(wrapper.find('textarea')).toHaveLength(1);

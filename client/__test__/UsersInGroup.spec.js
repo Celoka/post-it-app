@@ -37,6 +37,7 @@ describe('<UsersInGroup/>', () => {
     expect(wrapper.state().error).toEqual('');
     expect(wrapper.state().message).toEqual('');
     expect(wrapper.state().newMember).toHaveLength(0);
+    expect(wrapper.state().groupId).toEqual(null);
   });
   it('should have on click method to be defined', () => {
     expect(wrapper.node.onClick).toBeDefined();
@@ -44,8 +45,11 @@ describe('<UsersInGroup/>', () => {
   it('should have on store change method to be defined', () => {
     expect(wrapper.node.onStoreChange).toBeDefined();
   });
-  it('should have user validation method to be defined', () => {
+  it('should have all the function in it to be defined', () => {
+    expect(wrapper.node.onStoreChange).toBeDefined();
+    expect(wrapper.node.onChange).toBeDefined();
     expect(wrapper.node.userValidation).toBeDefined();
+    expect(wrapper.node.onClick).toBeDefined();
   });
   it('should call componentDidMount() lifecycle method', () => {
     expect(addChangeListenerSpy).toHaveBeenCalled();
@@ -53,10 +57,19 @@ describe('<UsersInGroup/>', () => {
   it('should add a memebr to group when condition is met', () => {
     wrapper.setState({
       newUser: 'testUser',
-      groupId: 'testId',
-      userId: 'testId'
+      groupId: 'testgroupId',
+      userId: 'testId',
+      newMember: [],
     });
-    wrapper.find('button').at(3).simulate('submit');
-    expect(userValidation.addUserToGroupSpy).toHaveBeenCalled();
+    wrapper.setProps({
+      groupId: 'whatever',
+      newMember: [],
+      userId: [{ userNames: 'testUser', userId: 'testId'
+      }]
+
+    });
+    wrapper.find('.modal-footer').first().find('button').last()
+    .simulate('click');
+    expect(addUserToGroupSpy).toHaveBeenCalled();
   });
 });

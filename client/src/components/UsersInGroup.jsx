@@ -71,7 +71,7 @@ class UsersInGroup extends React.Component {
  */
   componentWillReceiveProps(nextProps) {
     this.setState({
-      newMember: nextProps.newMember,
+      newMember: nextProps && nextProps.newMember,
       groupId: nextProps.groupId
     });
   }
@@ -140,7 +140,7 @@ class UsersInGroup extends React.Component {
  * @memberof UsersInGroup
  */
   onClick = () => {
-    if (!this.props.groupId) {
+    if (!this.state.groupId) {
       this.setState({
         error: toastr.error('Click a group to add a member'),
         newUser: ''

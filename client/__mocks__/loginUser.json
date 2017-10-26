@@ -2,12 +2,12 @@
    "data": { "message": "User Signed in!",
     "userDetails": [
         {
-            "uid": "chychima1@gmail.com",
-            "displayName": null,
-            "photoURL": null,
-            "email": "chychima1@gmail.com",
-            "phoneNumber": null,
-            "providerId": "password"
+          "uid": "chychima1@gmail.com",
+          "displayName": null,
+          "photoURL": null,
+          "email": "chychima1@gmail.com",
+          "phoneNumber": null,
+          "providerId": "password"
         }
     ],
     "userId": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1",

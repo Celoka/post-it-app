@@ -27,7 +27,7 @@ describe('<Group/>', () => {
     expect(wrapper.find('form')).toHaveLength(1);
   });
   it('should update the state when on click of a button', () => {
-    wrapper.setState({ userGroupName: '' });
+    wrapper.setState({ userGroupName: 'test' });
     wrapper.find('button').at(3).simulate('click');
     expect(createGroupSpy).toHaveBeenCalled();
     expect(loadGroupsSpy).toHaveBeenCalled();
@@ -35,8 +35,8 @@ describe('<Group/>', () => {
   it('should have an input for groupname', () => {
     expect(wrapper.find('input')).toHaveLength(1);
   });
-  it('should have an initial state set to empty', () => {
-    expect(wrapper.state().userGroupName).toEqual('');
+  it('should have an it state to be equal to test', () => {
+    expect(wrapper.state().userGroupName).toEqual('test');
   });
   it('calls componentDidMount() lifecycle method', () => {
     expect(loadGroupsSpy).toHaveBeenCalled();

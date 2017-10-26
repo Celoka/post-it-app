@@ -60,15 +60,18 @@ describe('<DashBoard />', () => {
     expect(wrapper.find(UsersInGroup)).toHaveLength(1);
   });
   it('should show <MessageBoard /> component when the state is set', () => {
-    wrapper.setState({ groupId: '123456789' });
-    expect(wrapper.find(MessageBoard));
+    expect(wrapper.find(MessageBoard)).toBeDefined();
   });
   it('should have an initial empty inital states state', () => {
-    expect(wrapper.state().groupId).toEqual('123456789');
+    expect(wrapper.state().groupId).toEqual(null);
     expect(wrapper.state().groupname).toEqual('');
     expect(wrapper.state().groupMessage).toHaveLength(0);
     expect(wrapper.state().newMember).toHaveLength(0);
-    expect(wrapper.state().userId).toBeUndefined();
+    expect(wrapper.state().userId).toBeDefined();
+  });
+  it('should have all the function defined', () => {
+    expect(wrapper.nodes[0].onStoreChange).toBeDefined();
+    expect(wrapper.nodes[0].setGroupId).toBeDefined();
   });
   it('calls componentDidMount() lifecycle method', () => {
     expect(getUsersInGroupSpy).toHaveBeenCalled();

@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
 import { assert } from 'chai';
 import mockApiCall from '../__mocks__/axios';
 import AppActions from '../src/actions/AppActions';
@@ -48,8 +47,16 @@ describe('<ResetPassword />', () => {
   it('should find form', () => {
     expect(wrapper.find('form')).toHaveLength(1);
   });
+  it('should have initial state set to empty', () => {
+    expect(wrapper.state().email).toEqual('');
+    expect(wrapper.state().message).toEqual('');
+  });
   it('should find fieldset', () => {
     expect(wrapper.find('fieldset')).toHaveLength(1);
+  });
+  it('should have defined functions', () => {
+    expect(wrapper.node.onChange).toBeDefined();
+    expect(wrapper.node.onSubmit).toBeDefined();
   });
   it('should find a button to click', () => {
     expect(wrapper.find('button')).toHaveLength(1);
