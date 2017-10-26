@@ -136,7 +136,7 @@ class MessageBoard extends React.Component {
         <div className="col-sm-12">
           <div className="well">
             <p id="message-text">{groupMessage.message}</p>
-            <time id="time-tag">{groupMessage.time}</time>
+            <time id="time-tag"> posted on {groupMessage.time}</time>
           </div>
         </div>
       </div>

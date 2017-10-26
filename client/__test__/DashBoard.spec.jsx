@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { expect } from 'chai';
-import { MemoryRouter } from 'react-router-dom';
-
+import AppStore from '../src/stores/AppStore';
+import AppActions from '../src/actions/AppActions';
+import mockApiCall from '../__mocks__/axios';
 import MessageBoard from '../src/components/MessageBoard.jsx';
 import UsersInGroup from '../src/components/UsersInGroup.jsx';
 import Group from '../src/components/Group.jsx';
@@ -10,27 +10,68 @@ import DashBoard from '../src/components/DashBoard.jsx';
 import BoardNavigation from '../src/components/BoardNavigation.jsx';
 
 describe('<DashBoard />', () => {
-  const wrapper = mount(<MemoryRouter><DashBoard/></MemoryRouter>);
+  const getUsersInGroupSpy = jest.spyOn(AppActions, 'getUsersInGroup');
+  const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
+  beforeEach(() => {
+    jest.mock('axios', () => mockApiCall);
+  });
+  const wrapper = mount(<DashBoard/>,
+    {
+      childContextTypes: { router: React.PropTypes.object },
+      context: { router: {
+        history: {
+          push: () => null,
+          createHref: () => null,
+          replace: () => null,
+          length: 10,
+          action: 'PUSH',
+          location: {
+            pathname: '/dashboard',
+            search: '',
+            hash: '',
+            key: 'qi4prx'
+          }
+        },
+        route: {
+          location: {
+            pathname: '/dashboard',
+            search: '',
+            hash: '',
+            key: 'qi4prx'
+          },
+          match: {
+            path: '/',
+            url: '/',
+            params: {},
+            isExact: false
+          }
+        }
+      }
+      },
+    });
 
   it('contains a <BoardNavigation /> component', () => {
-    expect(wrapper.find(BoardNavigation)).to.have.length(1);
+    expect(wrapper.find(BoardNavigation)).toHaveLength(1);
   });
   it('contains a <Group /> component', () => {
-    expect(wrapper.find(Group)).to.have.length(1);
+    expect(wrapper.find(Group)).toHaveLength(1);
   });
   it('contains a < UsersInGroup /> component', () => {
-    expect(wrapper.find(UsersInGroup)).to.have.length(1);
+    expect(wrapper.find(UsersInGroup)).toHaveLength(1);
   });
-  it('contains a <MessageBoard /> component', () => {
-    expect(wrapper.find(MessageBoard)).to.have.length(0);
+  it('should show <MessageBoard /> component when the state is set', () => {
+    wrapper.setState({ groupId: '123456789' });
+    expect(wrapper.find(MessageBoard));
   });
-  it('should have an initial groupId state', () => {
-    expect(wrapper.state().groupId.length).to.equal(0);
+  it('should have an initial empty inital states state', () => {
+    expect(wrapper.state().groupId).toEqual('123456789');
+    expect(wrapper.state().groupname).toEqual('');
+    expect(wrapper.state().groupMessage).toHaveLength(0);
+    expect(wrapper.state().newMember).toHaveLength(0);
+    expect(wrapper.state().userId).toBeUndefined();
   });
-  it('should not have an initial state to be set', () => {
-    expect(wrapper.state().groupname.length).to.equal(0);
-    expect(wrapper.state().groupMessage.length).to.equal(0);
-    expect(wrapper.state().userId.length).to.equal(0);
-    expect(wrapper.state().newMember.length).to.equal(0);
+  it('calls componentDidMount() lifecycle method', () => {
+    expect(getUsersInGroupSpy).toHaveBeenCalled();
+    expect(addChangeListenerSpy).toHaveBeenCalled();
   });
 });

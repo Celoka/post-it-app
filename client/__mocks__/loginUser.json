@@ -1,0 +1,16 @@
+{
+   "data": { "message": "User Signed in!",
+    "userDetails": [
+        {
+            "uid": "chychima1@gmail.com",
+            "displayName": null,
+            "photoURL": null,
+            "email": "chychima1@gmail.com",
+            "phoneNumber": null,
+            "providerId": "password"
+        }
+    ],
+    "userId": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1",
+    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjA4NzA3NDE3MmQ2YTA1MmQxY2Q5NjhlZWIyYTdmYTdjZTU2ZmRjMWMifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZWxva2EtNjY3YmUiLCJhdWQiOiJlbG9rYS02NjdiZSIsImF1dGhfdGltZSI6MTUwOTAwMzc1OCwidXNlcl9pZCI6IkpaRG01U1hWUm9Sa1g4WlpHd2tHSXFDZzNIbjEiLCJzdWIiOiJKWkRtNVNYVlJvUmtYOFpaR3drR0lxQ2czSG4xIiwiaWF0IjoxNTA5MDAzNzU4LCJleHAiOjE1MDkwMDczNTgsImVtYWlsIjoiY2h5Y2hpbWExQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjaHljaGltYTFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.q9D5uNbu7Zb2CMJlidKHLlWUZkixImCit-TGpOvblgqsu8gzRsTnP0tsDNYiDb7jqxZQtf7LrbtyBf2Er14WVuV1jbObonNFJiVsCtiXGnyEqax2XkpMWaB37Y7hIuoEc99GlaDrzH8Atmj9c7PuUG-5Z5NQzN_mBeflu907dKX9dCmwsDf0nEYkdU3VQjdlfFmmTvPUB26sAFPAchzHHzxHBZ-geNpJBubl2w5HcfPrE8LP_Sb6uhNdfF8CuvZIQBFpCLQcW8FGYCWRSirW-x4sBqRe2eLdpY655XhGp5AuvwVnm-7ylCcwAeOL6ddQKkvm953e9CxpkmINliu3RA"
+ }
+} 

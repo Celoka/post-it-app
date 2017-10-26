@@ -2,8 +2,6 @@ import path from 'path';
 import webpack from 'webpack';
 import DotEnvPlugin from 'dotenv-webpack';
 
-const debug = process.env.NODE_ENV !== 'production';
-
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
 });
@@ -13,7 +11,7 @@ const config = {
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
-  devtool: debug ? 'source-map' : '',
+  devtool: 'source-map',
   output: {
     path: path.join(__dirname, 'client/app/js'),
     publicPath: '/',
@@ -30,7 +28,7 @@ const config = {
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
     }),
-    new webpack.NoEmitOnErrorsPlugin(),
+   // new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     dotEnvPlugin
   ],
@@ -59,6 +57,12 @@ const config = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
+  },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
   },
 };
 

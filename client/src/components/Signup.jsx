@@ -1,7 +1,5 @@
 import React from 'react';
-import toastr from 'toastr';
-import AppStore from '../stores/AppStore';
-import Header from '../components/Navbar.jsx';
+import Navbar from '../components/Navbar.jsx';
 import AppActions from '../actions/AppActions';
 
 
@@ -78,7 +76,7 @@ class SignUp extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Navbar />
         <div id="signup" >
           <h1>Create Account</h1>
           <form onSubmit={this.onSubmit} >
@@ -104,8 +102,9 @@ class SignUp extends React.Component {
                   type="inputPhone" name="phonenumber" />
               </label>
             </fieldset>
-            <button id="sign" type="submit" name="submit"
-            >Register Now </button>
+            <button id="sign" type="submit" name="submit">
+              Register Now
+            </button>
           </form>
         </div>
       </div>

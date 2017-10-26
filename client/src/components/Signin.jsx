@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
-import Header from '../components/Navbar.jsx';
+import Navbar from '../components/Navbar.jsx';
 
 /**
  * @description creates a class sign up as a react component
@@ -60,7 +60,7 @@ class SignIn extends React.Component {
    *
    * @memberof SignIn
    */
-  onSubmit= (event) => {
+  onSubmit = (event) => {
     event.preventDefault();
     const signInDetails = { ...this.state };
     AppActions.loginUser(signInDetails).then(() => {
@@ -96,7 +96,7 @@ class SignIn extends React.Component {
  *
  * @return { void }
  */
-  googleSignIn= (event) => {
+  googleSignIn = (event) => {
     event.preventDefault();
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
@@ -117,7 +117,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <div>
-          <Header />
+          <Navbar />
         <div id="signin">
           <h1> Account Login </h1>
           <form onSubmit={this.onSubmit}>

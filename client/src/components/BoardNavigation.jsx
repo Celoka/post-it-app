@@ -46,6 +46,9 @@ class BoardNavigation extends React.Component {
                 </h1>
               </Link>
             </div>
+            <div>
+              <i className="material-icons">message</i>
+            </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav">
               </ul>
@@ -53,6 +56,7 @@ class BoardNavigation extends React.Component {
                 <li onClick={this.logOut}>
                   <Link to= '/'>
                     Sign Out
+                    <i className="material-icons">power_settings_new</i>
                   </Link>
                 </li>
               </ul>

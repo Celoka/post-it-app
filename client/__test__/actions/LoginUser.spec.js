@@ -1,22 +1,22 @@
-import mockApiCall from '../../__mocks__/axios.js';
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
 
-describe('AppActions.js', () => {
+
+describe('LoadMessages.js', () => {
   let dispatch;
   beforeEach(() => {
-    jest.mock('axios', () => mockApiCall);
     dispatch = jest.spyOn(AppDispatcher, 'dispatch');
   });
   afterEach(() => {
     dispatch.mockReset();
   });
-  it('should get data', () =>
-    AppActions.loadGroups()
+
+  it('should get all messages', () => {
+    AppActions.registerUser('/user/signup')
     .then(() => {
-      const checkVariable = dispatch.mock.calls[0][0];
-      expect(checkVariable.actionType).toEqual(AppConstants.SET_GROUP);
-    })
-  );
+      const messageResult = dispatch.mock.calls[0][0];
+      expect(messageResult.actionType).toEqual(AppConstants.NEW_USER);
+    });
+  });
 });

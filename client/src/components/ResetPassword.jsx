@@ -1,7 +1,7 @@
 import React from 'react';
 import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
-import Header from '../components/Navbar.jsx';
+import Navbar from '../components/Navbar.jsx';
 
 /**
  * @description creates a class reset password as a react component
@@ -70,7 +70,7 @@ class ResetPassword extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Navbar />
         <form id="resetpassword" onSubmit={this.onSubmit}>
           <fieldset className="account-info">
             <label>

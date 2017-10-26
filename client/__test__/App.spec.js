@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import App from '../src/components/App.jsx';
 import Routes from '../src/Routes.jsx';
 
 describe('<App />', () => {
   it('should contain browser router ', () => {
-    const wrapper = shallow(<App />);
+    const wrapper = mount(<App />);
     expect(wrapper.find(BrowserRouter)).toHaveLength(1);
   });
 

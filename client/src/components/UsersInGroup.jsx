@@ -1,5 +1,4 @@
 import React from 'react';
-import lodash from 'lodash';
 import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
@@ -28,7 +27,8 @@ class UsersInGroup extends React.Component {
       newUser: '',
       error: '',
       message: '',
-      newMember: []
+      newMember: [],
+      groupId: null
     };
   }
 /**
@@ -72,6 +72,7 @@ class UsersInGroup extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       newMember: nextProps.newMember,
+      groupId: nextProps.groupId
     });
   }
 /**
@@ -148,7 +149,7 @@ class UsersInGroup extends React.Component {
     }
     const userDetails = {
       newUser: this.state.newUser,
-      groupId: this.props.groupId,
+      groupId: this.state.groupId,
       userId: this.userValidation(this.state.newUser)
     };
     if (!userDetails.userId) {
@@ -172,7 +173,7 @@ class UsersInGroup extends React.Component {
   render() {
     const memberList = this.state.newMember.map((newMember, index) =>
     <div key={index} className="list-group">
-        <p id="member-list"> {newMember.userNames}</p>
+        <p id="member-list"> {newMember.userNames} </p>
     </div>
   );
     return (
@@ -189,6 +190,7 @@ class UsersInGroup extends React.Component {
                 data-toggle="modal"
                 data-target=".modal2">
                 Add User To Group
+               <i className="material-icons">person_add</i>
             </button>
             <div className="modal fade modal2"
               id="my-Modal"

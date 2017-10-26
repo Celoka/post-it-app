@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Link, MemoryRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { expect } from 'chai';
 
 import BoardNavigation from '../src/components/BoardNavigation.jsx';
@@ -10,7 +10,18 @@ describe('<BoardNavigation />', () => {
   beforeEach(() => {
     jest.mock('axios', () => mockApiCall);
   });
-  const wrapper = mount(<MemoryRouter><BoardNavigation /></MemoryRouter>);
+  const wrapper = mount(<BoardNavigation />,
+    {
+      childContextTypes: { router: React.PropTypes.object },
+      context: { router: {
+        history: {
+          push: () => null,
+          createHref: () => null,
+          replace: () => null
+        }
+      } }
+    }
+  );
   it('it should contain link', () => {
     expect(wrapper.find(Link)).to.have.length(2);
   });

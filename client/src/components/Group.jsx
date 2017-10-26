@@ -118,6 +118,7 @@ class Group extends React.Component {
             data-toggle="modal"
             data-target=".create1">
             Create New Group
+              <i className="material-icons">group_add</i>
            </button>
           <div className="modal fade create1"
             id="myModal"

@@ -1,11 +1,21 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-
+import mockApiCall from '../__mocks__/axios';
+import AppStore from '../src/stores/AppStore';
+import AppActions from '../src/actions/AppActions';
 import Group from '../src/components/Group.jsx';
 import GroupList from '../src/components/GroupList.jsx';
 
 describe('<Group/>', () => {
+  const createGroupSpy = jest.spyOn(AppActions, 'createGroup');
+  const loadGroupsSpy = jest.spyOn(AppActions, 'loadGroups');
+  const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
+
+  beforeEach(() => {
+    jest.mock('axios', () => mockApiCall);
+  });
+
   const wrapper = mount(<MemoryRouter><Group /></MemoryRouter>);
   it('should contain a <GroupList /> component', () => {
     expect(wrapper.find(GroupList)).toHaveLength(0);
@@ -18,13 +28,18 @@ describe('<Group/>', () => {
   });
   it('should update the state when on click of a button', () => {
     wrapper.setState({ userGroupName: '' });
-    wrapper.find('form').simulate('click');
+    wrapper.find('button').at(3).simulate('click');
+    expect(createGroupSpy).toHaveBeenCalled();
+    expect(loadGroupsSpy).toHaveBeenCalled();
   });
   it('should have an input for groupname', () => {
     expect(wrapper.find('input')).toHaveLength(1);
   });
   it('should have an initial state set to empty', () => {
     expect(wrapper.state().userGroupName).toEqual('');
-    expect(wrapper.state().groupName.length).toHaveLength(0);
+  });
+  it('calls componentDidMount() lifecycle method', () => {
+    expect(loadGroupsSpy).toHaveBeenCalled();
+    expect(addChangeListenerSpy).toHaveBeenCalled();
   });
 });
