@@ -69,7 +69,6 @@ describe('<Signin/>', () => {
   );
 
   it('should contain a <Navbar /> component', () => {
-    console.log(wrapper.nodes[0].onChange)
     expect(wrapper.find(Navbar).root.length).toEqual(1);
   });
   it('should find a link', () => {

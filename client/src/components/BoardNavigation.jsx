@@ -35,7 +35,7 @@ class BoardNavigation extends React.Component {
       <div>
         <nav className="navbar navbar-default">
           <div className="container">
-            <div className="navbar-header">
+            <div className="navbar-header brand-header">
               <button type="button" className="navbar-toggle"
                 data-toggle="collapse" data-target=".navbar-collapse">
                 <span className="sr-only">Toggle navigation</span>
@@ -45,9 +45,7 @@ class BoardNavigation extends React.Component {
                   Post It
                 </h1>
               </Link>
-            </div>
-            <div>
-              <i className="material-icons">message</i>
+              <i className="material-icons message-icon">message</i>
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav">
@@ -55,7 +53,7 @@ class BoardNavigation extends React.Component {
               <ul className="nav navbar-nav navbar-right">
                 <li onClick={this.logOut}>
                   <Link to= '/'>
-                    Sign Out
+                    <span>Sign Out</span>
                     <i className="material-icons">power_settings_new</i>
                   </Link>
                 </li>

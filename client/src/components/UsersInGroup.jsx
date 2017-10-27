@@ -186,7 +186,7 @@ class UsersInGroup extends React.Component {
               <hr/>
             </h4>
             <button type="button"
-                className="btn btn-success"
+                className="btn btn-success btn-block"
                 data-toggle="modal"
                 data-target=".modal2">
                 Add User To Group

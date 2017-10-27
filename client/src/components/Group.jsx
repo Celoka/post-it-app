@@ -114,7 +114,7 @@ class Group extends React.Component {
           <h4><center> Group List</center><hr /></h4>
           <button id='modal-button'
             type="button"
-            className="btn btn-success"
+            className="btn btn-success btn-block"
             data-toggle="modal"
             data-target=".create1">
             Create New Group
