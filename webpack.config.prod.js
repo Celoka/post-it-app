@@ -1,35 +1,29 @@
-import path from 'path';
-import webpack from 'webpack';
-import DotEnvPlugin from 'dotenv-webpack';
+const path = require('path');
+const webpack = require('webpack');
+const DotEnvPlugin = require('dotenv-webpack');
 
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
 });
 const config = {
   entry: [
-    path.join(__dirname, 'client/src/index.js'),
-    'webpack/hot/dev-server',
-    'webpack-hot-middleware/client'
+    path.join(__dirname, 'client/src/index.js')
   ],
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   output: {
-    path: path.join(__dirname, 'client/app/js'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [
-    // Define production build to allow React tto strip out unnecessary checks
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    // Minify the bundle
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
     }),
-   // new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
     dotEnvPlugin
   ],
   module: {

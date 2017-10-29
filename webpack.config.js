@@ -1,6 +1,6 @@
-import path from 'path';
-import webpack from 'webpack';
-import DotEnvPlugin from 'dotenv-webpack';
+const path = require('path');
+const webpack = require('webpack');
+const DotEnvPlugin = require('dotenv-webpack');
 
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
@@ -11,20 +11,18 @@ const config = {
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   output: {
-    path: path.join(__dirname, 'client/app/js'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     dotEnvPlugin
   ],
   devServer: {
-    contentBase: './client/app/js',
+    contentBase: './dist',
     inline: true,
     hot: true,
     historyApiFallback: true

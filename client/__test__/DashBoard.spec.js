@@ -69,7 +69,7 @@ describe('<DashBoard />', () => {
     expect(wrapper.state().newMember).toHaveLength(0);
     expect(wrapper.state().userId).toBeDefined();
   });
-  it('should have all the function defined', () => {
+  it('should have all component function to be  defined', () => {
     expect(wrapper.nodes[0].onStoreChange).toBeDefined();
     expect(wrapper.nodes[0].setGroupId).toBeDefined();
   });

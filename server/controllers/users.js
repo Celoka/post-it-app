@@ -1,5 +1,5 @@
 /**
- * Module dependencies
+ * Import module dependencies
  */
 import firebase from 'firebase';
 import db from '../config/config';
@@ -17,10 +17,12 @@ export const createUser = (req, res) => {
   const { email, password, username, phonenumber } = req.body;
   req.check('email', 'Email is required').notEmpty();
   req.check('username', 'Username is required').notEmpty();
-  req.check('email', 'Please put a valid email').isEmail();
+  req.check('email', 'Bad email format').isEmail();
   req.check('password', 'Password is required').notEmpty();
-  req.check('password', 'Password must be a mininum of 6 character')
-  .isLength(6, 50);
+  req.check('password',
+   'Password must be at least 6 character and contain number')
+  .isLength({ min: 5 })
+  .matches(/\d/);
 
   const errors = req.validationErrors();
   if (errors) {
@@ -40,11 +42,11 @@ export const createUser = (req, res) => {
           parsedUser = JSON.parse(JSON.stringify(user));
         } catch (error) {
           res.status(500).json({
-            error
+            message: `An error occured while creating ${username}`
           });
         }
         const token = parsedUser.stsTokenManager.accessToken;
-        res.status(200).json({
+        res.status(201).json({
           message: 'Registration success',
           userDetails: parsedUser.providerData,
           token
@@ -55,10 +57,12 @@ export const createUser = (req, res) => {
         const errorMessage = error.message;
         if (errorCode === 'auth/email-already-in-use') {
           res.status(401).json({
-            message: 'email already in use.'
+            message: 'Email already in use'
           });
         } else {
-          res.status(500).json(errorMessage);
+          res.status(500).json({
+            errorMessage
+          });
         }
       });
   }
@@ -76,8 +80,12 @@ export const createUser = (req, res) => {
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   req.check('email', 'Email is required').notEmpty();
-  req.check('email', 'Please put a valid email').isEmail();
+  req.check('email', 'Invalid email format').isEmail();
   req.check('password', 'Password is required').notEmpty();
+  req.check('password',
+   'Password must be at least 6 character and contain number')
+  .isLength({ min: 5 })
+  .matches(/\d/);
 
   const errors = req.validationErrors();
 
@@ -90,9 +98,9 @@ export const logIn = (req, res) => {
         let parsedUser;
         try {
           parsedUser = JSON.parse(JSON.stringify(user));
-        } catch (err) {
-          res.status(401).send({
-            message: 'Please enter a valid login details'
+        } catch (error) {
+          res.status(500).send({
+            error
           });
         }
         const token = parsedUser.stsTokenManager.accessToken;
@@ -105,12 +113,30 @@ export const logIn = (req, res) => {
         });
       })
       .catch((error) => {
-        res.status(500).send({
-          message: `${error.message}`
-        });
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode === 'auth/user-not-found') {
+          res.status(404).json({
+            message: 'User not found'
+          });
+        } else {
+          res.status(500).json({
+            errorMessage
+          });
+        }
       });
   }
 };
+
+// /**
+//  * @description describes a controller for google sign up
+//  *
+//  *
+//  */
+// export const googleSignIn = (req, res) => {
+//   const {email, password, userName, phoneNumber } = req.body;
+// }
+
 
 /**
  * @description This controller handles a user reset password
@@ -123,21 +149,37 @@ export const logIn = (req, res) => {
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
-  req.check('email', 'auth/invalid-email').notEmpty();
-  req.check('email', 'auth/invalid-email').isEmail();
+  const user = req.user.uid;
+  req.check('email', 'Email is required').notEmpty();
+  req.check('email', 'Invalid email format').isEmail();
 
-  firebase.auth().sendPasswordResetEmail(email)
-    .then((user) => {
+  const errors = req.validationErrors();
+
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).json({ message });
+  } else {
+    firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
       res.status(200).json({
         message: 'Mail sent succesfully',
         user
       });
     })
     .catch((error) => {
-      res.status(500).send({
-        message: `An error occured ${error.message}`
-      });
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/user-not-found') {
+        res.status(404).json({
+          message: 'Email does not exist'
+        });
+      } else {
+        res.status(500).send({
+          errorMessage
+        });
+      }
     });
+  }
 };
 
 
@@ -151,9 +193,7 @@ export const resetPassword = (req, res) => {
  * @return {object} return an object containing a message;
  */
 export const logOut = (req, res) => {
-  const user = req.user.uid;
-  if (user) {
-    firebase.auth().signOut()
+  firebase.auth().signOut()
     .then(() => {
       res.status(200).json({
         message: 'Signed out!',
@@ -164,49 +204,6 @@ export const logOut = (req, res) => {
         message: `An error occured ${error.message}`
       });
     });
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
-    });
-  }
-};
-
-/**
- * @description This controller fetches a user in a group
- * GET:/user/group
- *
- * @param {object} req request object
- * @param {object} res response object
- *
- * @return {object} return an object containing the user details;
- */
-export const getUser = (req, res) => {
-  const user = req.user.uid;
-  if (user) {
-    const query = db.database().ref(`users/${user}`);
-    query.once('value').then((snapshot) => {
-      const result = [];
-      snapshot.forEach((childSnapshot) => {
-        const value = childSnapshot.val();
-        const key = childSnapshot.key;
-        if (key === 'groups') {
-          result.push(value);
-        }
-      });
-      return res.status(200).json({
-        result
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: `An error occured ${error.message}`
-      });
-    });
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
-    });
-  }
 };
 
 /**
@@ -237,6 +234,11 @@ export const getAllUsersInGroup = (req, res) => {
       res.status(200).json({
         message: 'Users retrieved successfully',
         usersDetails
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: `An error occured ${error}`
       });
     });
   } else {
@@ -273,6 +275,11 @@ export const newUsersInGroup = (req, res) => {
       });
       res.status(200).json({
         users
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: `An error occure ${error.message}`
       });
     });
   } else {

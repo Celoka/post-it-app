@@ -4,7 +4,6 @@ import {
   logIn,
   logOut,
   resetPassword,
-  getUser,
   getAllUsersInGroup,
   newUsersInGroup
 } from '../controllers/users';
@@ -30,7 +29,6 @@ router.post('/groups/:groupId/message', postMessage);
 router.get('/groups/:groupId/members', newUsersInGroup);
 router.get('/user/allusers', getAllUsersInGroup);
 router.get('/groups', getGroup);
-router.get('/user/group', getUser);
 router.get('/group/:groupId', getGroupMessage);
 router.get('/group/:groupId/users', getUserInGroup);
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
 import mockApiCall from '../__mocks__/axios';
 import AppStore from '../src/stores/AppStore';
 import AppActions from '../src/actions/AppActions';
@@ -16,7 +15,7 @@ describe('<Group/>', () => {
     jest.mock('axios', () => mockApiCall);
   });
 
-  const wrapper = mount(<MemoryRouter><Group /></MemoryRouter>);
+  const wrapper = mount(<Group />);
   it('should contain a <GroupList /> component', () => {
     expect(wrapper.find(GroupList)).toHaveLength(0);
   });

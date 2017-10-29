@@ -4,12 +4,23 @@
   "description": "Post it Application",
   "main": "index.js",
   "scripts": {
-    "client-test": "jest ./client/__test__ --coverage",
-    "start": "babel-watch ./server/server.js && webpack -w --hot",
-    "build": "babel server/ -d dist",
-    "heroku-postbuild": "webpack -p --config ./webpack-production.config.js --progress",
-    "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 1500000 --compilers js:babel-register && npm run coverage-report",
-    "coverage-report": "cat ./coverage/lcov.info | coveralls"
+    "dev": "babel-watch server.js ", 
+    "start":"npm run build && babel-node ./server/server.js",
+    "start-dev": "npm run build-dev && babel-node ./server/server.js",
+    "build":  "webpack --config=webpack.config.prod.js",
+    "build-dev":"webpack --config=webpack.config.js",
+    "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 150000 ",
+    "client-test": "NODE_ENV=test jest ./client/__test__ --coverage",    
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ]
   },
   "repository": {
     "type": "git",

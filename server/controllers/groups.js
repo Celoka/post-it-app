@@ -52,7 +52,7 @@ export const createGroup = (req, res) => {
     .catch((error) => {
       if (!userId) {
         res.status(403).json({
-          message: 'Unauthorized operation,please signup/signin'
+          message: 'Login to perform this operation'
         });
       } else {
         res.status(500).json({
@@ -110,8 +110,8 @@ export const addMemberToGroup = (req, res) => {
             db.database().ref(`groups/${groupId}/phonenumber`)
             .push(phonenumber);
           } else {
-            res.status(403).json({ message:
-               'Group does not exists'
+            res.status(403).json({
+              message: 'Group does not exists'
             });
           }
         })
@@ -121,8 +121,8 @@ export const addMemberToGroup = (req, res) => {
           });
         });
       } else {
-        res.status(403).json({
-          message: 'This User is not registered or does not exist'
+        res.status(401).json({
+          message: 'Sign In to perform this operation'
         });
       }
     })
@@ -151,7 +151,8 @@ export const postMessage = (req, res) => {
   if (user) {
     const messageKey = db.database().ref('messages/').push({
     }).key;
-    const messageRef = db.database().ref(`messages/${messageKey}/groups/${groupId}`);
+    const messageRef = db.database()
+    .ref(`messages/${messageKey}/groups/${groupId}`);
     messageRef.push({
       message,
       priority,
@@ -165,7 +166,7 @@ export const postMessage = (req, res) => {
       timestamp,
     })
       .then(() => {
-        res.status(200).json({
+        res.status(201).json({
           status: 'Message posted successfully',
           message,
           priority,
@@ -295,6 +296,7 @@ export const getGroupMessage = (req, res) => {
       status: 'Message retrived succcessfully',
       groupMessage,
     });
+    res.status()
   });
 };
 
@@ -325,11 +327,11 @@ export const getUserInGroup = (req, res) => {
       res.status(200).json({
         message: 'User retrieved successfully',
         users
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: `An error occured ${error.message}`
-        });
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: `An error occured ${error.message}`
       });
     });
   } else {
