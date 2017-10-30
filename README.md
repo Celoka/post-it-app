@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/Celoka/post-it-app.svg?branch=develop1)](https://travis-ci.org/Celoka/post-it-app)
-[![Coverage Status](https://coveralls.io/repos/github/Celoka/post-it-app/badge.svg?branch=chore%2Fserver-side-test)](https://coveralls.io/github/Celoka/post-it-app?branch=chore%2Fserver-side-test)
+[![Build Status](https://travis-ci.org/Celoka/post-it-app.svg?branch=chore%2Ffeedback-implementation)](https://travis-ci.org/Celoka/post-it-app)
+[![Coverage Status](https://coveralls.io/repos/github/Celoka/post-it-app/badge.svg?branch=chore%2Ffeedback-implementation)](https://coveralls.io/github/Celoka/post-it-app?branch=chore%2Fserver-side-test)
 # Post-It
 
 Post-It allows for unprecedented interaction and collaboration amongst its users who are within a particular group. It provides REST API for a group messaging system. It also allows for notification so that group members can read a message when a member shares it in the group. 
