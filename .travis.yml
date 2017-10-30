@@ -5,7 +5,7 @@ node_js:
 services:
   
 before_install:
-  -travis_wait npm install
+  - travis_wait npm install
 
 cache:
   - node_modules
