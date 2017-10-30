@@ -1,5 +1,5 @@
 import groups from './groups.json';
-import loadMessage from './loadMessage.json';
+import loadmessage from './loadmessage.json';
 import registerUser from './resgisterUser.json';
 import loginUser from './loginUser.json';
 import createGroup from './createGroup.json';
@@ -13,7 +13,7 @@ import postMessage from './postMessage.json';
 const mockApiCall = {
   get(url) {
     if (url === '/groups/test/members') {
-      return Promise.resolve(loadMessage);
+      return Promise.resolve(loadmessage);
     } else if (url === '/group/test') {
       return Promise.resolve(getNewUsers);
     } else if (url === '/user/allusers') {
