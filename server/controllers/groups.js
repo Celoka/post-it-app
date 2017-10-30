@@ -296,7 +296,11 @@ export const getGroupMessage = (req, res) => {
       status: 'Message retrived succcessfully',
       groupMessage,
     });
-    res.status()
+  })
+  .catch((error) => {
+    res.status(500).json({
+      message: `An error occured ${error.message}`
+    });
   });
 };
 
