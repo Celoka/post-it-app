@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const DotEnvPlugin = require('dotenv-webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
@@ -9,19 +10,22 @@ const config = {
   entry: [
     path.join(__dirname, 'client/src/index.js')
   ],
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      debug: false
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    new UglifyJsPlugin({
       sourceMap: true,
     }),
     dotEnvPlugin
