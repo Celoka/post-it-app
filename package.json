@@ -4,13 +4,13 @@
   "description": "Post it Application",
   "main": "index.js",
   "scripts": {
-    "dev": "babel-watch server.js ", 
-    "start":"npm run build && babel-node ./server/server.js",
+    "dev": "babel-watch server.js ",
+    "start": "npm run build && babel-node ./server/server.js",
     "start-dev": "npm run build-dev && babel-node ./server/server.js",
-    "build":  "webpack --config=webpack.config.prod.js",
-    "build-dev":"webpack --config=webpack.config.js",
+    "build": "webpack --config=webpack.config.prod.js",
+    "build-dev": "webpack --config=webpack.config.js",
     "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 150000 ",
-    "client-test": "NODE_ENV=test jest ./client/__test__ --coverage",    
+    "client-test": "NODE_ENV=test jest ./client/__test__ --coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "nyc": {
@@ -86,6 +86,7 @@
     "webpack-hot-middleware": "^2.18.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-register": "^6.26.0",
