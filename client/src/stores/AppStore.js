@@ -299,7 +299,7 @@ class AppStoreClass extends EventEmitter {
  *
  * @memberof AppStoreClass
  *
- * @returns { Array }
+ * @returns { Array } returns object containing google user details
  */
   getNewGoogleUser() {
     return googleUsers;
