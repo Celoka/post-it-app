@@ -82,7 +82,7 @@ export const addMemberToGroup = (req, res) => {
     const message = errors[0].msg;
     res.status(400).json({ message });
   } else if (user) {
-    db.database().ref(`groups/${groupId}/users/${userId}/`).set({
+    const groupRef = db.database().ref(`groups/${groupId}/users/${userId}/`).set({
       userId,
       newUser
     });
@@ -93,12 +93,17 @@ export const addMemberToGroup = (req, res) => {
         db.database().ref(`groups/${groupId}`)
         .once('value', (snap) => {
           const groupname = snap.val().groupname;
-          db.database().ref(`/users/${userId}/groups/${groupId}`)
-        .update({
-          userId,
-          newUser,
-          groupname
-        });
+          const userRef = db.database().ref(`/users/${userId}/groups/${groupId}`)
+          .update({
+            userId,
+            newUser,
+            groupname
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({ 
+            message: `An error occure ${error.message}`
+          });
         });
         db.database().ref(`groups/${groupId}/groupname`)
         .once('value', (groupSnapshot) => {
@@ -121,8 +126,8 @@ export const addMemberToGroup = (req, res) => {
           });
         });
       } else {
-        res.status(401).json({
-          message: 'Sign In to perform this operation'
+        res.status(404).json({
+          message: 'User details not found'
         });
       }
     })
@@ -130,6 +135,10 @@ export const addMemberToGroup = (req, res) => {
       res.status(500).json({
         message: `An error occured ${error.message}`
       });
+    });
+  } else {
+    res.status(401).json({
+      message: 'Sign In to perform this operation'
     });
   }
 };
@@ -179,8 +188,8 @@ export const postMessage = (req, res) => {
         });
       });
   } else {
-    res.status(403).json({
-      message: 'Unauthorized operation,please signup/signin'
+    res.status(401).json({
+      message: 'Please signup/signin to perform this operation'
     });
   }
   const email = [];
@@ -262,7 +271,7 @@ export const getGroup = (req, res) => {
       });
   } else {
     res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
+      message: 'Please signup/signin to perform this operation'
     });
   }
 };
@@ -278,30 +287,37 @@ export const getGroup = (req, res) => {
  */
 export const getGroupMessage = (req, res) => {
   const groupId = req.params.groupId;
-  const groupMessage = [];
-  const messageRef = db.database().ref(`/groups/${groupId}/messages`);
-  messageRef.once('value', (snap) => {
-    let message = {};
-    snap.forEach((details) => {
-      message = {
-        messageId: details.key,
-        message: details.val().message,
-        time: details.val().timestamp,
-        priority: details.val().priority,
-        user: details.val().user
-      };
-      groupMessage.push(message);
-    });
-    res.status(200).json({
-      status: 'Message retrived succcessfully',
-      groupMessage,
-    });
-  })
+  const user = req.user.uid;
+  if (user) {
+    const groupMessage = [];
+    const messageRef = db.database().ref(`/groups/${groupId}/messages`);
+    messageRef.once('value', (snap) => {
+      let message = {};
+      snap.forEach((details) => {
+        message = {
+          messageId: details.key,
+          message: details.val().message,
+          time: details.val().timestamp,
+          priority: details.val().priority,
+          user: details.val().user
+        };
+        groupMessage.push(message);
+      });
+      res.status(200).json({
+        status: 'Message retrived succcessfully',
+        groupMessage,
+      });
+    })
   .catch((error) => {
     res.status(500).json({
       message: `An error occured ${error.message}`
     });
   });
+  } else {
+    res.status(401).json({
+      message: 'Please signup/signin to perform this operation'
+    });
+  }
 };
 
 /**
@@ -339,8 +355,8 @@ export const getUserInGroup = (req, res) => {
       });
     });
   } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
+    res.status(401).json({
+      message: 'Please signup/signin to perform this operation'
     });
   }
 };

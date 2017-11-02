@@ -29,7 +29,8 @@ class DashBoard extends React.Component {
       groupname: '',
       groupMessage: [],
       userId: [],
-      newMember: []
+      newMember: [],
+      googleUser: null
     };
   }
   /**
@@ -74,7 +75,8 @@ class DashBoard extends React.Component {
     this.setState({
       groupMessage: AppStore.getAllMessages(),
       userId: AppStore.getAllUsers(),
-      newMember: AppStore.getNewMember()
+      newMember: AppStore.getNewMember(),
+      googleUser: AppStore.getNewGoogleUser(),
     });
   }
 
@@ -104,7 +106,7 @@ class DashBoard extends React.Component {
   render() {
     return (
     <div>
-      <BoardNavigation />
+      <BoardNavigation googleUser={this.state.googleUser}/>
       <div className="container-fluid">
           <div id= 'profile' className="row">
             <div className="col-sm-3 leftsidenav">

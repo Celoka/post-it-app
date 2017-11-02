@@ -13,7 +13,7 @@ import Navbar from '../components/Navbar.jsx';
  *
  * @extends { React.Component }
  */
-class SignIn extends React.Component {
+class Login extends React.Component {
 
 /**
  *
@@ -41,7 +41,7 @@ class SignIn extends React.Component {
  *
  * @return { void }
  *
- * @memberof Signup
+ * @memberof Login
  */
   onChange = (event) => {
     this.setState({
@@ -58,7 +58,7 @@ class SignIn extends React.Component {
    *
    * @return { void }
    *
-   * @memberof SignIn
+   * @memberof Login
    */
   onSubmit = (event) => {
     event.preventDefault();
@@ -68,22 +68,6 @@ class SignIn extends React.Component {
       this.props.history.push('/dashboard');
     });
   }
-
-/**
- * @description This method gets the current user
- *
- * @method getCurrentUser
- *
- * @memberof SignIn
- *
- * @return { object } user object from the store is set to state
- */
-  getCurrentUser = () => {
-    this.setState({
-      user: AppStore.getCurrentUser()
-    });
-  }
-
 /**
  * @description Create google login function
  * for alternative sign up method.
@@ -92,7 +76,7 @@ class SignIn extends React.Component {
  *
  * @param { Object } event
  *
- * @memberof SignIn
+ * @memberof Login
  *
  * @return { void }
  */
@@ -102,17 +86,47 @@ class SignIn extends React.Component {
     provider.addScope('profile');
     provider.addScope('email');
     firebase.auth().signInWithPopup(provider)
-      .then((response) => {
-        const { user } = response;
-        if (user) {
-          return this.props.history.push('/dashboard');
-        }
-      });
+    .then((result) => {
+      return AppActions.googleLogin(result);
+    })
+    .then(() => {
+      AppStore.on('login_success', this.getGoogleUser);
+      return this.props.history.push('/dashboard');
+    });
+  }
+/**
+ * @description This method gets the current user
+ *
+ * @method getCurrentUser
+ *
+ * @memberof Login
+ *
+ * @return { object } user object from the store is set to state
+ */
+  getCurrentUser = () => {
+    this.setState({
+      user: AppStore.getCurrentUser()
+    });
+  }
+  /**
+   * @description describes method that gets a google user
+   * from the store
+   *
+   * @method getGoogleUser
+   *
+   * @memberof Login
+   *
+   * @return { object } google user object from the store
+   */
+  getGoogleUser = () => {
+    this.setState({
+      googleUser: AppStore.getNewGoogleUser()
+    });
   }
 /**
  * @return { jsx } rendered jsx element
  *
- * @memberof SignIn
+ * @memberof Login
  */
   render() {
     return (
@@ -152,4 +166,4 @@ class SignIn extends React.Component {
     );
   }
 }
-export default SignIn;
+export default Login;

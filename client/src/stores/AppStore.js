@@ -11,6 +11,7 @@ let usersGroups = [];
 const newMessage = [];
 let allMessages = [];
 let allUserDetails = [];
+let googleUsers = [];
 let addRegisteredUser = '';
 
 /**
@@ -114,7 +115,7 @@ function currentGroup(group) {
 }
 
 /**
- * @description describes a function that fetches a and sets it
+ * @description describes a function that fetches user groups and sets it
  * member to a group
  *
  * @function setUserGroup
@@ -126,6 +127,21 @@ function currentGroup(group) {
 function setUserGroup(userGroups) {
   usersGroups = userGroups;
   return usersGroups;
+}
+
+/**
+ * @description describes a function that sets a new user using
+ * google as a sign in method
+ *
+ * @function setNewGoogleUser
+ *
+ * @param { Object } googleUser
+ *
+ * @returns { Array } 
+ */
+function setNewGoogleUser(googleUser) {
+  googleUsers = googleUser;
+  return googleUsers;
 }
 
 /**
@@ -277,6 +293,17 @@ class AppStoreClass extends EventEmitter {
   getNewMember() {
     return newMember;
   }
+/**
+ * @description describes a method that gets a google users
+ * sign in details
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array }
+ */
+  getNewGoogleUser() {
+    return googleUsers;
+  }
 }
 
 const AppStore = new AppStoreClass();
@@ -314,6 +341,10 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       break;
     case AppConstants.GET_NEW_USERS:
       setNewMember(action.usersDetails);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GOOGLE_LOGIN:
+      setNewGoogleUser(action.googleUser);
       AppStore.emitChange();
       break;
     default:

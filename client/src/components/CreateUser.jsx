@@ -10,7 +10,7 @@ import AppActions from '../actions/AppActions';
  *
  * @extends { React.Component }
  */
-class SignUp extends React.Component {
+class CreateUser extends React.Component {
 
 /**
  * @description Creates an instance of MessageBoard
@@ -19,7 +19,7 @@ class SignUp extends React.Component {
  *
  * @return { void }
  *
- * @memberof SignIn
+ * @memberof CreateUser
  */
   constructor(props) {
     super(props);
@@ -41,7 +41,7 @@ class SignUp extends React.Component {
  *
  * @return { void }
  *
- * @memberof Signup
+ * @memberof CreateUser
  */
   onChange = (event) => {
     this.setState({
@@ -59,7 +59,7 @@ class SignUp extends React.Component {
  *
  * @return {void }
  *
- * @memberof SignUp
+ * @memberof CreateUser
  */
   onSubmit = (event) => {
     event.preventDefault();
@@ -71,7 +71,7 @@ class SignUp extends React.Component {
 /**
  * @return { jsx } rendered jsx element
  *
- * @memberof SignUp
+ * @memberof CreateUser
  */
   render() {
     return (
@@ -111,4 +111,4 @@ class SignUp extends React.Component {
     );
   }
 }
-export default SignUp;
+export default CreateUser;

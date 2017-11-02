@@ -13,10 +13,6 @@
   "nyc": {
     "require": [
       "babel-register"
-    ],
-    "reporter": [
-      "lcov",
-      "text"
     ]
   },
   "repository": {

@@ -3,7 +3,10 @@ import AppActions from '../actions/AppActions';
 
 /**
  * @description a stateless component
- * that is a child of group.
+ * that is a child of group. Displays
+ * the group name to the browser. An
+ * onclick method is created to make API
+ * calls for needed data.
  *
  * @return { jsx } rendered jsx element
  *

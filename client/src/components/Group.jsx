@@ -100,6 +100,7 @@ class Group extends React.Component {
  */
   onClick = () => {
     AppActions.createGroup(this.state.userGroupName);
+    this.state.userGroupName = '';
     AppActions.loadGroups();
   }
 /**
@@ -136,6 +137,7 @@ class Group extends React.Component {
                 <div className="modal-body">
                   <input type="text"
                     className="form-control"
+                    value ={this.state.userGroupName}
                     onChange={this.onChange}
                     name="groupname"
                     placeholder="Input groupname...." />

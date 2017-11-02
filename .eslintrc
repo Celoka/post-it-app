@@ -49,7 +49,8 @@
         "getUserGroup",
         "getCurrentGroup",
         "getCurrentUser",
-        "getGroupMessage"
+        "getGroupMessage",
+        "getNewGoogleUser"
       ]
     }],
     "no-shadow": [

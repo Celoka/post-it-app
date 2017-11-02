@@ -5,7 +5,8 @@ import {
   logOut,
   resetPassword,
   getAllUsersInGroup,
-  newUsersInGroup
+  newUsersInGroup,
+  googleSignIn
 } from '../controllers/users';
 import {
   createGroup,
@@ -20,12 +21,12 @@ const router = express.Router();
 
 router.post('/user/signup', createUser);
 router.post('/user/signin', logIn);
+router.post('/user/googlesignin', googleSignIn);
 router.post('/user/signout', logOut);
 router.post('/user/passwordreset', resetPassword);
 router.post('/group', createGroup);
 router.post('/group/groupId/user', addMemberToGroup);
 router.post('/groups/:groupId/message', postMessage);
-
 router.get('/groups/:groupId/members', newUsersInGroup);
 router.get('/user/allusers', getAllUsersInGroup);
 router.get('/groups', getGroup);

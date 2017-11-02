@@ -26,7 +26,7 @@ class MessageBoard extends React.Component {
       message: '',
       groupId: '',
       groupname: '',
-      groupMessage: []
+      groupMessage: [],
     };
   }
 
@@ -113,7 +113,6 @@ class MessageBoard extends React.Component {
  */
   onSubmit = (event) => {
     event.preventDefault();
-    const { text, type } = this.refs;
     const messageDetail = {
       message: this.state.message,
       priority: this.refs.type.value,
@@ -121,8 +120,8 @@ class MessageBoard extends React.Component {
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
-      text.value = '';
-      type.value = 'Normal';
+      this.state.message = '';
+      this.refs.type.value = 'Normal';
     }
   }
 /**
@@ -150,7 +149,7 @@ class MessageBoard extends React.Component {
             <div className='row content'>
               <div id="message-box" className="form-group">
                 <textarea className="form-control"
-                  ref="text"
+                  value={this.state.message}
                   rows="0.5"
                   onChange={this.onChange}
                   placeholder='type a message..'

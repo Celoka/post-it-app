@@ -68,6 +68,34 @@ const AppActions = {
       })
       .catch(ToastrError);
   },
+  /**
+   * @description describes an actions that makes a call to
+   * google login API with a resolved promised from google
+   * sign in with popup
+   *
+   * @param { Object } result
+   *
+   * @returns { Object } return google
+   */
+  googleLogin(result) {
+    return axios
+      .post('/user/googlesignin', result)
+      .then((response) => {
+        console.log(response);
+        const token = response.data.user.stsTokenManager.accessToken;
+        const googleUser = response.data.user;
+        const displayName = response.data.user.displayName;
+        localStorage.setItem('token', JSON.stringify(token));
+        toastr.success(`Welcome ${displayName}`);
+        AppDispatcher.dispatch({
+          actionType: AppConstants.GOOGLE_LOGIN,
+          googleUser
+        });
+      })
+      .catch((error) => {
+        toastr.error(error.message);
+      });
+  },
 /**
  * @description describes an action that makes
  * API call to the server for a post request to create

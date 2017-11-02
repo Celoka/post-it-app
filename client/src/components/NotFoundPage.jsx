@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
+ * @description describes a component that
+ * handles page that does not exist
+ *
  * @return { jsx } rendered jsx elements
  *
  * @function notFoundPage

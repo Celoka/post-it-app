@@ -209,6 +209,7 @@ class UsersInGroup extends React.Component {
                     </div>
                     <div className="modal-body">
                       <input type="text"
+                      value={this.state.newUser}
                       onChange={this.onChange}
                       className="form-control"
                       name="username"

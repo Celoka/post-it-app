@@ -44,7 +44,8 @@ class ResetPassword extends React.Component {
     });
   }
 /**
- * @description Creates an on submit event that fires a submit action.
+ * @description Creates an on submit
+ *  event that fires a submit action.
  *
  * @return { void }
  *

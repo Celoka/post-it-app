@@ -128,14 +128,63 @@ export const logIn = (req, res) => {
   }
 };
 
-// /**
-//  * @description describes a controller for google sign up
-//  *
-//  *
-//  */
-// export const googleSignIn = (req, res) => {
-//   const {email, password, userName, phoneNumber } = req.body;
-// }
+/**
+ * @description describes a controller for google sign up
+ *
+ * @param { object } req request object
+ * @param { object } res response object
+ *
+ * @return { object } returns a google user object
+ */
+export const googleSignIn = (req, res) => {
+  const result = req.body;
+  const credential =
+  firebase.auth.GoogleAuthProvider.credential(result.credential.idToken);
+  db.database().ref(`users/${result.user.uid}`)
+    .once('value', (snap) => {
+      if (!snap.exists()) {
+        db.database().ref(`users/${result.user.uid}`)
+        .set({
+          userName: result.user.displayName,
+          email: result.user.email,
+          phoneNumber: result.user.phoneNumber
+        });
+        firebase.auth().signInWithCredential(credential)
+        .then((user) => {
+          res.status(200).json({
+            message: 'Google sign in successful',
+            user
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          res.status(500).json({
+            message: errorMessage
+          });
+        });
+      } else {
+        firebase.auth().signInWithCredential(credential)
+        .then((user) => {
+          res.status(200).json({
+            message: 'Google sign in successful',
+            user
+          });
+        })
+        .catch((err) => {
+          const errMessage = err.message;
+          res.status(500).json({
+            message: errMessage
+          });
+        });
+      }
+    })
+    .catch((err) => {
+      const errMessage = err.message;
+      res.status(500).json({
+        message: errMessage
+      });
+    });
+};
 
 
 /**
@@ -242,8 +291,8 @@ export const getAllUsersInGroup = (req, res) => {
       });
     });
   } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
+    res.status(401).json({
+      message: 'Please signup/signin to perform this operation'
     });
   }
 };
@@ -283,7 +332,7 @@ export const newUsersInGroup = (req, res) => {
       });
     });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized operation, please signup/signin'
     });
   }
