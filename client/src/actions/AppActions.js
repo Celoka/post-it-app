@@ -81,7 +81,6 @@ const AppActions = {
     return axios
       .post('/user/googlesignin', result)
       .then((response) => {
-        console.log(response);
         const token = response.data.user.stsTokenManager.accessToken;
         const googleUser = response.data.user;
         const displayName = response.data.user.displayName;
