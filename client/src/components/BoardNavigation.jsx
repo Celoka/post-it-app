@@ -45,7 +45,6 @@ class BoardNavigation extends React.Component {
                   Post It
                 </h1>
               </Link>
-              <i className="material-icons message-icon">message</i>
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav">
