@@ -59,8 +59,8 @@ const AppActions = {
       .then((response) => {
         const { token } = response.data;
         const user = response.data.userDetails[0];
-        toastr.success(response.data.message);
         localStorage.setItem('token', JSON.stringify(token));
+        toastr.success(response.data.message);
         AppDispatcher.dispatch({
           actionType: AppConstants.SET_USER,
           user
@@ -105,15 +105,14 @@ const AppActions = {
  * @returns { Object } returns created group details
  */
   createGroup(groupDetail) {
-    const groupname = { groupname: groupDetail };
     return axios
-      .post('/group', groupname)
+      .post('/group', groupDetail)
       .then((response) => {
-        const group = response.data.groupname;
-        toastr.success(`${group} created successfully`);
+        const groupName = response.data.groupName;
+        toastr.success(`${groupName} created successfully`);
         AppDispatcher.dispatch({
           actionType: AppConstants.CREATE_GROUP,
-          group
+          groupName
         });
       })
       .catch(ToastrError);

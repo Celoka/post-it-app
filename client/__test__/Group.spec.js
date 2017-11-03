@@ -10,11 +10,12 @@ describe('<Group/>', () => {
   const createGroupSpy = jest.spyOn(AppActions, 'createGroup');
   const loadGroupsSpy = jest.spyOn(AppActions, 'loadGroups');
   const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
+  const getUserGroupSpy = jest.spyOn(AppStore, 'getUserGroup');
+  const removeChangeListenerSpy = jest.spyOn(AppStore, 'removeChangeListener');
 
   beforeEach(() => {
     jest.mock('axios', () => mockApiCall);
   });
-
   const wrapper = mount(<Group />);
   it('should contain a <GroupList /> component', () => {
     expect(wrapper.find(GroupList)).toHaveLength(0);
@@ -35,10 +36,19 @@ describe('<Group/>', () => {
     expect(wrapper.find('input')).toHaveLength(1);
   });
   it('should have an it state to be equal to test', () => {
-    expect(wrapper.state().userGroupName).toEqual('test');
+    expect(wrapper.state().userGroupName).toEqual('');
+    expect(wrapper.state().groupName).toEqual([
+    { groupId: '-Kwz6LQ8P66M25GfxlNQ', groupname: 'Nwendu' },
+    { groupId: '-Kwz6UdeGr7kjKRhpE0T', groupname: 'Ebuka' },
+    { groupId: '-KwzMzLzSbVLm_Vsauwd', groupname: 'Andela' }]);
   });
   it('calls componentDidMount() lifecycle method', () => {
     expect(loadGroupsSpy).toHaveBeenCalled();
     expect(addChangeListenerSpy).toHaveBeenCalled();
+    expect(getUserGroupSpy).toHaveBeenCalled();
+  });
+  it('should unmount the component after mounting', () => {
+    wrapper.unmount();
+    expect(removeChangeListenerSpy).toHaveBeenCalled();
   });
 });

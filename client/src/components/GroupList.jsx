@@ -19,10 +19,10 @@ const GroupList = () => ({
         AppActions.getNewUsers(this.props.KeyName.groupId);
         AppActions.loadMessage(this.props.KeyName.groupId);
         this.props.setGroupId(this.props.KeyName.groupId,
-          this.props.KeyName.groupname);
+          this.props.KeyName.groupName);
       }}>
           <h5 id ="style-group"className="list-group-item">
-            {this.props.KeyName.groupname}
+            {this.props.KeyName.groupName}
           </h5>
       </div>
 

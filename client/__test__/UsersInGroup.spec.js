@@ -7,13 +7,13 @@ import AppActions from '../src/actions/AppActions';
 
 
 describe('<UsersInGroup/>', () => {
-  const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup');
-
   const userValidation = jest.fn().mockReturnValue(Promise.resolve({
     newMember: ['testUser']
   }));
+  const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup');
+  const removeChangeListenerSpy = jest.spyOn(AppStore, 'removeChangeListener');
   const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
-
+  const getNewUsersSpy = jest.spyOn(AppActions, 'getNewUsers');
   beforeEach(() => {
     jest.mock('axios', () => mockApiCall);
   });
@@ -59,7 +59,6 @@ describe('<UsersInGroup/>', () => {
       newUser: 'testUser',
       groupId: 'testgroupId',
       userId: 'testId',
-      newMember: [],
     });
     wrapper.setProps({
       groupId: 'whatever',
@@ -70,6 +69,11 @@ describe('<UsersInGroup/>', () => {
     });
     wrapper.find('.modal-footer').first().find('button').last()
     .simulate('click');
-    expect(addUserToGroupSpy).toHaveBeenCalled();
+    expect(addUserToGroupSpy).toHaveBeenCalledTimes(1);
+    expect(getNewUsersSpy).toHaveBeenCalledTimes(1);
+  });
+  it('Should unmount the component after mounting', () => {
+    wrapper.unmount();
+    expect(removeChangeListenerSpy).toHaveBeenCalledTimes(1);
   });
 });

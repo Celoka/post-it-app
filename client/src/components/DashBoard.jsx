@@ -26,7 +26,7 @@ class DashBoard extends React.Component {
     super(props);
     this.state = {
       groupId: null,
-      groupname: '',
+      groupName: '',
       groupMessage: [],
       userId: [],
       newMember: [],
@@ -86,16 +86,16 @@ class DashBoard extends React.Component {
  * @method setGroupId
  *
  * @param { String } groupId
- * @param { String } groupname
+ * @param { String } groupName
  *
  * @return { void }
  *
  * @memberof DashBoard
  */
-  setGroupId = (groupId, groupname) => {
+  setGroupId = (groupId, groupName) => {
     this.setState({
       groupId,
-      groupname
+      groupName
     });
   }
 /**
@@ -120,7 +120,7 @@ class DashBoard extends React.Component {
                 (this.state.groupId === null) ?
                 <h1>WELCOME TO POSTIT</h1> :
                 <MessageBoard groupId={this.state.groupId}
-                  groupname={this.state.groupname}
+                  groupName={this.state.groupName}
                   groupMessage={this.state.groupMessage}/>
               }
             </div>

@@ -22,7 +22,7 @@ class Group extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userGroupName: '',
+      group: '',
       groupName: []
     };
   }
@@ -84,7 +84,7 @@ class Group extends React.Component {
 */
   onChange = (event) => {
     this.setState({
-      userGroupName: event.target.value
+      group: event.target.value
     });
   }
 
@@ -98,9 +98,13 @@ class Group extends React.Component {
  *
  * @memberof Group
  */
-  onClick = () => {
-    AppActions.createGroup(this.state.userGroupName);
-    this.state.userGroupName = '';
+  onClick = (event) => {
+    event.preventDefault();
+    const groupDetail = {
+      group: this.state.group
+    };
+    AppActions.createGroup(groupDetail);
+    this.state.group = '';
     AppActions.loadGroups();
   }
 /**
@@ -137,9 +141,9 @@ class Group extends React.Component {
                 <div className="modal-body">
                   <input type="text"
                     className="form-control"
-                    value ={this.state.userGroupName}
+                    value ={this.state.group}
                     onChange={this.onChange}
-                    name="groupname"
+                    name="group"
                     placeholder="Input groupname...." />
                 </div>
                 <div className="modal-footer">

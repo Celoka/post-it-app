@@ -26,8 +26,8 @@ class CreateUser extends React.Component {
     this.state = {
       email: '',
       password: '',
-      username: '',
-      phonenumber: '',
+      userName: '',
+      phoneNumber: '',
       message: ''
     };
   }
@@ -84,7 +84,7 @@ class CreateUser extends React.Component {
               <label>
                 Email Address
                 <input value={this.state.email} onChange={this.onChange}
-                  type="email" name="email" required />
+                  type="email" name="email" />
               </label>
               <label>
                 Password
@@ -93,13 +93,13 @@ class CreateUser extends React.Component {
               </label>
               <label>
                 Username
-                <input value={this.state.username} onChange={this.onChange}
-                  type="text" name="username" />
+                <input value={this.state.userName} onChange={this.onChange}
+                  type="text" name="userName" />
               </label>
               <label>
                 Phonenumber
-                <input value={this.state.phonenumber} onChange={this.onChange}
-                  type="inputPhone" name="phonenumber" />
+                <input value={this.state.phoneNumber} onChange={this.onChange}
+                  type="inputPhone" name="phoneNumber" />
               </label>
             </fieldset>
             <button id="sign" type="submit" name="submit">

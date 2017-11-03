@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
 import mockApiCall from '../__mocks__/axios';
 import firebase from '../src/firebase/index';
-import SignIn from '../src/components/Signin.jsx';
+import Login from '../src/components/Login.jsx';
 import Navbar from '../src/components/Navbar.jsx';
 import AppActions from '../src/actions/AppActions';
 
@@ -40,7 +40,7 @@ describe('<Signin/>', () => {
     jest.mock('axios', () => mockApiCall);
   });
 
-  const wrapper = mount(<SignIn />,
+  const wrapper = mount(<Login />,
     {
       childContextTypes: { router: React.PropTypes.object },
       context: { router: {

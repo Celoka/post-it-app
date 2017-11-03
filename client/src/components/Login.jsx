@@ -116,6 +116,7 @@ class Login extends React.Component {
    *
    * @memberof Login
    *
+   * '
    * @return { object } google user object from the store
    */
   getGoogleUser = () => {
@@ -139,7 +140,7 @@ class Login extends React.Component {
               <label>
                 Email Address
                   <input value={this.state.email} onChange={this.onChange}
-                  type="email" name="email" required />
+                  type="email" name="email" />
               </label>
               <label>
                 Password

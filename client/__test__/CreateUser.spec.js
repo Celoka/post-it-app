@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter, Link } from 'react-router-dom';
-import Signup from '../src/components/Signup.jsx';
+import { MemoryRouter } from 'react-router-dom';
+import CreateUser from '../src/components/CreateUser.jsx';
 import mockApiCall from '../__mocks__/axios';
 import Navbar from '../src/components/Navbar.jsx';
 import AppActions from '../src/actions/AppActions';
@@ -14,7 +14,7 @@ describe('<Signup/>', () => {
     jest.mock('axios', () => mockApiCall);
   });
 
-  const wrapper = mount(<MemoryRouter><Signup /></MemoryRouter>);
+  const wrapper = mount(<MemoryRouter><CreateUser /></MemoryRouter>);
   it('should contain a <Navbar /> component', () => {
     expect(wrapper.find(Navbar).length).toEqual(0);
   });

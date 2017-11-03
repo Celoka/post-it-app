@@ -16,7 +16,7 @@ const MessageForm = () => ({
       <div>
         <form id="message-display">
           <h1>
-            {this.props.groupname}
+            {this.props.groupName}
           </h1>
           {this.props.messageList}
         </form>

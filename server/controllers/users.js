@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import db from '../config/config';
 
 /**
- * @description This controller creates a news user
+ * @description This controller creates a new user
  * POST:/user/signup
  *
  * @param {object} req request object
@@ -14,35 +14,21 @@ import db from '../config/config';
  * @return {object} return an obejct containing a user
  */
 export const createUser = (req, res) => {
-  const { email, password, username, phonenumber } = req.body;
-  req.check('email', 'Email is required').notEmpty();
-  req.check('username', 'Username is required').notEmpty();
-  req.check('email', 'Bad email format').isEmail();
-  req.check('password', 'Password is required').notEmpty();
-  req.check('password',
-   'Password must be at least 6 character and contain number')
-  .isLength({ min: 5 })
-  .matches(/\d/);
-
-  const errors = req.validationErrors();
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({ message });
-  } else {
-    return firebase.auth().createUserWithEmailAndPassword(email, password)
+  const { email, password, userName, phoneNumber } = req.body;
+  firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         db.database().ref(`users/${user.uid}`).set({
           email,
           password,
-          username,
-          phonenumber
+          userName,
+          phoneNumber
         });
         let parsedUser;
         try {
           parsedUser = JSON.parse(JSON.stringify(user));
         } catch (error) {
           res.status(500).json({
-            message: `An error occured while creating ${username}`
+            message: `An error occured while creating ${userName}`
           });
         }
         const token = parsedUser.stsTokenManager.accessToken;
@@ -65,11 +51,10 @@ export const createUser = (req, res) => {
           });
         }
       });
-  }
 };
 
 /**
- * @description This controller signs a registered in
+ * @description This controller signs a registered user in
  * POST:/user/signin
  *
  * @param {object} req request object
@@ -79,53 +64,39 @@ export const createUser = (req, res) => {
  */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
-  req.check('email', 'Email is required').notEmpty();
-  req.check('email', 'Invalid email format').isEmail();
-  req.check('password', 'Password is required').notEmpty();
-  req.check('password',
-   'Password must be at least 6 character and contain number')
-  .isLength({ min: 5 })
-  .matches(/\d/);
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({ message });
-  } else {
-    return firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        let parsedUser;
-        try {
-          parsedUser = JSON.parse(JSON.stringify(user));
-        } catch (error) {
-          res.status(500).send({
-            error
-          });
-        }
-        const token = parsedUser.stsTokenManager.accessToken;
-        const { uid: userId, providerData: userDetails } = parsedUser;
-        res.status(200).send({
-          message: 'User Signed in!',
-          userDetails,
-          userId,
-          token
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      let parsedUser;
+      try {
+        parsedUser = JSON.parse(JSON.stringify(user));
+      } catch (error) {
+        res.status(500).send({
+          error
         });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === 'auth/user-not-found') {
-          res.status(404).json({
-            message: 'User not found'
-          });
-        } else {
-          res.status(500).json({
-            errorMessage
-          });
-        }
+      }
+      const token = parsedUser.stsTokenManager.accessToken;
+      const { uid: userId, providerData: userDetails } = parsedUser;
+      res.status(200).send({
+        message: 'User Signed in!',
+        userDetails,
+        userId,
+        token
       });
-  }
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/user-not-found') {
+        res.status(404).json({
+          message:
+          'User not found. Make sure your email and password is correct'
+        });
+      } else {
+        res.status(500).json({
+          errorMessage
+        });
+      }
+    });
 };
 
 /**
@@ -141,49 +112,49 @@ export const googleSignIn = (req, res) => {
   const credential =
   firebase.auth.GoogleAuthProvider.credential(result.credential.idToken);
   db.database().ref(`users/${result.user.uid}`)
-    .once('value', (snap) => {
-      if (!snap.exists()) {
-        db.database().ref(`users/${result.user.uid}`)
-        .set({
-          userName: result.user.displayName,
-          email: result.user.email,
-          phoneNumber: result.user.phoneNumber
-        });
-        firebase.auth().signInWithCredential(credential)
-        .then((user) => {
-          res.status(200).json({
-            message: 'Google sign in successful',
-            user
-          });
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          res.status(500).json({
-            message: errorMessage
-          });
-        });
-      } else {
-        firebase.auth().signInWithCredential(credential)
-        .then((user) => {
-          res.status(200).json({
-            message: 'Google sign in successful',
-            user
-          });
-        })
-        .catch((err) => {
-          const errMessage = err.message;
-          res.status(500).json({
-            message: errMessage
-          });
-        });
-      }
-    })
-    .catch((err) => {
-      const errMessage = err.message;
-      res.status(500).json({
-        message: errMessage
+  .once('value', (snap) => {
+    if (!snap.exists()) {
+      db.database().ref(`users/${result.user.uid}`)
+      .set({
+        userName: result.user.displayName,
+        email: result.user.email,
+        phoneNumber: result.user.phoneNumber
       });
+      firebase.auth().signInWithCredential(credential)
+      .then((user) => {
+        res.status(200).json({
+          message: 'Google sign in successful',
+          user
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        res.status(500).json({
+          message: errorMessage
+        });
+      });
+    } else {
+      firebase.auth().signInWithCredential(credential)
+      .then((user) => {
+        res.status(200).json({
+          message: 'Google sign in successful',
+          user
+        });
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        res.status(500).json({
+          message: errMessage
+        });
+      });
+    }
+  })
+  .catch((err) => {
+    const errMessage = err.message;
+    res.status(500).json({
+      message: errMessage
     });
+  });
 };
 
 
@@ -198,37 +169,25 @@ export const googleSignIn = (req, res) => {
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
-  const user = req.user.uid;
-  req.check('email', 'Email is required').notEmpty();
-  req.check('email', 'Invalid email format').isEmail();
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({ message });
-  } else {
-    firebase.auth().sendPasswordResetEmail(email)
-    .then(() => {
-      res.status(200).json({
-        message: 'Mail sent succesfully',
-        user
-      });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === 'auth/user-not-found') {
-        res.status(404).json({
-          message: 'Email does not exist'
-        });
-      } else {
-        res.status(500).send({
-          errorMessage
-        });
-      }
+  firebase.auth().sendPasswordResetEmail(email)
+  .then(() => {
+    res.status(200).json({
+      message: 'Mail sent succesfully',
     });
-  }
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/user-not-found') {
+      res.status(404).json({
+        message: 'Email does not exist'
+      });
+    } else {
+      res.status(500).send({
+        errorMessage
+      });
+    }
+  });
 };
 
 
@@ -243,16 +202,17 @@ export const resetPassword = (req, res) => {
  */
 export const logOut = (req, res) => {
   firebase.auth().signOut()
-    .then(() => {
-      res.status(200).json({
-        message: 'Signed out!',
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: `An error occured ${error.message}`
-      });
+  .then(() => {
+    res.status(200).json({
+      message: 'Signed out!',
     });
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    res.status(500).json({
+      message: `An error occured ${errorMessage}`
+    });
+  });
 };
 
 /**
@@ -276,7 +236,7 @@ export const getAllUsersInGroup = (req, res) => {
       snap.forEach((details) => {
         usersInGroup = {
           userId: details.key,
-          userNames: details.val().username
+          userNames: details.val().userName
         };
         usersDetails.push(usersInGroup);
       });
@@ -286,8 +246,9 @@ export const getAllUsersInGroup = (req, res) => {
       });
     })
     .catch((error) => {
+      const errorMessage = error.message;
       res.status(500).json({
-        message: `An error occured ${error}`
+        message: `An error occured ${errorMessage}`
       });
     });
   } else {
@@ -327,8 +288,9 @@ export const newUsersInGroup = (req, res) => {
       });
     })
     .catch((error) => {
+      const errorMessage = error.message;
       res.status(500).json({
-        message: `An error occure ${error.message}`
+        message: `An error occure ${errorMessage}`
       });
     });
   } else {

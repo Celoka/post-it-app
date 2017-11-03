@@ -25,7 +25,7 @@ class MessageBoard extends React.Component {
     this.state = {
       message: '',
       groupId: '',
-      groupname: '',
+      groupName: '',
       groupMessage: [],
     };
   }
@@ -45,24 +45,7 @@ class MessageBoard extends React.Component {
     this.setState({
       groupId: nextProps.groupId,
       groupMessage: nextProps.groupMessage,
-      groupname: nextProps.groupname
-    });
-  }
-
-/**
- * @description gets the message from the store
- *
- * @param { void } f
- *
- * @method onStoreChange
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
-  onStoreChange = () => {
-    this.setState({
-      groupMessage: AppStore.getAllMessages(),
+      groupName: nextProps.groupName
     });
   }
 
@@ -78,7 +61,7 @@ class MessageBoard extends React.Component {
  *
  * @memberof MessageBoard
  */
-  handlePriority= (event) => {
+  handlePriority = (event) => {
     this.setState({
       priority: event.target.value
     });
@@ -142,7 +125,7 @@ class MessageBoard extends React.Component {
     );
     return (
       <div>
-        <MessageForm groupname={this.state.groupname}
+        <MessageForm groupName={this.state.groupName}
           messageList={messageList} />
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>

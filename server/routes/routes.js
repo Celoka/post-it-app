@@ -1,5 +1,12 @@
 import express from 'express';
 import {
+  validateCreateUser,
+  validateLogin,
+  validateCreateGroup,
+  validateAddmember,
+  validateResetPassword
+ } from '../utils/helpers';
+import {
   createUser,
   logIn,
   logOut,
@@ -19,13 +26,13 @@ import {
 
 const router = express.Router();
 
-router.post('/user/signup', createUser);
-router.post('/user/signin', logIn);
+router.post('/user/signup', validateCreateUser, createUser);
+router.post('/user/signin', validateLogin, logIn);
 router.post('/user/googlesignin', googleSignIn);
 router.post('/user/signout', logOut);
-router.post('/user/passwordreset', resetPassword);
-router.post('/group', createGroup);
-router.post('/group/groupId/user', addMemberToGroup);
+router.post('/user/passwordreset', validateResetPassword, resetPassword);
+router.post('/group', validateCreateGroup, createGroup);
+router.post('/group/groupId/user', validateAddmember, addMemberToGroup);
 router.post('/groups/:groupId/message', postMessage);
 router.get('/groups/:groupId/members', newUsersInGroup);
 router.get('/user/allusers', getAllUsersInGroup);

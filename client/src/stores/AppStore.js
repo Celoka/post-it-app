@@ -6,7 +6,7 @@ const CHANGE_EVENT = 'change';
 
 let newMember = [];
 let currentUser = [];
-let groups = '';
+let groupStore = '';
 let usersGroups = [];
 const newMessage = [];
 let allMessages = [];
@@ -110,8 +110,8 @@ function setNewMember (usersDetails) {
  * @returns { String } returns name of group as string
  */
 function currentGroup(group) {
-  groups = group;
-  return groups;
+  groupStore = group;
+  return groupStore;
 }
 
 /**
@@ -137,7 +137,7 @@ function setUserGroup(userGroups) {
  *
  * @param { Object } googleUser
  *
- * @returns { Array } 
+ * @returns { Array } details of a google user
  */
 function setNewGoogleUser(googleUser) {
   googleUsers = googleUser;
@@ -234,7 +234,7 @@ class AppStoreClass extends EventEmitter {
  * @returns { String } Returns all group names
  */
   getCurrentGroup() {
-    return groups;
+    return groupStore;
   }
 /**
  * @description describes a method that gets
@@ -307,7 +307,6 @@ class AppStoreClass extends EventEmitter {
 }
 
 const AppStore = new AppStoreClass();
-
 AppStore.dispatchToken = AppDispatcher.register((action) => {
   switch (action.actionType) {
     case AppConstants.SET_USER:
