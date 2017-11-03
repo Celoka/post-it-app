@@ -1,5 +1,5 @@
-import webpack from 'webpack';
-import config from '../webpack.config.prod';
+const webpack = require('webpack');
+const config = require('../webpack.config.prod');
 
 process.env.NODE_ENV = 'production';
 
