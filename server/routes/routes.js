@@ -26,18 +26,18 @@ import {
 
 const router = express.Router();
 
-router.post('/user/signup', validateCreateUser, createUser);
-router.post('/user/signin', validateLogin, logIn);
-router.post('/user/googlesignin', googleSignIn);
-router.post('/user/signout', logOut);
-router.post('/user/passwordreset', validateResetPassword, resetPassword);
-router.post('/group', validateCreateGroup, createGroup);
-router.post('/group/groupId/user', validateAddmember, addMemberToGroup);
-router.post('/groups/:groupId/message', postMessage);
-router.get('/groups/:groupId/members', newUsersInGroup);
-router.get('/user/allusers', getAllUsersInGroup);
-router.get('/groups', getGroup);
-router.get('/group/:groupId', getGroupMessage);
-router.get('/group/:groupId/users', getUserInGroup);
+router.post('/api/v1/user/signup', validateCreateUser, createUser);
+router.post('/api/v1/user/signin', validateLogin, logIn);
+router.post('/api/v1/user/googlesignin', googleSignIn);
+router.post('/api/v1/user/signout', logOut);
+router.post('/api/v1/user/passwordreset', validateResetPassword, resetPassword);
+router.post('/api/v1/group', validateCreateGroup, createGroup);
+router.post('/api/v1/group/groupId/user', validateAddmember, addMemberToGroup);
+router.post('/api/v1/groups/:groupId/message', postMessage);
+router.get('/api/v1/groups/:groupId/members', newUsersInGroup);
+router.get('/api/v1/user/allusers', getAllUsersInGroup);
+router.get('/api/v1/groups', getGroup);
+router.get('/api/v1/group/:groupId', getGroupMessage);
+router.get('/api/v1/group/:groupId/users', getUserInGroup);
 
 export default router;

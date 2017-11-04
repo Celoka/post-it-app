@@ -2,22 +2,10 @@ import axios from 'axios';
 import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
+import ToastrError from '../vendors/index';
 
-
-/**
- * @function ToastrError
- *
- * @return { object } error message
- *
- * @param { * } error
- */
-const ToastrError = (error) => {
-  const status = error.response.data.message;
-  toastr.error(status);
-};
 
 const AppActions = {
-
   /**
    * @description describes an action that makes
    * API call to the server for a post request
@@ -29,7 +17,7 @@ const AppActions = {
    */
   registerUser(userDetails) {
     return axios
-      .post('/user/signup', userDetails)
+      .post('/api/v1/user/signup', userDetails)
       .then((response) => {
         const { token } = response.data;
         localStorage.setItem('token', JSON.stringify(token));
@@ -55,7 +43,7 @@ const AppActions = {
  */
   loginUser(signInDetails) {
     return axios
-      .post('/user/signin', signInDetails)
+      .post('/api/v1/user/signin', signInDetails)
       .then((response) => {
         const { token } = response.data;
         const user = response.data.userDetails[0];
@@ -79,7 +67,7 @@ const AppActions = {
    */
   googleLogin(result) {
     return axios
-      .post('/user/googlesignin', result)
+      .post('/api/v1/user/googlesignin', result)
       .then((response) => {
         const token = response.data.user.stsTokenManager.accessToken;
         const googleUser = response.data.user;
@@ -106,7 +94,7 @@ const AppActions = {
  */
   createGroup(groupDetail) {
     return axios
-      .post('/group', groupDetail)
+      .post('/api/v1/group', groupDetail)
       .then((response) => {
         const groupName = response.data.groupName;
         toastr.success(`${groupName} created successfully`);
@@ -128,7 +116,7 @@ const AppActions = {
  */
   loadGroups() {
     return axios
-      .get('/groups')
+      .get('/api/v1/groups')
       .then((response) => {
         const { userGroups } = response.data;
         AppDispatcher.dispatch({
@@ -151,7 +139,7 @@ const AppActions = {
  */
   postMessage(messageDetail, groupId) {
     return axios
-      .post(`/groups/${groupId}/message`, messageDetail, groupId)
+      .post(`/api/v1/groups/${groupId}/message`, messageDetail, groupId)
       .then((response) => {
         const groupMessage = response.data;
         AppDispatcher.dispatch({
@@ -174,7 +162,7 @@ const AppActions = {
 
   loadMessage(groupId) {
     return axios
-      .get(`/group/${groupId}`)
+      .get(`/api/v1/group/${groupId}`)
       .then((response) => {
         const message = response.data.groupMessage;
         AppDispatcher.dispatch({
@@ -195,7 +183,7 @@ const AppActions = {
  */
   getNewUsers(groupId) {
     return axios
-      .get(`/groups/${groupId}/members`, groupId)
+      .get(`/api/v1/groups/${groupId}/members`, groupId)
       .then((res) => {
         const usersDetails = res.data.users;
         AppDispatcher.dispatch({
@@ -218,7 +206,7 @@ const AppActions = {
  */
   addUserToGroup(userDetails) {
     return axios
-    .post('/group/groupId/user', userDetails)
+    .post('/api/v1/group/groupId/user', userDetails)
     .then((response) => {
       const message = response.data.message;
       toastr.success(response.data.message);
@@ -239,7 +227,7 @@ const AppActions = {
  */
   getUsersInGroup() {
     return axios
-    .get('/user/allusers')
+    .get('/api/v1/user/allusers')
     .then((response) => {
       const allUsers = response.data.usersDetails;
       AppDispatcher.dispatch({
@@ -261,7 +249,7 @@ const AppActions = {
  */
   resetPassword(resetEmail) {
     return axios
-    .post('/user/passwordreset', resetEmail)
+    .post('/api/v1/user/passwordreset', resetEmail)
     .then((response) => {
       const status = response.data.message;
       toastr.success(status);
@@ -278,7 +266,7 @@ const AppActions = {
  */
   logOut() {
     return axios
-      .post('/user/signout')
+      .post('api/v1/user/signout')
       .then((response) => {
         const { token } = response.data;
         localStorage.removeItem('token', token);
