@@ -99,7 +99,9 @@ class CreateUser extends React.Component {
               <label>
                 Phonenumber
                 <input value={this.state.phoneNumber} onChange={this.onChange}
-                  type="inputPhone" name="phoneNumber" />
+                  type="inputPhone"
+                  name="phoneNumber"
+                  placeholder="ex.2349000000000" />
               </label>
             </fieldset>
             <button id="sign" type="submit" name="submit">

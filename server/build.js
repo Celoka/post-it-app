@@ -1,3 +1,6 @@
+/**
+ * Module dependencies
+ */
 const webpack = require('webpack');
 const config = require('../webpack.config.prod');
 
