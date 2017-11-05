@@ -43,12 +43,12 @@ This application was developed purely with JavaScript using React and Flux Archi
 ## Coding Style
 * Airbnb: Airbnb is a coding style guide that guides developers to write clean codes
 ## Testing
-All app components, actions, and stores were tested using [Facebook's Jest](https://facebook.github.io/jest/) The test files can be found in the tests folder.
-As well, server side test files are contained on the server folder.
+All app components, actions, and stores were tested using [Facebook's Jest](https://facebook.github.io/jest/). The test files can be found in the client folder.
+As well, server side test files are contained in the server folder.
 
-* To run the tests, run `npm run client-test` on the command line. This automatically runs jest on all test files.
-* On the other hand, to run the server side test, run `npm test ` on the command line. 
+* To run the tests, run `npm run client-test` on the command line. This automatically runs jest on all test files for the client side tests.
 * You can also run jest directly. However, jest-cli needs to be globally installed on your machine.
+* Equally, to run the server side test, run `npm test ` on the command line. 
 
 
 ## Contributing
