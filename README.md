@@ -7,76 +7,88 @@
 
 Post-It allows for unprecedented interaction and collaboration amongst its users who are within a particular group. It provides REST API for a group messaging system. It also allows for notification so that group members can read a message when a member shares it in the group. 
 
-## Features
 
-* **Users:** A user created will be able to do the following: 
+## Getting Started
+* Install NodeJs
+* Clone the project from repository `$ git clone https://github.com/Celoka/post-it-app`
+* In your terminal, cd into the cloned folder like so `$ cd /post-it-app`
+* Run npm install, this installs all the app's dependencies`$ npm install`
+* Create a `.env` file in your root directory as described in `.env.sample file`
+* Run `npm run start-dev` in your terminal, open your browser and enter `localhost:8000`. 
+* Alternatively, you can access the app on [elokat-postit.herokuapp.com](https://eloka-postit.herokuapp.com)
 
-1. Create an account: User can create new account.
-2. Create a new group: A user can create a new group.
-3. Add registered members: User can registered members to new groups.
-4. Post message to group: A user can post a message to group, based on the priority level of the message, group members can either receive an email or a text message. They can receive notifications on their message board. Group members can as well be able to post messages to the group.
+
+## App Features
+
+* A user can Sign Up
+* A user can Sign In
+* A user can create a user group
+* A user can add other registered users to the group
+* A user can post a broadcast message to a user group
+* A user can view broadcast messages posted to a user group
+* A user can get Email and SMS notification depending on the priority level of the message posted to a user group
+* A user can sign in with a Google account
+* A user can reset password
 
 
-* **Authentication:**  Users are authenticated and validated using Firebase authentication. By generating a token on login, API endpoints are protected from unauthorized access and requests to protected routes are validated using the generated token.
+## Technology
+This application was developed purely with JavaScript using React and Flux Architecture, NodeJs and Express.
 
-# Development
-
-Post-It app is built with the following technologies;
-
-* Javascript EcmaScript6 (ES6)
-* NodeJs
-* Express
+**Module Dependencies**
 * Firebase
 * Nodemailer
-* React/Flux architecture
+* Axios
+* Nexmo
 
-# Installation
+## Coding Style
+* Airbnb: Airbnb is a coding style guide that guides developers to write clean codes
+## Testing
+All app components, actions, and stores were tested using [Facebook's Jest](https://facebook.github.io/jest/) The test files can be found in the tests folder.
+As well, server side test files are contained on the server folder.
 
-* Install NodeJs
-* Clone the repository `$ git clone https://github.com/Celoka/post-it-app`
-* Change into the directory `$ cd /post-it-app`
-* Install all required dependencies with `$ npm install`
-* Create a `.env` file in your root directory as described in `.env.sample file`
-* Start the app with `npm start`
+* To run the tests, run `npm run client-test` on the command line. This automatically runs jest on all test files.
+* On the other hand, to run the server side test, run `npm test ` on the command line. 
+* You can also run jest directly. However, jest-cli needs to be globally installed on your machine.
 
-# Contributing
 
-* Fork this repository to your GitHub account
-* Clone the forked repository
-* Create your feature branch
-* Commit your changes.
-* To commit your changes, we recommend that commit messages have a Header, Body and Footer, like so:
+## Contributing
+* Fork this repository.
+* Clone it.
+* Create your feature branch on your local machine with git checkout -b your-feature-branch
+* Push your changes to your remote branch with git push origin your-feature-branch
+* Open a pull request to the master branch, and describe how your feature works
+* Refer to this wiki for proper [GIT CONVENTION](https://github.com/Celoka/post-it-app/wiki)
+* Ensure your codes follow [AirBnB Javascript Styles Guide](https://github.com/airbnb/javascript)
 
+## Limitations
+The app is continuously being developed and so far has the listed limitaions:
 ```
-feature(): This feature addresses some particular issue(s):
-- implements functionality A.
-- implements functionality B.
-[Finishes #STORY_ID]
-```
-
-* Push to the remote branch
-* Create a pull request,it is recommended that the pull requests follows the convention shown below:
-
-```
-- What does this PR do?
-- Description of Task to be completed?
-- How should this be manually tested?
-- Any background context you want to provide?
-- What are the relevant pivotal tracker stories?
-- Screenshots (if appropriate)
-- Questions:
+- Users cannot upload their picture
+- Users cannot choose to accept or reject an invitation request
+- Users cannot leave a group
+- A user cannot be deleted from a group
+- A user group cannot be deleted
+- Users cannot delete a message when sent
+- The application is designed to accommodate limited users as the firebase database used for the project is a free account. The UI/UX needs more modification.
 ```
 
-# Limitations
+## FAQ
+#### What is Post It ?
+* Post It is an application that mirrors the modern day social medial chat applications, where users can create a broadcast group, share information amongst themselves and also familiarize with registered members.
+#### Is Post It free ?
+* Post It application is free for anyone who wants to become a member.
 
-The limitations of the API are:
+#### Can I contribute to the development of the application ?
+* Yes! Contributions are welcomed. Anyone who intends to contribute to the development of the application can follow the guide line already stated in this file above.
 
-* The application is designed to accommodate limited users as the firebase database used for the project is a free account. The UI/UX needs more modification.
+For further questions, contact me via eloka.chima@andela.com
 
-# FAQ
+## Acknowlegdement 
+* Andelans
+* Friends
+* Learning Facilitator
+* Family
 
-If there are any question you want to ask, contact me via mail eloka.chima@andela.com
+## LICENSE
 
-# LICENSE
-
-This project is authored by [Eloka Chima](https://github.com/Celoka) it is licensed under the MIT license.
+This project is authored by [Eloka Chima](https://github.com/Celoka) it is licensed under the [MIT](https://github.com/Celoka/post-it-app/blob/chore/feedback-implementation/LICENSE) license.
