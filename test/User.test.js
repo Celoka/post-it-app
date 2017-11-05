@@ -183,7 +183,7 @@ describe('Sign up route', () => {
 describe('Sign in route', () => {
   it('should successfully sign in a resgistered user', (done) => {
     const userTest = {
-      email: 'ebuka@yahoo.com',
+      email: 'eloka.chima@gmail.com',
       password: 'Asorock1',
     };
     chai.request(server)
@@ -371,7 +371,7 @@ describe('Sign out route', () => {
     chai.request(server)
     .post('/users/signin')
     .send({
-      email: 'ebuka@yahoo.com',
+      email: 'eloka.chima@gmail.com',
       password: 'Asorock1'
     })
         .end(() => {
