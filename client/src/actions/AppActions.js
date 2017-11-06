@@ -130,7 +130,7 @@ const AppActions = {
 /**
  * @description describes an action that makes
  * API call to the server for a post/get request to post
- * a message to user group and fetch group messages
+ * a message to user group
  *
  * @param { Object } messageDetail
  * @param {String } groupId
@@ -146,20 +146,19 @@ const AppActions = {
           actionType: AppConstants.SET_GROUP_MESSAGE,
           groupMessage
         });
-        axios
-      .get(`/group/${groupId}`)
-      .then((res) => {
-        const message = res.data.groupMessage;
-        AppDispatcher.dispatch({
-          actionType: AppConstants.LOAD_GROUP_MESSAGE,
-          message,
-        });
-      })
-      .catch(ToastrError);
       })
     .catch(ToastrError);
   },
 
+/**
+ * @description describes an action that makes
+ * API call to the server for a get request to get
+ * message in a group
+ *
+ * @param { String } groupId
+ *
+ * @returns { Object } returns group message and details
+ */
   loadMessage(groupId) {
     return axios
       .get(`/api/v1/group/${groupId}`)

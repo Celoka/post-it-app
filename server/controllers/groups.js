@@ -240,7 +240,7 @@ export const getGroupMessage = (req, res) => {
         message = {
           messageId: details.key,
           message: details.val().message,
-          time: details.val().timeStamp,
+          timeStamp: details.val().timeStamp,
           priority: details.val().priority,
           user: details.val().user
         };

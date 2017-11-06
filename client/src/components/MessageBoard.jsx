@@ -1,6 +1,5 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore.js';
 import MessageForm from '../components/MessageForm.jsx';
 
 /**
@@ -118,7 +117,7 @@ class MessageBoard extends React.Component {
         <div className="col-sm-12">
           <div className="well">
             <p id="message-text">{groupMessage.message}</p>
-            <time id="time-tag"> posted on {groupMessage.time}</time>
+            <time id="time-tag"> posted on {groupMessage.timeStamp}</time>
           </div>
         </div>
       </div>
