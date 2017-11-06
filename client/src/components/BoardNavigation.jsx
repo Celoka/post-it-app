@@ -2,33 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AppActions from '../actions/AppActions';
 
-
 /**
- * @description creates a class boardnavigation as a react component
- *
- * @class BoardNavigation
- *
- * @extends {React.Component}
- */
-class BoardNavigation extends React.Component {
-
-/**
- * @method onClick
+ * @description describes a function that fires an
+ * action when a user logsout.
  *
  * @return { void }
  *
- * @memberof BoardNavigation
+ * @function logOut
  */
-  logOut = () => {
-    AppActions.logOut();
-  }
+const logOut = () => {
+  AppActions.logOut();
+};
 
+const BoardNavigation = () => ({
 /**
  * @method render
  *
- * @returns { Jsx } rendered jsx element
+ * @returns { Jsx } jsx markup
  *
- * @memberof BoardNavigation
+ * @function BoardNavigation
  */
   render() {
     return (
@@ -50,7 +42,7 @@ class BoardNavigation extends React.Component {
               <ul className="nav navbar-nav">
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li onClick={this.logOut} >
+                <li onClick={logOut} >
                   <Link to= '/'>
                     <span>Sign Out</span>
                   </Link>
@@ -62,5 +54,6 @@ class BoardNavigation extends React.Component {
       </div>
     );
   }
-}
+});
+
 export default BoardNavigation;

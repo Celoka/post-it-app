@@ -1,23 +1,15 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 import Routes from '../Routes.jsx';
 
+const App = () => ({
 /**
- * @description creates a class app as a react component
+ * @description describes a stateless component that wraps other
+ * within it for rendering
  *
- * @class App
+ * @returns { component } components wrapped in a router
  *
- * @extends {React.Component}
- */
-class App extends React.Component {
-
-/**
- *
- * @returns { void } jsx
- *
- * @memberof App
+ * @function App
  */
   render() {
     return (
@@ -28,6 +20,6 @@ class App extends React.Component {
       </div>
     );
   }
-}
+});
 
 export default App;

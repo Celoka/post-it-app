@@ -1,6 +1,5 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
-import MessageForm from '../components/MessageForm.jsx';
 
 /**
  * @description  creates a class message board as a react component
@@ -124,8 +123,12 @@ class MessageBoard extends React.Component {
     );
     return (
       <div>
-        <MessageForm groupName={this.state.groupName}
-          messageList={messageList} />
+        <form id="message-display">
+          <h1>
+            {this.props.groupName}
+          </h1>
+          {messageList}
+        </form>
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
             <div className='row content'>

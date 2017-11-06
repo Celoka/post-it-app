@@ -198,13 +198,13 @@ p{
 
 #userlist-form {
     background:#ECE8E7;
-    height:300px;
+    height: 43vh;
     margin-top: 20px;
     overflow: auto;
 }
 
 #group-form {
-    height:300px;
+    height: 43vh;
     overflow: auto;
 }
 
@@ -213,7 +213,7 @@ p{
 }
 
 #message-display {
-    height: 490px;
+    height: 70vh;
     margin-right: 13px;
     margin-top: -1px;
     overflow: auto;
@@ -233,8 +233,6 @@ p{
 #message-text {
     color: #00008b
 }
-
-
 
 .register {
   border-radius: 4px;
