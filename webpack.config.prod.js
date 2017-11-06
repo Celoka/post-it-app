@@ -13,6 +13,7 @@ const config = {
     filename: 'bundle.js',
   },
   plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: false
     }),
@@ -28,7 +29,11 @@ const config = {
       }
     }),
     new UglifyJsPlugin({
+      minimize: true,
       sourceMap: true,
+      compress: {
+        warnings: false
+      }
     }),
   ],
   module: {
