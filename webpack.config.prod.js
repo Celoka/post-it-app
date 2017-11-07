@@ -29,11 +29,7 @@ const config = {
       }
     }),
     new UglifyJsPlugin({
-      minimize: true,
       sourceMap: true,
-      compress: {
-        warnings: false
-      }
     }),
   ],
   module: {
