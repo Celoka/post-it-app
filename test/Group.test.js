@@ -15,7 +15,7 @@ describe('Group routes', () => {
   };
   before((done) => {
     chai.request(server)
-        .post('/user/signin')
+        .post('/api/v1/user/signin')
         .send({
           email: 'eloka.chima@gmail.com',
           password: 'Asorock1'
@@ -26,12 +26,12 @@ describe('Group routes', () => {
   });
   it('should create a group successfully and return 200', (done) => {
     chai.request(server)
-    .post('/group')
+    .post('/api/v1/group')
     .send(groupTest)
     .end((err, res) => {
       expect(res.statusCode).to.equal(201);
       expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/group');
+      expect(res.req.path).to.equal('/api/v1/group');
       expect(res.req.method).to.equal('POST');
       expect(res.body).to.be.an('object');
       res.body.message.should.equal('User group created successfully');
@@ -42,12 +42,12 @@ describe('Group routes', () => {
   });
   it('should require text for group name', (done) => {
     chai.request(server)
-    .post('/group')
+    .post('/api/v1/group')
     .send('')
     .end((err, res) => {
       expect(res.statusCode).to.equal(400);
       expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/group');
+      expect(res.req.path).to.equal('/api/v1/group');
       expect(res.req.method).to.equal('POST');
       expect(res.body).to.be.an('object');
       res.body.message.should.equal('Groupname is required');
@@ -57,7 +57,7 @@ describe('Group routes', () => {
   });
   it('should add a member to a group and successfully return 201', (done) => {
     chai.request(server)
-    .post('/group/groupId/user')
+    .post('/api/v1/group/groupId/user')
     .send({
       groupId: '-Ky24zneu7LlYn13dgfP',
       newUser: 'PostIt App',
@@ -66,7 +66,7 @@ describe('Group routes', () => {
     .end((err, res) => {
       expect(res.statusCode).to.equal(201);
       expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/group/groupId/user');
+      expect(res.req.path).to.equal('/api/v1/group/groupId/user');
       expect(res.req.method).to.equal('POST');
       expect(res.body).to.be.an('object');
       expect(res.body.message).to.equal('User added successfully');
@@ -77,7 +77,7 @@ describe('Group routes', () => {
   it('should successfully post a message to a group and return 201', (done) => {
     const groupId = '-Ky24zneu7LlYn13dgfP';
     chai.request(server)
-    .post(`/groups/${groupId}/message`)
+    .post(`/api/v1/groups/${groupId}/message`)
     .send({
       message: 'Hello world',
       priority: 'Normal'
@@ -85,7 +85,7 @@ describe('Group routes', () => {
     .end((err, res) => {
       expect(res.statusCode).to.equal(201);
       expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/groups/-Kwz6LQ8P66M25GfxlNQ/message');
+      expect(res.req.path).to.equal('/api/v1/groups/-Ky24zneu7LlYn13dgfP/message');
       expect(res.req.method).to.equal('POST');
       expect(res.body).to.be.an('object');
       expect(res.body.status).to.equal('Message posted successfully');
@@ -98,12 +98,12 @@ describe('Group routes', () => {
   it(
     'should get all the groups of a user belongs to and return 200', (done) => {
       chai.request(server)
-      .get('/groups')
+      .get('/api/v1/groups')
       .send()
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.res.statusMessage).to.equal('OK');
-        expect(res.req.path).to.equal('/groups');
+        expect(res.req.path).to.equal('/api/v1/groups');
         expect(res.req.method).to.equal('GET');
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equal('Message retrieved successfully');
@@ -118,12 +118,12 @@ describe('Group routes', () => {
   it('should fetch all the group message', (done) => {
     const groupId = '-Ky24zneu7LlYn13dgfP';
     chai.request(server)
-    .get(`/group/${groupId}`)
+    .get(`/api/v1/group/${groupId}`)
     .send()
     .end((err, res) => {
       expect(res.statusCode).to.equal(200);
       expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/group/-Ky24zneu7LlYn13dgfP');
+      expect(res.req.path).to.equal('/api/v1/group/-Ky24zneu7LlYn13dgfP');
       expect(res.req.method).to.equal('GET');
       expect(res.body).to.be.an('object');
       expect(res.body.status).to.equal('Message retrived succcessfully');
@@ -147,12 +147,12 @@ describe('Group routes', () => {
   it('should get users in a particular group', (done) => {
     const groupId = 'Ky24zneu7LlYn13dgfP';
     chai.request(server)
-    .get(`/group/${groupId}/users`)
+    .get(`/api/v1/group/${groupId}/users`)
     .send()
     .end((err, res) => {
       expect(res.statusCode).to.equal(200);
       expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/group/-Ky24zneu7LlYn13dgfP/users');
+      expect(res.req.path).to.equal('/api/v1/group/-Ky24zneu7LlYn13dgfP/users');
       expect(res.req.method).to.equal('GET');
       expect(res.body).to.be.an('object');
       expect(res.body.message).to.equal('User retrieved successfully');
@@ -164,12 +164,12 @@ describe('Group routes', () => {
   });
   it('should fetch all registered user and return 200', (done) => {
     chai.request(server)
-    .get('/user/allusers')
+    .get('/api/v1/user/allusers')
     .send()
     .end((err, res) => {
       expect(res.statusCode).to.equal(200);
       expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/user/allusers');
+      expect(res.req.path).to.equal('/api/v1/user/allusers');
       expect(res.req.method).to.equal('GET');
       expect(res.body).to.be.an('object');
       expect(res.body.message).to.equal('Users retrieved successfully');
@@ -184,12 +184,12 @@ describe('Group routes', () => {
   it('should names of members added to a group and return 200', (done) => {
     const groupId = '-Ky24zneu7LlYn13dgfP';
     chai.request(server)
-    .get(`/groups/${groupId}/members`)
+    .get(`/api/v1/groups/${groupId}/members`)
     .send()
     .end((err, res) => {
       expect(res.statusCode).to.equal(200);
       expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/groups/-Ky24zneu7LlYn13dgfP/members');
+      expect(res.req.path).to.equal('/api/v1/groups/-Ky24zneu7LlYn13dgfP/members');
       expect(res.req.method).to.equal('GET');
       expect(res.body).to.be.an('object');
       expect(res.body.users[0].userNames).to.equal('West');
