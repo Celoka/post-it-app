@@ -1,25 +1,25 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 import Routes from '../Routes.jsx';
 
+const App = () => ({
 /**
- * 
- * @class App
- * @extends {React.Component}
+ * @description describes a stateless component that wraps other
+ * within it for rendering
+ *
+ * @returns { component } components wrapped in a router
+ *
+ * @function App
  */
-class App extends React.Component {
-
   render() {
     return (
       <div>
          <BrowserRouter>
-          <Routes />
+            <Routes />
         </BrowserRouter>
       </div>
     );
   }
-}
+});
 
 export default App;

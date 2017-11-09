@@ -1,42 +1,52 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import expect from 'chai';
-
+import { mount } from 'enzyme';
+import mockApiCall from '../__mocks__/axios.js';
+import AppActions from '../src/actions/AppActions';
 import MessageBoard from '../src/components/MessageBoard.jsx';
 import MessageForm from '../src/components/MessageForm.jsx';
 
+
 describe('<MessageBoard/>', () => {
-  it('should contain <MessageForm/> component', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find(MessageForm)).to.have.length(1);
+  let wrapper;
+  beforeEach(() => {
+    jest.mock('axios', () => mockApiCall);
+    wrapper = mount(<MessageBoard />);
   });
-  it('should contain props for messageform', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.props().groupname).to.be.defined;
+
+  it('should contain <MessageForm /> component', () => {
+    expect(wrapper.find(MessageForm)).toHaveLength(0);
   });
-  it('should have a form ', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find('form')).to.have.length(1);
-  })
-  it('should have a textarea for message input', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find('textarea')).to.have.length(1);
+  it('should have a form ', () => {
+    expect(wrapper.find('form').length).toEqual(2);
   });
-  it('should have a button', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find('button')).to.have.length(1);
+  it('should change state when button is click', () => {
+    wrapper.setState({ groupId: 'eafeafa' });
+    const postMessageSpy = jest.spyOn(AppActions, 'postMessage');
+    wrapper.find('form').at(1).simulate('submit');
+    expect(postMessageSpy).toHaveBeenCalledTimes(1);
   });
-  it('should have a select ', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find('select')).to.have.length(1);
+  it('should have a textarea for message input', () => {
+    expect(wrapper.find('textarea')).toHaveLength(1);
   });
-  it('should have a option ', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.find('option')).to.have.length(3);
+  it('should have a button', () => {
+    expect(wrapper.find('button')).toHaveLength(1);
   });
-  it('should have anempty initial state', ()=> {
-    const wrapper = shallow(<MessageBoard/>);
-    expect(wrapper.state().message).to.equal('');
-    expect(wrapper.state().groupId).to.equal('');
-  })
+  it('should have a select ', () => {
+    expect(wrapper.find('select')).toHaveLength(1);
+  });
+  it('should have a option ', () => {
+    expect(wrapper.find('option')).toHaveLength(3);
+  });
+  it('should have all the method defined', () => {
+    expect(wrapper.node.onStoreChange).toBeDefined();
+    expect(wrapper.node.handlePriority).toBeDefined();
+    expect(wrapper.node.onChange).toBeDefined();
+    expect(wrapper.node.onSubmit).toBeDefined();
+  });
+  it('should have an empty initial state', () => {
+    expect(wrapper.state().message).toEqual('');
+    expect(wrapper.state().groupId).toEqual('');
+    expect(wrapper.state().groupname).toEqual('');
+    expect(wrapper.state().groupMessage).toHaveLength(0);
+  });
 });

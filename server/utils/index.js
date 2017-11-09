@@ -1,3 +1,10 @@
+/**
+ * @description Helper function to resolve data into an array of object
+ *
+ * @param {object} data object
+ *
+ * @return { array } return an array containing an group object details
+ */
 export default {
 
   normalizeData(data) {
@@ -8,11 +15,11 @@ export default {
     const result = [];
     keys.forEach((key) => {
       const groupId = key;
-      const { dateCreated, groupname, messages, users } = data[key];
+      const { dateCreated, groupName, messages, users } = data[key];
       result.push({
         groupId,
         dateCreated,
-        groupname,
+        groupName,
         messages,
         users
       });

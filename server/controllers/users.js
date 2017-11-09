@@ -1,50 +1,38 @@
 /**
- * Module dependencies
+ * Import module dependencies
  */
 import firebase from 'firebase';
 import db from '../config/config';
 
 /**
- * @description Register a new user
+ * @description This controller creates a new user
  * POST:/user/signup
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an obejct containing a user
  */
 export const createUser = (req, res) => {
-  const { email, password, username, phonenumber } = req.body;
-  req.check('email', 'Email is required').notEmpty();
-  req.check('username', 'Username is required').notEmpty();
-  req.check('email', 'Please put a valid email').isEmail();
-  req.check('password', 'Password is required').notEmpty();
-  req.check('password', 'Password must be a mininum of 6 character')
-  .isLength(6, 50);
-
-  const errors = req.validationErrors();
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({ message });
-  } else {
-    return firebase.auth().createUserWithEmailAndPassword(email, password)
+  const { email, password, userName, phoneNumber } = req.body;
+  firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         db.database().ref(`users/${user.uid}`).set({
           email,
           password,
-          username,
-          phonenumber
+          userName,
+          phoneNumber
         });
         let parsedUser;
         try {
           parsedUser = JSON.parse(JSON.stringify(user));
         } catch (error) {
           res.status(500).json({
-            error
+            message: `An error occured while creating ${userName}`
           });
         }
         const token = parsedUser.stsTokenManager.accessToken;
-        res.status(200).json({
+        res.status(201).json({
           message: 'Registration success',
           userDetails: parsedUser.providerData,
           token
@@ -55,166 +43,188 @@ export const createUser = (req, res) => {
         const errorMessage = error.message;
         if (errorCode === 'auth/email-already-in-use') {
           res.status(401).json({
-            message: 'email already in use.'
+            message: 'Email already in use'
           });
         } else {
-          res.status(500).json(errorMessage);
+          res.status(500).json({
+            errorMessage
+          });
         }
       });
-  }
 };
 
 /**
- * @description User sign In
+ * @description This controller signs a registered user in
  * POST:/user/signin
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a logged in user
  */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
-  req.check('email', 'Email is required').notEmpty();
-  req.check('email', 'Please put a valid email').isEmail();
-  req.check('password', 'Password is required').notEmpty();
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({ message });
-  } else {
-    return firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        let parsedUser;
-        try {
-          parsedUser = JSON.parse(JSON.stringify(user));
-        } catch (err) {
-          res.status(500).send('');
-        }
-        const token = parsedUser.stsTokenManager.accessToken;
-        const { uid: userId, providerData: userDetails } = parsedUser;
-        res.status(200).send({
-          message: 'User Signed in!',
-          userDetails,
-          userId,
-          token
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      let parsedUser;
+      try {
+        parsedUser = JSON.parse(JSON.stringify(user));
+      } catch (error) {
+        res.status(500).send({
+          error
         });
-      })
-      .catch((error) => {
-        res.status(401).send({
-          message: `An error occured ${error.message}`
-        });
+      }
+      const token = parsedUser.stsTokenManager.accessToken;
+      const { uid: userId, providerData: userDetails } = parsedUser;
+      res.status(200).send({
+        message: 'User Signed in!',
+        userDetails,
+        userId,
+        token
       });
-  }
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/user-not-found') {
+        res.status(404).json({
+          message:
+          'User not found. Make sure your email and password is correct'
+        });
+      } else {
+        res.status(500).json({
+          errorMessage
+        });
+      }
+    });
 };
 
 /**
- * @description User reset password
+ * @description describes a controller for google sign up
+ *
+ * @param { object } req request object
+ * @param { object } res response object
+ *
+ * @return { object } returns a google user object
+ */
+export const googleSignIn = (req, res) => {
+  const result = req.body;
+  const credential =
+  firebase.auth.GoogleAuthProvider.credential(result.credential.idToken);
+  db.database().ref(`users/${result.user.uid}`)
+  .once('value', (snap) => {
+    if (!snap.exists()) {
+      db.database().ref(`users/${result.user.uid}`)
+      .set({
+        userName: result.user.displayName,
+        email: result.user.email,
+        phoneNumber: result.user.phoneNumber
+      });
+      firebase.auth().signInWithCredential(credential)
+      .then((user) => {
+        res.status(200).json({
+          message: 'Google sign in successful',
+          user
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        res.status(500).json({
+          message: errorMessage
+        });
+      });
+    } else {
+      firebase.auth().signInWithCredential(credential)
+      .then((user) => {
+        res.status(200).json({
+          message: 'Google sign in successful',
+          user
+        });
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        res.status(500).json({
+          message: errMessage
+        });
+      });
+    }
+  })
+  .catch((err) => {
+    const errMessage = err.message;
+    res.status(500).json({
+      message: errMessage
+    });
+  });
+};
+
+
+/**
+ * @description This controller handles a user reset password
  * POST:/user/passwordreset
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a message
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
-  req.check('email', 'auth/invalid-email').notEmpty();
-  req.check('email', 'auth/invalid-email').isEmail();
-
   firebase.auth().sendPasswordResetEmail(email)
-    .then((user) => {
-      res.status(200).json({
-        message: 'Mail sent succesfully',
-        user
-      });
-    })
-    .catch((error) => {
-      res.status(500).send({
-        message: `An error occured ${error.message}`
-      });
+  .then(() => {
+    res.status(200).json({
+      message: 'Mail sent succesfully',
     });
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/user-not-found') {
+      res.status(404).json({
+        message: 'Email does not exist'
+      });
+    } else {
+      res.status(500).send({
+        errorMessage
+      });
+    }
+  });
 };
 
 
 /**
- * @description User sign out
- * POST:/user/signoutt
+ * @description This method handles a user sign out
+ * POST:/user/signout
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
+ * @return {object} return an object containing a message;
  */
 export const logOut = (req, res) => {
-  const user = req.user.uid;
-  if (user) {
-    firebase.auth().signOut()
-    .then(() => {
-      res.status(200).json({
-        message: 'Signed out!',
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: `An error occured ${error.message}`
-      });
+  firebase.auth().signOut()
+  .then(() => {
+    res.status(200).json({
+      message: 'Signed out!',
     });
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    res.status(500).json({
+      message: `An error occured ${errorMessage}`
     });
-  }
+  });
 };
 
 /**
- * @description get a user in a group
- * POST:/user/group
+ * @description This controller fetches all registered
+ * user in the app
+ *
+ * GET:/user/group
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} response object;
- */
-export const getUser = (req, res) => {
-  const user = req.user.uid;
-  if (user) {
-    const query = db.database().ref(`users/${user}`);
-    query.once('value').then((snapshot) => {
-      const result = [];
-      snapshot.forEach((childSnapshot) => {
-        const value = childSnapshot.val();
-        const key = childSnapshot.key;
-        if (key === 'groups') {
-          result.push(value);
-        }
-      });
-      return res.status(200).json({
-        result
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: `An error occured ${error.message}`
-      });
-    });
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
-    });
-  }
-};
-
-/**
- * @description get all registered users
- * POST:/user/group
- *
- * @param {object} req request object
- * @param {object} res response object
- *
- * @return {object} response object
+ * @return {object} return all users and users details
  */
 export const getAllUsersInGroup = (req, res) => {
   const user = req.user.uid;
@@ -226,7 +236,7 @@ export const getAllUsersInGroup = (req, res) => {
       snap.forEach((details) => {
         usersInGroup = {
           userId: details.key,
-          userNames: details.val().username
+          userNames: details.val().userName
         };
         usersDetails.push(usersInGroup);
       });
@@ -234,14 +244,31 @@ export const getAllUsersInGroup = (req, res) => {
         message: 'Users retrieved successfully',
         usersDetails
       });
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      res.status(500).json({
+        message: `An error occured ${errorMessage}`
+      });
     });
   } else {
-    res.status(403).json({
-      message: 'Unauthorized operation, please signup/signin'
+    res.status(401).json({
+      message: 'Please signup/signin to perform this operation'
     });
   }
 };
 
+/**
+ * @description This controller fetches all users
+ * added to a group
+ *
+ * GET:/groups/:groupId/members
+ *
+ * @param {object} req request object
+ * @param {object} res response object
+ *
+ * @return {object} return all user details
+ */
 export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const user = req.user.uid;
@@ -259,9 +286,15 @@ export const newUsersInGroup = (req, res) => {
       res.status(200).json({
         users
       });
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      res.status(500).json({
+        message: `An error occure ${errorMessage}`
+      });
     });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized operation, please signup/signin'
     });
   }

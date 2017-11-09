@@ -4,11 +4,17 @@
   "description": "Post it Application",
   "main": "index.js",
   "scripts": {
-    "client-test": "jest ./client/__test__ --coverage",
-    "start": "babel-watch ./server/server.js && webpack -w --hot",
-    "build": "babel server/ -d dist",
-    "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 1500000 --compilers js:babel-register && npm run coverage-report",
-    "coverage-report": "cat ./coverage/lcov.info | coveralls"
+    "start": "NODE_ENV=production babel-node ./server/server.js",
+    "start-dev": "NODE_ENV=development babel-watch ./server/server.js && webpack -w --hot",
+    "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 150000 ",
+    "client-test": "NODE_ENV=test jest ./client/__test__ --coverage",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "heroku-postbuild": "babel-node ./server/build.js"
+  },
+  "nyc": {
+    "require": [
+      "babel-register"
+    ]
   },
   "repository": {
     "type": "git",
@@ -23,6 +29,7 @@
   "dependencies": {
     "assert": "^1.4.1",
     "axios": "^0.16.2",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-react-transform": "^2.0.2",
@@ -30,6 +37,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
     "babel-runtime": "^6.23.0",
     "babel-watch": "^2.0.7",
     "body-parser": "^1.17.2",
@@ -37,6 +45,7 @@
     "chai-http": "^3.0.0",
     "change": "0.0.0",
     "dotenv": "^4.0.0",
+    "dotenv-webpack": "^1.5.4",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
@@ -48,18 +57,17 @@
     "html-webpack-plugin": "^2.30.1",
     "jquery": "^3.2.1",
     "keymirror": "^0.1.1",
-    "lodash": "^4.17.4",
+    "material-design-icons": "^3.0.1",
     "mocha": "^3.5.3",
-    "moment": "^2.18.1",
     "nexmo": "^2.0.2",
     "nodemailer": "^4.1.0",
     "nyc": "^11.2.1",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4",
+    "react": "^15.6.2",
     "react-bootstrap": "^0.31.2",
     "react-dispatcher": "^0.2.1",
     "react-document-title": "^2.0.3",
-    "react-dom": "^15.5.4",
+    "react-dom": "^15.6.2",
     "react-google-button": "^0.3.0",
     "react-hot-loader": "^1.3.1",
     "react-router-dom": "^4.1.1",
@@ -68,6 +76,7 @@
     "superagent": "^3.5.2",
     "supertest": "^3.0.0",
     "toastr": "^2.1.2",
+    "uglifyjs-webpack-plugin": "^1.0.0-rc.0",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.4.5",
@@ -76,20 +85,16 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
-    "babel-register": "^6.26.0",
     "coveralls": "^2.13.1",
     "enzyme": "^2.8.2",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
     "faker": "^4.1.0",
     "jest": "^20.0.4",
-    "jshint": "^2.9.4",
     "mocha": "^3.4.2",
     "mocha-lcov-reporter": "^1.3.0",
-    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
     "react-test-renderer": "^15.5.4",
-    "should": "^11.2.1",
-    "supertest": "^3.0.0"
+    "should": "^11.2.1"
   }
 }

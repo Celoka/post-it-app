@@ -4,88 +4,126 @@ import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
 
 /**
+ * @description creates a class group as a react component
+ *
  * @class Group
- * 
+ *
  * @extends {React.Component}
  */
 class Group extends React.Component {
-  /**
-   * Creates an instance of Group.
-   * 
-   * @memberof Group
-   */
-  constructor() {
-    super();
+
+/**
+ * @param { Object } props
+ *
+ * @return { void }
+ *
+ * @memberof Group
+ */
+  constructor(props) {
+    super(props);
     this.state = {
-      userGroupName: '',
+      group: '',
       groupName: []
     };
   }
 
-  /**
-   * @description React life cycle method,
-   * adds listens to change from the app store.
-   * 
-   * @memberof AppComponent
-  */
+/**
+ * @description React life cycle method,
+ * adds listens to change from the app store and
+ * fires an action when the component mounts
+ *
+ * @method componentDidMount
+ *
+ * @return { void }
+ *
+ * @memberof Group
+*/
   componentDidMount() {
     AppActions.loadGroups();
     AppStore.addChangeListener(this.onStoreChange);
   }
-  /**
-   * @description React life cycle method,
-   * removes change listener.
-   * 
-   * @memberof AppComponent
-   * @returns {void}
-  */
+/**
+ * @description React life cycle method,
+ * removes change listener.
+ *
+ * @method componentWillUnmount
+ *
+ * @returns { void }
+ *
+ * @memberof Group
+ *
+*/
   componentWillUnmount() {
     AppStore.removeChangeListener(this.onStoreChange);
   }
-  /**
-   *
-   * @param {any} event
-   * @memberof Group
-  */
-  onStoreChange = ()=> {
+/**
+ * @description this method gets all the user groups
+ * from the store
+ *
+ * @method onStoreChange
+ *
+ * @return { Array } array of user groups
+ *
+ * @memberof Group
+*/
+  onStoreChange = () => {
     this.setState({
       groupName: AppStore.getUserGroup()
     });
   }
 
-  onChange = (event)=> {
+/**
+ * @description this method gets all the user groups
+ * from the store
+ *
+ * @param { String } event
+ *
+ * @returns { String } returns string for usergroup name
+ *
+ * @memberof Group
+*/
+  onChange = (event) => {
     this.setState({
-      userGroupName: event.target.value
+      group: event.target.value
     });
   }
 
-  /**
-   *
-   * @param {any} event
-   * 
-   * @memberof Group
-   */
-  onClick = () => {
-    AppActions.createGroup(this.state.userGroupName);
+/**
+ * @description This method fires action on button click
+ *
+ *
+ * @method onClick
+ *
+ * @return { void }
+ *
+ * @memberof Group
+ */
+  onClick = (event) => {
+    event.preventDefault();
+    const groupDetail = {
+      group: this.state.group
+    };
+    AppActions.createGroup(groupDetail);
+    this.state.group = '';
     AppActions.loadGroups();
   }
-
-  /**
-   * @memberof Group
-   * 
-   * @returns
-   */
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof Group
+ */
   render() {
     return (
       <div>
         <form onSubmit={this.onClick} id='group-form'>
           <h4><center> Group List</center><hr /></h4>
-          <button id='modal-button' 
+          <button id='modal-button'
             type="button"
-            className="btn btn-success"
+            className="btn btn-success btn-block"
             data-toggle="modal"
             data-target=".create1">
             Create New Group
+              <i className="material-icons">group_add</i>
            </button>
           <div className="modal fade create1"
             id="myModal"
@@ -103,8 +141,9 @@ class Group extends React.Component {
                 <div className="modal-body">
                   <input type="text"
                     className="form-control"
+                    value ={this.state.group}
                     onChange={this.onChange}
-                    name="groupname"
+                    name="group"
                     placeholder="Input groupname...." />
                 </div>
                 <div className="modal-footer">
@@ -127,7 +166,8 @@ class Group extends React.Component {
           <div >
             <div className="list-group">
               {this.state.groupName.map((KeyName, KeyIndex) =>
-                 (<GroupList setGroupId={this.props.setGroupId} KeyName={KeyName} key={KeyIndex} />))}
+                 (<GroupList setGroupId={this.props.setGroupId}
+                  KeyName={KeyName} key={KeyIndex} />))}
             </div>
           </div>
         </form>

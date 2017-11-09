@@ -1,0 +1,28 @@
+{
+  "data": { 
+    "status": "Message retrived succcessfully",
+    "groupMessage": [
+      {
+          "messageId": "-Kx-bhNDZLmYclETVJUc",
+          "message": "Humanity is the oldest religion.",
+          "time": "Sat Oct 21 2017 21:27:51 GMT+0100 (WAT)",
+          "priority": "Critical",
+          "user": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1"
+      },
+      {
+          "messageId": "-Kx-bpTOVwHSHS8Qv7mf",
+          "message": "We will hereby commence our product launch",
+          "time": "Sat Oct 21 2017 21:28:25 GMT+0100 (WAT)",
+          "priority": "Urgent",
+          "user": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1"
+      },
+      {
+          "messageId": "-KxAdcAa8gylf2UncLw5",
+          "message": "Hello world ",
+          "time": "Tue Oct 24 2017 00:52:04 GMT+0100 (WAT)",
+          "priority": "Normal",
+          "user": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1"
+      }
+    ]
+  }
+}

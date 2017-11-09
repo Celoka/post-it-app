@@ -1,76 +1,99 @@
 import React from 'react';
 import AppActions from '../actions/AppActions';
-import MessageForm from '../components/MessageForm.jsx';
+
 /**
+ * @description  creates a class message board as a react component
  *
  * @class MessageBoard
- * 
+ *
  * @extends {React.Component}
  */
 class MessageBoard extends React.Component {
-  /**
-   * @description Creates an instance of MessageBoard
-   * 
-   * @memberof MessageBoard
-   */
+/**
+ * @description Creates an instance of MessageBoard
+ *
+ * @param { object } props
+ *
+ * @return { void }
+ *
+ * @memberof MessageBoard
+ */
   constructor() {
     super();
     this.state = {
       message: '',
       groupId: '',
+      groupName: '',
+      groupMessage: [],
     };
   }
 
-  /**
-   * @description this receives props from the parent component
-   * 
-   * @param {any} nextProps 
-   * 
-   * @memberof MessageBoard
-   */
+/**
+ * @description this receives props from the parent component(dashboard)
+ *
+ * @param { String } nextProps
+ *
+ * @method componentWillReceiveProps
+ *
+ * @return { void }
+ *
+ * @memberof MessageBoard
+ */
   componentWillReceiveProps(nextProps) {
     this.setState({
       groupId: nextProps.groupId,
+      groupMessage: nextProps.groupMessage,
+      groupName: nextProps.groupName
     });
   }
 
-  /**
-   * @description gets the message from the store
-   * @memberof MessageBoard
-   */
-  onStoreChange = () => {
-    this.setState({
-      groupMessage: AppStore.getAllMessages(),
-    });
-  }
-  /**
-   * @param {any} event
-   *  
-   * @memberof MessageBoard
-   */
-  handlePriority=(event)=> {
+/**
+ * @description this changes the state of the component
+ * for a controlled input
+ *
+ * @param { String } event
+ *
+ * @method handlePriority
+ *
+ * @return { void }
+ *
+ * @memberof MessageBoard
+ */
+  handlePriority = (event) => {
     this.setState({
       priority: event.target.value
     });
   }
-  /**
-   * @param {any} event 
-   * 
-   * @memberof MessageBoard
-   */
-  onChange=(event)=> {
+/**
+ * @description changes the state of the component on input
+ *
+ * @param { String } event
+ *
+ * @method onChange
+ *
+ * @return { void }
+ *
+ * @memberof MessageBoard
+ */
+  onChange = (event) => {
     this.setState({
       message: event.target.value
     });
   }
-  /**
-   * @param {any} event
-   *  
-   * @memberof MessageBoard
-   */
-  onSubmit=(event)=> {
+
+/**
+ * @description fires an action on click of a button
+ *
+ * @param { Object } event
+ *
+ * @method onSubmit
+ *
+ * @return { void }
+ *
+ * @memberof MessageBoard
+ */
+  onSubmit = (event) => {
     event.preventDefault();
-    const { text, type } = this.refs;
     const messageDetail = {
       message: this.state.message,
       priority: this.refs.type.value,
@@ -78,36 +101,40 @@ class MessageBoard extends React.Component {
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
-      text.value = '';
-      type.value = 'Normal';
+      this.state.message = '';
+      this.refs.type.value = 'Normal';
     }
   }
-  /**
-   * @memberof MessageBoard
-   * 
-   * @returns {any} This returns the rendered component
-   */
+/**
+ * @return { jsx } rendered jsx element
+ *
+ * @memberof MessageBoard
+ */
   render() {
-    const messageList = this.props.groupMessage.map( (groupMessage, index) =>
+    const messageList = this.state.groupMessage.map((groupMessage, index) =>
       <div key={index} className="row">
         <div className="col-sm-12">
           <div className="well">
             <p id="message-text">{groupMessage.message}</p>
-            <time id="time-tag">{groupMessage.time}</time>
+            <time id="time-tag"> posted on {groupMessage.timeStamp}</time>
           </div>
         </div>
       </div>
     );
     return (
       <div>
-        <MessageForm groupname={this.props.groupname}
-          messageList={messageList} />
+        <form id="message-display">
+          <h1>
+            {this.props.groupName}
+          </h1>
+          {messageList}
+        </form>
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
             <div className='row content'>
               <div id="message-box" className="form-group">
                 <textarea className="form-control"
-                  ref="text"
+                  value={this.state.message}
                   rows="0.5"
                   onChange={this.onChange}
                   placeholder='type a message..'

@@ -1,35 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { mount, shallow } from 'enzyme';
-import { expect } from 'chai';
+import { shallow } from 'enzyme';
 
 import Navbar from '../src/components/Navbar.jsx';
 import Home from '../src/components/Home.jsx';
 
 
 describe('<Home />', () => {
-  it('should contain a <Navbar/> component', ()=> {
-    const wrapper = shallow(<Home />);
-    expect(wrapper.find(Navbar)).to.have.length(1);
+  const wrapper = shallow(<Home />);
+
+  it('should contain a <Navbar/> component', () => {
+    expect(wrapper.find(Navbar)).toHaveLength(1);
   });
-  it('should find line break', ()=> {
-    const wrapper = shallow(<Home/>);
-    expect(wrapper.find('br')).to.have.length(2);
+  it('should have function Navbar to be defined', () => {
+    expect(wrapper.nodes[0].props.types).toBeUndefined();
   });
-  it('should find button', ()=> {
-    const wrapper = shallow(<Home/>);
-    expect(wrapper.find('button')).to.have.length(1);
+  it('should find line break', () => {
+    expect(wrapper.find('br')).toHaveLength(2);
   });
-  it('should find a link tag', ()=> {
-    const wrapper = shallow (<Home/>);
-    expect(wrapper.find('Link')).to.have.length(1);
+  it('should find button', () => {
+    expect(wrapper.find('button')).toHaveLength(1);
   });
-  it('should contain a section ', ()=> {
-    const wrapper = shallow(<Home/>);
-    expect(wrapper.find('section')).to.have.length(1);
-  })
-  it('should redirect on click of a button', ()=> {
-    const wrapper = shallow(<Home/>);
+  it('should find a link tag', () => {
+    expect(wrapper.find('Link')).toHaveLength(1);
+  });
+  it('should contain a section ', () => {
+    expect(wrapper.find('section')).toHaveLength(1);
+  });
+  it('should redirect on click of a button', () => {
     wrapper.find('button').simulate('click');
   });
 });

@@ -5,16 +5,17 @@ node_js:
 services:
   
 before_install:
-  -travis_wait npm install
+  - travis_wait npm install
 
 cache:
-- node_modules
+  - node_modules
 
 script: 
   - npm run test
+  - npm run client-test
 
 env:
  CODECLIMATE_REPO_TOKEN: e27d7f10e79aeba198ada77becd8d02279d810cba99d3f70c0bf879ee3532f3f
 
 after_success:
-  - npm run coveralls
+  - npm run coverage

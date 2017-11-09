@@ -1,26 +1,28 @@
-import path from 'path';
-import webpack from 'webpack';
+const path = require('path');
+const webpack = require('webpack');
+const DotEnvPlugin = require('dotenv-webpack');
 
+const dotEnvPlugin = new DotEnvPlugin({
+  path: './.env',
+});
 const config = {
-
   entry: [
     path.join(__dirname, 'client/src/index.js'),
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
+  devtool: 'inline-source-map',
   output: {
-
-    path: path.join(__dirname, 'client/app/js'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    dotEnvPlugin
   ],
   devServer: {
-    contentBase: './client/app/js',
+    contentBase: './dist',
     inline: true,
     hot: true,
     historyApiFallback: true
@@ -57,7 +59,10 @@ const config = {
     extensions: ['*', '.js', '.jsx']
   },
   node: {
-    fs: 'empty'
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
   },
 };
 

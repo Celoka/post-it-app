@@ -1,36 +1,54 @@
 import React from 'react';
-import { mount,shallow } from 'enzyme';
-import { expect } from 'chai';
-
+import { mount } from 'enzyme';
+import mockApiCall from '../__mocks__/axios';
+import AppStore from '../src/stores/AppStore';
+import AppActions from '../src/actions/AppActions';
 import Group from '../src/components/Group.jsx';
 import GroupList from '../src/components/GroupList.jsx';
 
-describe ('<Group/>', ()=> {
-  
-  it('should contain a <GroupList /> component', ()=> {
-   const wrapper =  mount(<Group />);
-    expect(wrapper.find(GroupList)).to.have.length(0);
+describe('<Group/>', () => {
+  const createGroupSpy = jest.spyOn(AppActions, 'createGroup');
+  const loadGroupsSpy = jest.spyOn(AppActions, 'loadGroups');
+  const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
+  const getUserGroupSpy = jest.spyOn(AppStore, 'getUserGroup');
+  const removeChangeListenerSpy = jest.spyOn(AppStore, 'removeChangeListener');
+
+  beforeEach(() => {
+    jest.mock('axios', () => mockApiCall);
   });
-  it('should have a button', ()=> {
-    const wrapper =  shallow(<Group />);
-    expect(wrapper.find('button')).to.have.length(4);
+  const wrapper = mount(<Group />);
+  it('should contain a <GroupList /> component', () => {
+    expect(wrapper.find(GroupList)).toHaveLength(0);
   });
-  it('should find a form', ()=> {
-    const wrapper = shallow(<Group/>);
-    expect(wrapper.find('form')).to.have.length(1);
-  })
-  it('should update the state when on click of a button', ()=> {
-    const wrapper = mount(<Group/>);
-    wrapper.setState({ userGroupName: 'Eloka' });
-    wrapper.find('form').simulate('click');
+  it('should have a button', () => {
+    expect(wrapper.find('button')).toHaveLength(4);
   });
-  it('should have an input for groupname', ()=> {
-    const wrapper =  shallow(<Group />);
-    expect(wrapper.find('input')).to.have.length(1);
+  it('should find a form', () => {
+    expect(wrapper.find('form')).toHaveLength(1);
   });
-  it('should have an initial state set to empty', ()=> {
-    const wrapper =  shallow(<Group />);
-    expect(wrapper.state().userGroupName).to.equal('');
-    expect(wrapper.state().groupName.length).to.equal(0);
-  })
+  it('should update the state when on click of a button', () => {
+    wrapper.setState({ userGroupName: 'test' });
+    wrapper.find('button').at(3).simulate('click');
+    expect(createGroupSpy).toHaveBeenCalled();
+    expect(loadGroupsSpy).toHaveBeenCalled();
+  });
+  it('should have an input for groupname', () => {
+    expect(wrapper.find('input')).toHaveLength(1);
+  });
+  it('should have an it state to be equal to test', () => {
+    expect(wrapper.state().userGroupName).toEqual('');
+    expect(wrapper.state().groupName).toEqual([
+    { groupId: '-Kwz6LQ8P66M25GfxlNQ', groupname: 'Nwendu' },
+    { groupId: '-Kwz6UdeGr7kjKRhpE0T', groupname: 'Ebuka' },
+    { groupId: '-KwzMzLzSbVLm_Vsauwd', groupname: 'Andela' }]);
+  });
+  it('calls componentDidMount() lifecycle method', () => {
+    expect(loadGroupsSpy).toHaveBeenCalled();
+    expect(addChangeListenerSpy).toHaveBeenCalled();
+    expect(getUserGroupSpy).toHaveBeenCalled();
+  });
+  it('should unmount the component after mounting', () => {
+    wrapper.unmount();
+    expect(removeChangeListenerSpy).toHaveBeenCalled();
+  });
 });
