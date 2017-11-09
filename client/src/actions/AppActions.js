@@ -1,8 +1,9 @@
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import ToastrError from '../vendors/index';
+import { ToastrError, setAuthToken } from '../vendors/index';
 
 
 const AppActions = {
@@ -45,13 +46,16 @@ const AppActions = {
     return axios
       .post('/api/v1/user/signin', signInDetails)
       .then((response) => {
-        const { token } = response.data;
-        const user = response.data.userDetails[0];
-        localStorage.setItem('token', JSON.stringify(token));
-        toastr.success(response.data.message);
+        const { jwtToken } = response.data;
+        setAuthToken(jwtToken);
+        localStorage.setItem('token', jwtToken);
+        const userDetails = jwt.decode(localStorage.token);
+        localStorage.setItem('displayName',
+         JSON.stringify(userDetails.displayName));
+        toastr.success(`Welcome, ${userDetails.displayName}`);
         AppDispatcher.dispatch({
           actionType: AppConstants.SET_USER,
-          user
+          userDetails
         });
       })
       .catch(ToastrError);
@@ -69,10 +73,8 @@ const AppActions = {
     return axios
       .post('/api/v1/user/googlesignin', result)
       .then((response) => {
-        const token = response.data.user.stsTokenManager.accessToken;
         const googleUser = response.data.user;
         const displayName = response.data.user.displayName;
-        localStorage.setItem('token', JSON.stringify(token));
         toastr.success(`Welcome ${displayName}`);
         AppDispatcher.dispatch({
           actionType: AppConstants.GOOGLE_LOGIN,
@@ -267,8 +269,7 @@ const AppActions = {
     return axios
       .post('api/v1/user/signout')
       .then((response) => {
-        const { token } = response.data;
-        localStorage.removeItem('token', token);
+        localStorage.clear(response);
       })
       .catch(ToastrError);
   },

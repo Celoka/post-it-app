@@ -108,6 +108,7 @@ input {
     margin: 150px auto 0px auto;
 }
 
+
 #messageboard {
     height: 130px;
 }
@@ -120,8 +121,9 @@ input {
 }
 
 #signinfieldset {
-    margin-top: 40px;
+    margin-top: 40px; 
 }
+
 
 #signupfieldset {
     margin-top: 40px;
@@ -284,4 +286,22 @@ p{
 .message-icon {
   padding-top: 11px;
   padding-left: 5px;
+}
+#background {
+  background-image: url("../css/postitbg.png");
+  background-repeat: no-repeat;
+  background-size: cover
+}
+#background .container-fluid{
+  margin-top: -20px;
+  padding-top: 15px;
+  background-color: rgba(0,0,0,0.5);
+}
+
+@media screen  and (max-width: 480px){
+  #signin {
+    width: 100%;
+    margin: 0;
+    border: 5px solid red;
+  }
 }

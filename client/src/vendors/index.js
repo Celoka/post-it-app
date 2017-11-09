@@ -1,5 +1,6 @@
 
 import toastr from 'toastr';
+import axios from 'axios';
 
 
 /**
@@ -9,10 +10,17 @@ import toastr from 'toastr';
  *
  * @return { object } error message
  */
-const ToastrError = (error) => {
-  const status = error.response.data.message;
-  toastr.error(status);
+export const ToastrError = (error) => {
+  console.log(error)
+  // const status = error.response.data.message;
+  // toastr.error(status);
 };
 
-export default ToastrError;
+export const setAuthToken = (token) => {
+  if (token) {
+    axios.defaults.headers.common['x-access-token'] = token;
+  } else {
+    delete axios.defaults.headers.common['x-access-token'];
+  }
+};
 

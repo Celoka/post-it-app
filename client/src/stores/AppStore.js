@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import jwt from 'jsonwebtoken';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 
@@ -49,12 +50,12 @@ function allGroupMessages(message) {
  *
  * @function setCurrentUser
  *
- * @param { Object } user
+ * @param { Object } userDetails
  *
  * @returns { Array } returns an array of object of new user
  */
-function setCurrentUser(user) {
-  currentUser = user;
+function setCurrentUser(userDetails) {
+  currentUser = userDetails;
   return currentUser;
 }
 
@@ -140,6 +141,9 @@ function setUserGroup(userGroups) {
  * @returns { Array } details of a google user
  */
 function setNewGoogleUser(googleUser) {
+  localStorage.setItem('token',
+   JSON.stringify(googleUser.stsTokenManager.accessToken));
+  localStorage.setItem('userName', JSON.stringify(googleUser.displayName));
   googleUsers = googleUser;
   return googleUsers;
 }
@@ -310,7 +314,7 @@ const AppStore = new AppStoreClass();
 AppStore.dispatchToken = AppDispatcher.register((action) => {
   switch (action.actionType) {
     case AppConstants.SET_USER:
-      setCurrentUser(action.user);
+      setCurrentUser(action.userDetails);
       AppStore.emitChange();
       break;
     case AppConstants.CREATE_GROUP:

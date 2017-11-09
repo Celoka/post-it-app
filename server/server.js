@@ -9,7 +9,6 @@ import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import routes from './routes/routes';
-import getCurrentUser from './middlewares/auth';
 
 
 let configPath;
@@ -26,20 +25,12 @@ const compiler = webpack(config);
 const publicPath = express.static(path.join(__dirname, '../client/app/js'));
 
 
-/**
- * @type
- * @returns current signup user
- */
-
 app.use((req, res, next) => {
-  getCurrentUser().then((user) => {
-    req.user = user;
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POSTS');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, ' +
-         'content-type, Authorization');
-    next();
-  });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POSTS');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, ' +
+    'content-type, Authorization');
+  next();
 });
 
 app.use(webpackMiddleware(compiler, {

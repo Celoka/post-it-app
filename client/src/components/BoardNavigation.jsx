@@ -23,6 +23,8 @@ const BoardNavigation = () => ({
  * @function BoardNavigation
  */
   render() {
+    const displayName = JSON.parse(localStorage.getItem('displayName'));
+    const userName = JSON.parse(localStorage.getItem('userName'));
     return (
       <div>
         <nav className="navbar navbar-default">
@@ -34,7 +36,7 @@ const BoardNavigation = () => ({
               </button>
               <Link to='/dashboard'className="navbar-brand">
                 <h1>
-                  Post It
+                  Welcome, { displayName || userName }
                 </h1>
               </Link>
             </div>

@@ -89,7 +89,8 @@
   "globals": {
     "jest": true,
     "no-unused-vars": false,
-    "localStorage": true
+    "localStorage": true,
+    "document": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

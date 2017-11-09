@@ -105,7 +105,7 @@ class DashBoard extends React.Component {
  */
   render() {
     return (
-    <div>
+    <div id="background">
       <BoardNavigation googleUser={this.state.googleUser}/>
       <div className="container-fluid">
           <div id= 'profile' className="row">
