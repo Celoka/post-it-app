@@ -63,8 +63,9 @@ class CreateUser extends React.Component {
  */
   onSubmit = (event) => {
     event.preventDefault();
-    const userDetails = { ...this.state };
-    AppActions.registerUser(userDetails).then(() => {
+    const credentials = { ...this.state };
+    AppActions.registerUser(credentials)
+    .then(() => {
       this.props.history.push('/dashboard');
     });
   }

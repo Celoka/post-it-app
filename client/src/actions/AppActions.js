@@ -1,9 +1,8 @@
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import { ToastrError, setAuthToken } from '../vendors/index';
+import { ToastrError, setCurrentUser } from '../vendors/';
 
 
 const AppActions = {
@@ -12,23 +11,15 @@ const AppActions = {
    * API call to the server for a post request
    * to register a user
    *
-   * @param { Object } userDetails
+   * @param { Object } credentials
    *
    * @returns { Object } returns registered user registration details
    */
-  registerUser(userDetails) {
+  registerUser(credentials) {
     return axios
-      .post('/api/v1/user/signup', userDetails)
+      .post('/api/v1/user/signup', credentials)
       .then((response) => {
-        const { token } = response.data;
-        localStorage.setItem('token', JSON.stringify(token));
-        const user = response.data.userDetails[0];
-        toastr.success(response.data.message);
-        AppDispatcher.dispatch({
-          actionType: AppConstants.NEW_USER,
-          user,
-          token
-        });
+        setCurrentUser(response);
       })
       .catch(ToastrError);
   },
@@ -46,17 +37,7 @@ const AppActions = {
     return axios
       .post('/api/v1/user/signin', signInDetails)
       .then((response) => {
-        const { jwtToken } = response.data;
-        setAuthToken(jwtToken);
-        localStorage.setItem('token', jwtToken);
-        const userDetails = jwt.decode(localStorage.token);
-        localStorage.setItem('displayName',
-         JSON.stringify(userDetails.displayName));
-        toastr.success(`Welcome, ${userDetails.displayName}`);
-        AppDispatcher.dispatch({
-          actionType: AppConstants.SET_USER,
-          userDetails
-        });
+        setCurrentUser(response);
       })
       .catch(ToastrError);
   },
@@ -116,9 +97,9 @@ const AppActions = {
  *
  * @returns { Object } returns all user groups group details
  */
-  loadGroups() {
+  loadGroups(userId) {
     return axios
-      .get('/api/v1/groups')
+      .get(`/api/v1/${userId}/groups`)
       .then((response) => {
         const { userGroups } = response.data;
         AppDispatcher.dispatch({

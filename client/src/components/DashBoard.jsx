@@ -108,14 +108,15 @@ class DashBoard extends React.Component {
     <div id="background">
       <BoardNavigation googleUser={this.state.googleUser}/>
       <div className="container-fluid">
-          <div id= 'profile' className="row">
-            <div className="col-sm-3 leftsidenav">
+          <div id="profile" className="container">
+            <div className="row">
+            <div className="col-sm-12 col-md-3 leftsidenav">
               <Group setGroupId={this.setGroupId}/>
               <UsersInGroup groupId={this.state.groupId}
                 userId={this.state.userId}
                 newMember={this.state.newMember}/>
             </div>
-            <div className="<col-sm-12></col-sm-12> middleboard">
+            <div className="col-sm-12 col-md-9 ">
               {
                 (this.state.groupId === null) ?
                 <h1>WELCOME TO POSTIT</h1> :
@@ -123,6 +124,7 @@ class DashBoard extends React.Component {
                   groupName={this.state.groupName}
                   groupMessage={this.state.groupMessage}/>
               }
+            </div>
             </div>
           </div>
         </div>

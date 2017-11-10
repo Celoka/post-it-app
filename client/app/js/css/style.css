@@ -111,6 +111,8 @@ input {
 
 #messageboard {
     height: 130px;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 #resetpassword {
@@ -136,10 +138,6 @@ input {
 #checkbox {
     margin-left: 20px;
     margin-top: 10px;
-}
-
-#message-box {
-    margin-left: 15px;
 }
 
 #priority-class {
@@ -216,7 +214,6 @@ p{
 
 #message-display {
     height: 70vh;
-    margin-right: 13px;
     margin-top: -1px;
     overflow: auto;
     
@@ -304,4 +301,8 @@ p{
     margin: 0;
     border: 5px solid red;
   }
+}
+
+h1.group-title {
+  text-align: left;
 }

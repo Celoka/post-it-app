@@ -22,54 +22,43 @@ const secret = process.env.SECRET_TOKEN;
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
   firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        const { uid } = user;
-        const displayName = normalizeString(userName);
-        user.updateProfile({
-          displayName
-        });
-        db.database().ref(`users/${uid}`).set({
-          email,
-          password,
-          displayName,
-          phoneNumber
-        });
-        let parsedUser;
-        try {
-          parsedUser = JSON.parse(JSON.stringify(user));
-        } catch (error) {
-          res.status(500).json({
-            message: `An error occured while creating ${displayName}`
-          });
-        }
-        const jwtToken = jwt.sign({
-          uid,
-          displayName,
-        },
+  .then((user) => {
+    const { uid } = user;
+    const displayName = normalizeString(userName);
+    user.updateProfile({
+      displayName
+    });
+    db.database().ref(`users/${uid}`).set({
+      email,
+      password,
+      displayName,
+      phoneNumber
+    });
+    const jwtToken = jwt.sign({
+      uid,
+      displayName,
+    },
         secret,
         { expiresIn: 60 * 60 }
       );
-        const token = parsedUser.stsTokenManager.accessToken;
-        res.status(201).json({
-          message: 'Registration success',
-          jwtToken,
-          user,
-          token
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === 'auth/email-already-in-use') {
-          res.status(401).json({
-            message: 'Email already in use'
-          });
-        } else {
-          res.status(500).json({
-            errorMessage
-          });
-        }
+    res.status(201).json({
+      message: 'Registration success',
+      jwtToken,
+    });
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/email-already-in-use') {
+      res.status(401).json({
+        message: 'Email already in use'
       });
+    } else {
+      res.status(500).json({
+        message: errorMessage
+      });
+    }
+  });
 };
 
 /**
@@ -84,44 +73,34 @@ export const createUser = (req, res) => {
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      let parsedUser;
-      try {
-        parsedUser = JSON.parse(JSON.stringify(user));
-      } catch (error) {
-        res.status(500).send({
-          error
-        });
-      }
-      const { uid, displayName } = user;
-      const token = parsedUser.stsTokenManager.accessToken;
-      const jwtToken = jwt.sign({
-        uid,
-        displayName,
-      },
+  .then((user) => {
+    const { uid, displayName } = user;
+    const jwtToken = jwt.sign({
+      uid,
+      displayName,
+    },
       secret,
       { expiresIn: 60 * 60 });
-      res.status(200).send({
-        message: 'User Signed in!',
-        user,
-        token,
-        jwtToken
-      });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === 'auth/user-not-found') {
-        res.status(404).json({
-          message:
-          'User not found. Make sure your email and password is correct'
-        });
-      } else {
-        res.status(500).json({
-          message: errorMessage
-        });
-      }
+    res.status(200).send({
+      message: 'User Signed in!',
+      user,
+      jwtToken
     });
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/user-not-found') {
+      res.status(404).json({
+        message:
+          'User not found. Make sure your email and password is correct'
+      });
+    } else {
+      res.status(500).json({
+        message: errorMessage
+      });
+    }
+  });
 };
 
 /**
