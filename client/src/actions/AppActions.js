@@ -2,7 +2,7 @@ import axios from 'axios';
 import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import ToastrError from '../vendors/index';
+import { ToastrError, setCurrentUser } from '../vendors/';
 
 
 const AppActions = {
@@ -11,23 +11,15 @@ const AppActions = {
    * API call to the server for a post request
    * to register a user
    *
-   * @param { Object } userDetails
+   * @param { Object } credentials
    *
    * @returns { Object } returns registered user registration details
    */
-  registerUser(userDetails) {
+  registerUser(credentials) {
     return axios
-      .post('/api/v1/user/signup', userDetails)
+      .post('/api/v1/user/signup', credentials)
       .then((response) => {
-        const { token } = response.data;
-        localStorage.setItem('token', JSON.stringify(token));
-        const user = response.data.userDetails[0];
-        toastr.success(response.data.message);
-        AppDispatcher.dispatch({
-          actionType: AppConstants.NEW_USER,
-          user,
-          token
-        });
+        setCurrentUser(response);
       })
       .catch(ToastrError);
   },
@@ -45,14 +37,7 @@ const AppActions = {
     return axios
       .post('/api/v1/user/signin', signInDetails)
       .then((response) => {
-        const { token } = response.data;
-        const user = response.data.userDetails[0];
-        localStorage.setItem('token', JSON.stringify(token));
-        toastr.success(response.data.message);
-        AppDispatcher.dispatch({
-          actionType: AppConstants.SET_USER,
-          user
-        });
+        setCurrentUser(response);
       })
       .catch(ToastrError);
   },
@@ -69,10 +54,8 @@ const AppActions = {
     return axios
       .post('/api/v1/user/googlesignin', result)
       .then((response) => {
-        const token = response.data.user.stsTokenManager.accessToken;
         const googleUser = response.data.user;
         const displayName = response.data.user.displayName;
-        localStorage.setItem('token', JSON.stringify(token));
         toastr.success(`Welcome ${displayName}`);
         AppDispatcher.dispatch({
           actionType: AppConstants.GOOGLE_LOGIN,
@@ -114,9 +97,9 @@ const AppActions = {
  *
  * @returns { Object } returns all user groups group details
  */
-  loadGroups() {
+  loadGroups(userId) {
     return axios
-      .get('/api/v1/groups')
+      .get(`/api/v1/${userId}/groups`)
       .then((response) => {
         const { userGroups } = response.data;
         AppDispatcher.dispatch({
@@ -267,8 +250,7 @@ const AppActions = {
     return axios
       .post('api/v1/user/signout')
       .then((response) => {
-        const { token } = response.data;
-        localStorage.removeItem('token', token);
+        localStorage.clear(response);
       })
       .catch(ToastrError);
   },

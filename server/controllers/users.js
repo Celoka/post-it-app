@@ -2,7 +2,13 @@
  * Import module dependencies
  */
 import firebase from 'firebase';
+import jwt from 'jsonwebtoken';
 import db from '../config/config';
+import { normalizeString } from '../utils/helpers';
+
+require('dotenv').config();
+
+const secret = process.env.SECRET_TOKEN;
 
 /**
  * @description This controller creates a new user
@@ -16,41 +22,43 @@ import db from '../config/config';
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
   firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        db.database().ref(`users/${user.uid}`).set({
-          email,
-          password,
-          userName,
-          phoneNumber
-        });
-        let parsedUser;
-        try {
-          parsedUser = JSON.parse(JSON.stringify(user));
-        } catch (error) {
-          res.status(500).json({
-            message: `An error occured while creating ${userName}`
-          });
-        }
-        const token = parsedUser.stsTokenManager.accessToken;
-        res.status(201).json({
-          message: 'Registration success',
-          userDetails: parsedUser.providerData,
-          token
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === 'auth/email-already-in-use') {
-          res.status(401).json({
-            message: 'Email already in use'
-          });
-        } else {
-          res.status(500).json({
-            errorMessage
-          });
-        }
+  .then((user) => {
+    const { uid } = user;
+    const displayName = normalizeString(userName);
+    user.updateProfile({
+      displayName
+    });
+    db.database().ref(`users/${uid}`).set({
+      email,
+      password,
+      displayName,
+      phoneNumber
+    });
+    const jwtToken = jwt.sign({
+      uid,
+      displayName,
+    },
+        secret,
+        { expiresIn: 60 * 60 }
+      );
+    res.status(201).json({
+      message: 'Registration success',
+      jwtToken,
+    });
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/email-already-in-use') {
+      res.status(401).json({
+        message: 'Email already in use'
       });
+    } else {
+      res.status(500).json({
+        message: errorMessage
+      });
+    }
+  });
 };
 
 /**
@@ -65,38 +73,34 @@ export const createUser = (req, res) => {
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      let parsedUser;
-      try {
-        parsedUser = JSON.parse(JSON.stringify(user));
-      } catch (error) {
-        res.status(500).send({
-          error
-        });
-      }
-      const token = parsedUser.stsTokenManager.accessToken;
-      const { uid: userId, providerData: userDetails } = parsedUser;
-      res.status(200).send({
-        message: 'User Signed in!',
-        userDetails,
-        userId,
-        token
-      });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === 'auth/user-not-found') {
-        res.status(404).json({
-          message:
-          'User not found. Make sure your email and password is correct'
-        });
-      } else {
-        res.status(500).json({
-          errorMessage
-        });
-      }
+  .then((user) => {
+    const { uid, displayName } = user;
+    const jwtToken = jwt.sign({
+      uid,
+      displayName,
+    },
+      secret,
+      { expiresIn: 60 * 60 });
+    res.status(200).send({
+      message: 'User Signed in!',
+      user,
+      jwtToken
     });
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    if (errorCode === 'auth/user-not-found') {
+      res.status(404).json({
+        message:
+          'User not found. Make sure your email and password is correct'
+      });
+    } else {
+      res.status(500).json({
+        message: errorMessage
+      });
+    }
+  });
 };
 
 /**
@@ -227,35 +231,28 @@ export const logOut = (req, res) => {
  * @return {object} return all users and users details
  */
 export const getAllUsersInGroup = (req, res) => {
-  const user = req.user.uid;
-  if (user) {
-    const usersDetails = [];
-    db.database().ref('users')
-    .once('value', (snap) => {
-      let usersInGroup = {};
-      snap.forEach((details) => {
-        usersInGroup = {
-          userId: details.key,
-          userNames: details.val().userName
-        };
-        usersDetails.push(usersInGroup);
-      });
-      res.status(200).json({
-        message: 'Users retrieved successfully',
-        usersDetails
-      });
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      res.status(500).json({
-        message: `An error occured ${errorMessage}`
-      });
+  const usersDetails = [];
+  db.database().ref('users')
+  .once('value', (snap) => {
+    let usersInGroup = {};
+    snap.forEach((details) => {
+      usersInGroup = {
+        userId: details.key,
+        userNames: details.val().userName
+      };
+      usersDetails.push(usersInGroup);
     });
-  } else {
-    res.status(401).json({
-      message: 'Please signup/signin to perform this operation'
+    res.status(200).json({
+      message: 'Users retrieved successfully',
+      usersDetails
     });
-  }
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    res.status(500).json({
+      message: `An error occured ${errorMessage}`
+    });
+  });
 };
 
 /**
@@ -271,31 +268,25 @@ export const getAllUsersInGroup = (req, res) => {
  */
 export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
-  const user = req.user.uid;
-  if (user) {
-    const users = [];
-    db.database().ref(`groups/${groupId}/users`)
-    .once('value', (snap) => {
-      let newUsers = {};
-      snap.forEach((details) => {
-        newUsers = {
-          userNames: details.val().newUser
-        };
-        users.push(newUsers);
-      });
-      res.status(200).json({
-        users
-      });
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      res.status(500).json({
-        message: `An error occure ${errorMessage}`
-      });
+  const users = [];
+  db.database().ref(`groups/${groupId}/users`)
+  .once('value', (snap) => {
+    let newUsers = {};
+    snap.forEach((details) => {
+      newUsers = {
+        userNames: details.val().newUser
+      };
+      users.push(newUsers);
     });
-  } else {
-    res.status(401).json({
-      message: 'Unauthorized operation, please signup/signin'
+    res.status(200).json({
+      users
     });
-  }
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    res.status(500).json({
+      message: `An error occure ${errorMessage}`
+    });
+  });
 };
+

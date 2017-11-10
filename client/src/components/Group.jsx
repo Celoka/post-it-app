@@ -1,4 +1,5 @@
 import React from 'react';
+import jwt from 'jsonwebtoken';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import GroupList from './GroupList.jsx';
@@ -22,6 +23,7 @@ class Group extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: jwt.decode(localStorage.token).uid,
       group: '',
       groupName: []
     };
@@ -39,7 +41,7 @@ class Group extends React.Component {
  * @memberof Group
 */
   componentDidMount() {
-    AppActions.loadGroups();
+    AppActions.loadGroups(this.state.userId);
     AppStore.addChangeListener(this.onStoreChange);
   }
 /**
@@ -91,6 +93,7 @@ class Group extends React.Component {
 /**
  * @description This method fires action on button click
  *
+ * @param { object } event
  *
  * @method onClick
  *
@@ -101,11 +104,12 @@ class Group extends React.Component {
   onClick = (event) => {
     event.preventDefault();
     const groupDetail = {
+      userId: this.state.userId,
       group: this.state.group
     };
     AppActions.createGroup(groupDetail);
     this.state.group = '';
-    AppActions.loadGroups();
+    AppActions.loadGroups(this.state.userId);
   }
 /**
  * @return { jsx } rendered jsx element

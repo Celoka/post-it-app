@@ -1,4 +1,5 @@
 import React from 'react';
+import jwt from 'jsonwebtoken';
 import AppActions from '../actions/AppActions';
 
 /**
@@ -25,6 +26,7 @@ class MessageBoard extends React.Component {
       groupId: '',
       groupName: '',
       groupMessage: [],
+      displayName: jwt.decode(localStorage.token).displayName
     };
   }
 
@@ -97,6 +99,7 @@ class MessageBoard extends React.Component {
     const messageDetail = {
       message: this.state.message,
       priority: this.refs.type.value,
+      displayName: this.state.displayName
     };
     const groupId = this.state.groupId;
     if (groupId !== '') {
@@ -115,8 +118,23 @@ class MessageBoard extends React.Component {
       <div key={index} className="row">
         <div className="col-sm-12">
           <div className="well">
-            <p id="message-text">{groupMessage.message}</p>
-            <time id="time-tag"> posted on {groupMessage.timeStamp}</time>
+            <div className="row">
+              <div className="col-sm-9">
+                <p id="message-text">{groupMessage.message}</p>
+              </div>
+              <div className="col-sm-3">
+                <small>Priority level: <cite>{groupMessage.priority}</cite></small>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-9">
+                <time id="time-tag">sent on: {groupMessage.timeStamp}</time>
+              </div>
+              <div className="col-sm-3">
+                <small>sent by: {groupMessage.displayName}</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -124,18 +142,17 @@ class MessageBoard extends React.Component {
     return (
       <div>
         <form id="message-display">
-          <h1>
-            {this.props.groupName}
+          <h1 className="group-title">
+            Group Name: {this.props.groupName}
           </h1>
           {messageList}
         </form>
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>
-            <div className='row content'>
+            <div className="row">
               <div id="message-box" className="form-group">
                 <textarea className="form-control"
                   value={this.state.message}
-                  rows="0.5"
                   onChange={this.onChange}
                   placeholder='type a message..'
                   required>
