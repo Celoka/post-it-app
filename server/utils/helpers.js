@@ -3,8 +3,11 @@
  * Module dependencies
  */
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
 import Nexmo from 'nexmo';
 import db from '../config/config';
+
+require('dotenv').config();
 
 /**
  * @description describes a function that takes in a string,
@@ -234,3 +237,12 @@ export const validateResetPassword = (req, res, next) => {
   }
 };
 
+export const token = (uid, userName) => {
+  const jwtToken = jwt.sign({
+    uid,
+    displayName: userName,
+  },
+  process.env.SECRET_TOKEN,
+  { expiresIn: 60 * 60 });
+  return jwtToken;
+};

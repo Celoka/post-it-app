@@ -17,8 +17,10 @@ engines:
      linebreak-style:
        enabled: true
 exclude_paths:
-- "client/"
-- "server/test/"
+- "template/"
+- "client/__test__/"
+- "client/__mocks__/"
+- "test/"
 ratings:
   paths:
   - "server/**/*"
