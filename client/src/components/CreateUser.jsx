@@ -1,7 +1,8 @@
 import React from 'react';
+import toastr from 'toastr';
 import Navbar from '../components/Navbar.jsx';
+import { validateEmail } from '../vendors/';
 import AppActions from '../actions/AppActions';
-
 
 /**
  * @description creates a class sign up as a react component
@@ -26,11 +27,14 @@ class CreateUser extends React.Component {
     this.state = {
       email: '',
       password: '',
+      confirmPassword: '',
       userName: '',
       phoneNumber: '',
-      message: ''
+      message: '',
+      allUsers: []
     };
   }
+
 
 /**
  * @description Monitors changes in the components and change the state
@@ -64,10 +68,16 @@ class CreateUser extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     const credentials = { ...this.state };
-    AppActions.registerUser(credentials)
-    .then(() => {
-      this.props.history.push('/dashboard');
-    });
+    if (!validateEmail(this.state.email)) {
+      toastr.error('Enter a valid email');
+    } else if (this.state.password !== this.state.confirmPassword) {
+      toastr.error('Password does not match');
+    } else {
+      AppActions.registerUser(credentials)
+     .then(() => {
+       this.props.history.push('/dashboard');
+     });
+    }
   }
 /**
  * @return { jsx } rendered jsx element
@@ -81,31 +91,66 @@ class CreateUser extends React.Component {
         <div id="signup" >
           <h1>Create Account</h1>
           <form onSubmit={this.onSubmit} >
-            <fieldset id="signupfieldset" className="account-info">
+            <fieldset
+             id="signupfieldset"
+             className="account-info">
               <label>
                 Email Address
-                <input value={this.state.email} onChange={this.onChange}
-                  type="email" name="email" />
+                <input
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  className={'form-control'}
+                  type="email"
+                  name="email"
+                  className='form-control'
+                  required/>
               </label>
               <label>
                 Password
-                <input value={this.state.password} onChange={this.onChange}
-                  type="password" name="password" />
+                <input
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  type="password"
+                  name="password"
+                  className='form-control'
+                  required/>
+              </label>
+              <label>
+               Confirm Password
+                <input
+                  value={this.state.confirmPassword}
+                  onChange={this.onChange}
+                  className='form-control'
+                  type="password"
+                  name="confirmPassword"
+                  required/>
               </label>
               <label>
                 Username
-                <input value={this.state.userName} onChange={this.onChange}
-                  type="text" name="userName" />
+                <input
+                  value={this.state.userName}
+                  onChange={this.onChange}
+                  className='form-control'
+                  type="text"
+                  name="userName"
+                  required/>
               </label>
               <label>
                 Phonenumber
-                <input value={this.state.phoneNumber} onChange={this.onChange}
+                <input
+                  value={this.state.phoneNumber}
+                  onChange={this.onChange}
+                  className='form-control'
                   type="inputPhone"
                   name="phoneNumber"
-                  placeholder="ex.2349000000000" />
+                  pattern="[234][0-9]{12}"
+                  placeholder="ex.2349000000000" required />
               </label>
             </fieldset>
-            <button id="sign" type="submit" name="submit">
+            <button
+              id="sign"
+              type="submit"
+              name="submit">
               Register Now
             </button>
           </form>

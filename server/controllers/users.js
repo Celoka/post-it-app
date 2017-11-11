@@ -2,13 +2,9 @@
  * Import module dependencies
  */
 import firebase from 'firebase';
-import jwt from 'jsonwebtoken';
 import db from '../config/config';
-import { normalizeString } from '../utils/helpers';
+import { normalizeString, token } from '../utils/helpers';
 
-require('dotenv').config();
-
-const secret = process.env.SECRET_TOKEN;
 
 /**
  * @description This controller creates a new user
@@ -21,41 +17,49 @@ const secret = process.env.SECRET_TOKEN;
  */
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((user) => {
-    const { uid } = user;
-    const displayName = normalizeString(userName);
-    user.updateProfile({
-      displayName
+  const displayName = normalizeString(userName);
+  db.database().ref('usernames')
+  .once('value', (snapShot) => {
+    const names = [];
+    snapShot.forEach((details) => {
+      names.push(details.val().displayName);
     });
-    db.database().ref(`users/${uid}`).set({
-      email,
-      password,
-      displayName,
-      phoneNumber
-    });
-    const jwtToken = jwt.sign({
-      uid,
-      displayName,
-    },
-        secret,
-        { expiresIn: 60 * 60 }
-      );
-    res.status(201).json({
-      message: 'Registration success',
-      jwtToken,
-    });
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    if (errorCode === 'auth/email-already-in-use') {
-      res.status(401).json({
-        message: 'Email already in use'
-      });
+    if (names.indexOf(displayName) > -1) {
+      res.status(409).json({ message: 'Username already exists' });
     } else {
-      res.status(500).json({
-        message: errorMessage
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        const { uid } = user;
+        user.updateProfile({
+          displayName
+        });
+        db.database().ref(`users/${uid}`).set({
+          email,
+          password,
+          displayName,
+          phoneNumber
+        });
+        db.database().ref('usernames').push({
+          displayName
+        });
+        const jwtToken = token(uid, displayName);
+        res.status(201).json({
+          message: 'Registration success',
+          jwtToken,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode === 'auth/email-already-in-use') {
+          res.status(401).json({
+            message: 'Email already in use'
+          });
+        } else {
+          res.status(500).json({
+            message: errorMessage
+          });
+        }
       });
     }
   });
@@ -75,12 +79,7 @@ export const logIn = (req, res) => {
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then((user) => {
     const { uid, displayName } = user;
-    const jwtToken = jwt.sign({
-      uid,
-      displayName,
-    },
-      secret,
-      { expiresIn: 60 * 60 });
+    const jwtToken = token(uid, displayName);
     res.status(200).send({
       message: 'User Signed in!',
       user,

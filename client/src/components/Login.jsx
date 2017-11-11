@@ -1,7 +1,9 @@
 import React from 'react';
+import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
+import { validateEmail } from '../vendors/';
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import Navbar from '../components/Navbar.jsx';
@@ -63,10 +65,14 @@ class Login extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     const signInDetails = { ...this.state };
-    AppActions.loginUser(signInDetails).then(() => {
-      AppStore.on('login_success', this.getCurrentUser);
-      this.props.history.push('/dashboard');
-    });
+    if (!validateEmail(this.state.email)) {
+      toastr.error('Enter a valid email');
+    } else {
+      AppActions.loginUser(signInDetails).then(() => {
+        AppStore.on('login_success', this.getCurrentUser);
+        this.props.history.push('/dashboard');
+      });
+    }
   }
 /**
  * @description Create google login function
@@ -136,30 +142,47 @@ class Login extends React.Component {
         <div id="signin">
           <h1> Account Login </h1>
           <form onSubmit={this.onSubmit}>
-            <fieldset id="signinfieldset" className="account-info">
+            <fieldset
+             id="signinfieldset"
+             className="account-info">
               <label>
                 Email Address
-                  <input value={this.state.email} onChange={this.onChange}
-                  type="email" name="email" />
+                  <input
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    className='form-control'
+                    type="email"
+                    name="email" />
               </label>
               <label>
                 Password
-                  <input value={this.state.password} onChange={this.onChange}
-                  type='password' name='password' />
+                  <input
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    className='form-control'
+                    type='password'
+                    name='password' />
               </label>
               <Link to='/resetpassword'>
                 Forgot password? Click to reset password
               </Link>
             </fieldset>
             <div id="button-segment">
-              <button id="sign" type="submit" name="submit">
+              <button
+                id="sign"
+                type="submit"
+                name="submit">
                 Login
               </button>
               <label id="checkbox" >
-                <input type="checkbox" name="remember" />
-                Stay signed in.
+                <input
+                  type="checkbox"
+                  name="remember" />
+                  Stay signed in.
               </label>
-              <GoogleButton id="googlebutton" onClick={this.googleSignIn} />
+              <GoogleButton
+                id="googlebutton"
+                onClick={this.googleSignIn} />
             </div>
           </form>
         </div>
