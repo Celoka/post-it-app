@@ -12,7 +12,7 @@ import {
   logIn,
   logOut,
   resetPassword,
-  getAllUsersInGroup,
+  getAllUsers,
   newUsersInGroup,
   googleSignIn
 } from '../controllers/users';
@@ -37,7 +37,7 @@ router.post('/api/v1/group/groupId/user', jwtVerify,
  validateAddmember, addMemberToGroup);
 router.post('/api/v1/groups/:groupId/message', jwtVerify, postMessage);
 router.get('/api/v1/groups/:groupId/members', jwtVerify, newUsersInGroup);
-router.get('/api/v1/allusers', jwtVerify, getAllUsersInGroup);
+router.get('/api/v1/allusers', jwtVerify, getAllUsers);
 router.get('/api/v1/:userId/groups', jwtVerify, getGroup);
 router.get('/api/v1/group/:groupId', jwtVerify, getGroupMessage);
 router.get('/api/v1/group/:groupId/users', jwtVerify, getUserInGroup);

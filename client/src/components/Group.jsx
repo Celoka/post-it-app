@@ -24,6 +24,7 @@ class Group extends React.Component {
     super(props);
     this.state = {
       userId: jwt.decode(localStorage.token).uid,
+      displayName: jwt.decode(localStorage.token).displayName,
       group: '',
       groupName: []
     };
@@ -101,15 +102,28 @@ class Group extends React.Component {
  *
  * @memberof Group
  */
-  onClick = (event) => {
+  handleClick = (event) => {
     event.preventDefault();
     const groupDetail = {
       userId: this.state.userId,
-      group: this.state.group
+      group: this.state.group,
+      displayName: this.state.displayName
+
     };
-    AppActions.createGroup(groupDetail);
-    this.state.group = '';
+    AppActions.createGroup(groupDetail)
+    .then(() => {
+      this.setState({
+        group: '',
+      });
+    });
     AppActions.loadGroups(this.state.userId);
+  }
+
+  openCreateGroupModal = (event) => {
+    event.preventDefault();
+    $('#myModal').modal({
+      backdrop: false,
+    });
   }
 /**
  * @return { jsx } rendered jsx element
@@ -119,15 +133,16 @@ class Group extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.onClick} id='group-form'>
+        <form id='group-form'>
           <h4><center> Group List</center><hr /></h4>
-          <button id='modal-button'
+          <button
             type="button"
             className="btn btn-success btn-block"
-            data-toggle="modal"
-            data-target=".create1">
+            onClick={this.openCreateGroupModal}
+            data-toggle="myModal"
+            data-target=".myModal2">
             Create New Group
-              <i className="material-icons">group_add</i>
+            <i className="material-icons">group_add</i>
            </button>
           <div className="modal fade create1"
             id="myModal"
@@ -140,7 +155,9 @@ class Group extends React.Component {
                     data-dismiss="modal">
                     &times;
                   </button>
-                  <h4 className="modal-title">Create Group</h4>
+                  <h4 className="modal-title">
+                    Create Group
+                    </h4>
                 </div>
                 <div className="modal-body">
                   <input type="text"
@@ -157,10 +174,10 @@ class Group extends React.Component {
                     Close
                   </button>
                   <button type="button"
+                    onClick={this.handleClick}
                     className="btn btn-success"
-                    data-dismiss="modal"
-                    onClick={this.onClick}
-                    type="submit" name="submit">
+                    type="submit"
+                    name="submit">
                     Create
                   </button>
                 </div>

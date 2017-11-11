@@ -85,8 +85,9 @@ const AppActions = {
           actionType: AppConstants.CREATE_GROUP,
           groupName
         });
+        $('#myModal').modal('hide');
       })
-      .catch(ToastrError);
+     .catch(ToastrError);
   },
 
 /**
@@ -166,8 +167,8 @@ const AppActions = {
   getNewUsers(groupId) {
     return axios
       .get(`/api/v1/groups/${groupId}/members`, groupId)
-      .then((res) => {
-        const usersDetails = res.data.users;
+      .then((response) => {
+        const usersDetails = response.data.users;
         AppDispatcher.dispatch({
           actionType: AppConstants.GET_NEW_USERS,
           usersDetails
@@ -207,9 +208,9 @@ const AppActions = {
  * @returns { Object } returns details of users in a group
  *
  */
-  getUsersInGroup() {
+  getAllUsers() {
     return axios
-    .get('/api/v1/user/allusers')
+    .get('/api/v1/allusers')
     .then((response) => {
       const allUsers = response.data.usersDetails;
       AppDispatcher.dispatch({

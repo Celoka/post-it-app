@@ -20,43 +20,52 @@ require('dotenv').config();
  * @return {object} return an object containing group details;
  */
 export const createGroup = (req, res) => {
-  const { group, userId } = req.body;
+  const { group, userId, displayName } = req.body;
   const timeStamp = new Date().toString();
-
   const groupName = normalizeString(group);
-  const groupKey = db.database().ref('/groups').push({
-    groupName,
-    dateCreated: timeStamp
-  }).key;
-
-  const groupRef = db.database().ref(`/groups/${groupKey}/users`);
-  groupRef.push({
-    userNames: userId
+  db.database().ref('groups')
+  .once('value', (snapShot) => {
+    const groupNames = [];
+    snapShot.forEach((details) => {
+      groupNames.push(details.val().groupName);
+    });
+    if (groupNames.indexOf(groupName) > -1) {
+      res.status(409).json({ message: 'Groupname already exists' });
+    } else {
+      const groupKey = db.database().ref('/groups').push({
+        groupName,
+        dateCreated: timeStamp
+      }).key;
+      db.database().ref(`/groups/${groupKey}/users`)
+      .push({
+        displayName
+      });
+      db.database().ref(`/users/${userId}/groups`)
+      .child(groupKey).set({
+        groupName,
+        displayName
+      })
+      .then(() => {
+        res.status(201).send({
+          message: 'User group created successfully',
+          groupName,
+          dateCreated: timeStamp,
+          groupKey
+        });
+      })
+      .catch((error) => {
+        if (!userId) {
+          res.status(401).json({
+            message: 'Login to perform this operation'
+          });
+        } else {
+          res.status(500).json({
+            message: `An error occured ${error.message}`
+          });
+        }
+      });
+    }
   });
-
-  const userRef = db.database().ref(`/users/${userId}/groups`);
-  userRef.child(groupKey).set({
-    groupName,
-    isAdmin: true
-  }).then(() => {
-    res.status(201).send({
-      message: 'User group created successfully',
-      groupName,
-      dateCreated: timeStamp,
-      groupKey
-    });
-  })
-    .catch((error) => {
-      if (!userId) {
-        res.status(401).json({
-          message: 'Login to perform this operation'
-        });
-      } else {
-        res.status(500).json({
-          message: `An error occured ${error.message}`
-        });
-      }
-    });
 };
 
 /**
@@ -69,68 +78,58 @@ export const createGroup = (req, res) => {
  * @return {object} return an object containg an added user details
  */
 export const addMemberToGroup = (req, res) => {
-  const { groupId, userId, newUser } = req.body;
-  const user = req.user.uid;
-  if (user) {
-    db.database().ref(`groups/${groupId}/users/${userId}/`).set({
-      userId,
-      newUser
-    });
-    db.database().ref(`/users/${userId}`)
-    .once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        const { userName, email, phoneNumber } = snapshot.val();
-        db.database().ref(`groups/${groupId}`)
-        .once('value', (snap) => {
-          const groupName = snap.val().groupName;
-          db.database().ref(`/users/${userId}/groups/${groupId}`)
-          .update({
-            userId,
-            newUser,
-            groupName
-          });
-        })
-        .catch((error) => {
-          res.status(500).json({
-            message: `An error occure ${error.message}`
-          });
+  const { groupId, userId, newUser: displayName } = req.body;
+  db.database().ref(`groups/${groupId}/users/`)
+  .push({
+    displayName
+  });
+  db.database().ref(`/users/${userId}`)
+  .once('value', (snapshot) => {
+    if (snapshot.exists()) {
+      const { email, phoneNumber } = snapshot.val();
+      db.database().ref(`groups/${groupId}`)
+      .once('value', (snap) => {
+        const groupName = snap.val().groupName;
+        db.database().ref(`/users/${userId}/groups/${groupId}`)
+        .update({
+          displayName,
+          groupName
         });
-        db.database().ref(`groups/${groupId}/groupName`)
-        .once('value', (groupSnapshot) => {
-          if (groupSnapshot.exists()) {
-            db.database().ref(`groups/${groupId}/users/userName`)
-            .set(userName);
-            db.database().ref(`groups/${groupId}/email`)
-            .push(email);
-            db.database().ref(`groups/${groupId}/phoneNumber`)
-            .push(phoneNumber);
-          } else {
-            res.status(403).json({
-              message: 'Group does not exists'
-            });
-          }
-        })
-        .then(() => {
-          res.status(201).json({
-            message: 'User added successfully'
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: `An error occure ${error.message}`
+        });
+      });
+      db.database().ref(`groups/${groupId}/groupName`)
+      .once('value', (groupSnapshot) => {
+        if (groupSnapshot.exists()) {
+          db.database().ref(`groups/${groupId}/email`)
+          .push(email);
+          db.database().ref(`groups/${groupId}/phoneNumber`)
+          .push(phoneNumber);
+        } else {
+          res.status(403).json({
+            message: 'Group does not exists'
           });
+        }
+      })
+      .then(() => {
+        res.status(201).json({
+          message: 'User added successfully'
         });
-      } else {
-        res.status(404).json({
-          message: 'User details not found'
-        });
-      }
-    })
+      });
+    } else {
+      res.status(404).json({
+        message: 'User details not found'
+      });
+    }
+  })
     .catch((error) => {
       res.status(500).json({
         message: `An error occured ${error.message}`
       });
     });
-  } else {
-    res.status(401).json({
-      message: 'Sign In to perform this operation'
-    });
-  }
 };
 /**
  * @description This controller posts message to a group
@@ -143,7 +142,7 @@ export const addMemberToGroup = (req, res) => {
  */
 export const postMessage = (req, res) => {
   const { message, priority, displayName } = req.body;
-  const groupId = req.params.groupId;
+  const { groupId, groupName } = req.params;
   const timeStamp = moment().format('LLLL');
   const messageKey = db.database().ref('messages/')
   .push({})
@@ -161,7 +160,7 @@ export const postMessage = (req, res) => {
     message,
     priority,
     timeStamp,
-    displayName
+    displayName,
   })
   .then(() => {
     res.status(201).json({
@@ -169,7 +168,8 @@ export const postMessage = (req, res) => {
       message,
       priority,
       timeStamp,
-      displayName
+      displayName,
+      groupName
     });
   })
   .catch((error) => {
@@ -177,8 +177,8 @@ export const postMessage = (req, res) => {
       message: `An error occured ${error.message}`
     });
   });
-  sendEmailNotifications(groupId, priority);
-  sendSMSNotifications(groupId, priority);
+  sendEmailNotifications(groupId, priority, groupName);
+  sendSMSNotifications(groupId, priority, groupName);
 };
 
 /**

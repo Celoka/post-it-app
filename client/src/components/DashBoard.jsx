@@ -45,7 +45,8 @@ class DashBoard extends React.Component {
    * @memberof DashBoard
    */
   componentDidMount() {
-    AppActions.getUsersInGroup();
+    AppActions.getAllUsers();
+    AppActions.getNewUsers(this.state.groupId);
     AppStore.addChangeListener(this.onStoreChange);
   }
 /**

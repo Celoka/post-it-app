@@ -1,8 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
-
 
 /**
  * @description creates a class users in a particular
@@ -26,37 +24,12 @@ class UsersInGroup extends React.Component {
     this.state = {
       newUser: '',
       error: '',
-      message: '',
       newMember: [],
       groupId: null
     };
   }
-/**
- * @description Adds an event Listener to listen to the Store and fires when
- * there is a change component is fully mounted.
- *
- * @method componentDidMount
- *
- * @return { void }
- *
- * @memberof UsersInGroup
- */
-  componentDidMount() {
-    AppStore.addChangeListener(this.onStoreChange);
-  }
 
-/**
- * @description Removes the event Listener after the component has been mounted.
- *
- * @method componentWillUnmount
- *
- * @return { void }
- *
- * @memberof UsersInGroup
- */
-  componentWillUnmount() {
-    AppStore.removeChangeListener(this.onStoreChange);
-  }
+
 /**
  * @description This receives props from a parent component and
  * sets it to the state.
@@ -75,20 +48,7 @@ class UsersInGroup extends React.Component {
       groupId: nextProps.groupId
     });
   }
-/**
- * @description fetches a member object from the store
- *
- * @method onStoreChange
- *
- * @return { void }
- *
- * @memberof UsersInGroup
- */
-  onStoreChange = () => {
-    this.setState({
-      message: AppStore.getAddMember(),
-    });
-  }
+
 /**
  * @description Monitors changes in the components and changes state
  *
@@ -117,11 +77,11 @@ class UsersInGroup extends React.Component {
  *
  * @memberof UsersInGroup
  */
-  userValidation = (userName) => {
+  userValidation = (displayName) => {
     let usersInGroup;
-    (this.props.userId).map((data) => {
-      if (userName === data.userNames) {
-        usersInGroup = data.userId;
+    (this.props.userId).map((details) => {
+      if (displayName === details.displayName) {
+        usersInGroup = details.userId;
       } else {
         return null;
       }
@@ -135,15 +95,17 @@ class UsersInGroup extends React.Component {
  *
  * @method onClick
  *
+ * @param { string } event
+ *
  * @returns { Boolean } true
  *
  * @memberof UsersInGroup
  */
-  onClick = () => {
+  onClick = (event) => {
+    event.preventDefault();
     if (!this.state.groupId) {
       this.setState({
         error: toastr.error('Click a group to add a member'),
-        newUser: ''
       });
       return true;
     }
@@ -155,15 +117,20 @@ class UsersInGroup extends React.Component {
     if (!userDetails.userId) {
       this.setState({
         error: toastr.error('User does not exist'),
-        newUser: ''
       });
     } else {
       AppActions.addUserToGroup(userDetails);
-      AppActions.getNewUsers(this.props.groupId);
       this.setState({
-        newUser: ''
+        newUser: '',
       });
     }
+  }
+
+  openAddMemberModal = (event) => {
+    event.preventDefault();
+    $('#my-Modal').modal({
+      backdrop: false,
+    });
   }
 /**
  * @return { jsx } rendered jsx element
@@ -171,29 +138,24 @@ class UsersInGroup extends React.Component {
  * @memberof UsersInGroup
  */
   render() {
-    const memberList = this.state.newMember.map((newMember, index) =>
-    <div key={index} className="list-group">
-        <p id="member-list"> {newMember.userNames} </p>
+    const memberList = this.state.newMember.map((KeyName, KeyIndex) =>
+    <div key={KeyIndex} className="list-group">
+        <p id="member-list"> {KeyName.newUser} </p>
     </div>
   );
     return (
       <div>
         <form id='userlist-form'>
-            <h4>
-              <center>
-                User List
-              </center>
-              <hr/>
-            </h4>
-            <button type="button"
+            <h4><center>User List</center><hr/></h4>
+            <button
+                type="button"
                 className="btn btn-success btn-block"
-                data-toggle="modal"
-                data-target=".modal2">
+                onClick={this.openAddMemberModal}>
                 Add User To Group
                <i className="material-icons">person_add</i>
             </button>
             <div className="modal fade modal2"
-              id="my-Modal"
+                id="my-Modal"
                 role="dialog">
                 <div className="modal-dialog">
                   <div className="modal-content">
@@ -209,21 +171,21 @@ class UsersInGroup extends React.Component {
                     </div>
                     <div className="modal-body">
                       <input type="text"
-                      value={this.state.newUser}
-                      onChange={this.onChange}
-                      className="form-control"
-                      name="username"
-                      placeholder="Input username..." />
+                        value={this.state.newUser}
+                        onChange={this.onChange}
+                        className="form-control"
+                        name="username"
+                        placeholder="Input username..." />
                     </div>
                     <div className="modal-footer">
                       <button type="button"
-                        className="btn btn-danger"
-                         data-dismiss="modal">Close
+                          className="btn btn-danger"
+                          data-dismiss="modal">
+                          Close
                       </button>
                       <button type="button"
                           onClick={this.onClick}
                           className="btn btn-success"
-                          data-dismiss="modal"
                           type="submit"
                           name="submit">
                          Add

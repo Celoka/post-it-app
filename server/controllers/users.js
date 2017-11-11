@@ -92,7 +92,7 @@ export const logIn = (req, res) => {
     if (errorCode === 'auth/user-not-found') {
       res.status(404).json({
         message:
-          'User not found. Make sure your email and password is correct'
+          'User not found. Make sure your email or password is correct'
       });
     } else {
       res.status(500).json({
@@ -229,7 +229,7 @@ export const logOut = (req, res) => {
  *
  * @return {object} return all users and users details
  */
-export const getAllUsersInGroup = (req, res) => {
+export const getAllUsers = (req, res) => {
   const usersDetails = [];
   db.database().ref('users')
   .once('value', (snap) => {
@@ -237,7 +237,7 @@ export const getAllUsersInGroup = (req, res) => {
     snap.forEach((details) => {
       usersInGroup = {
         userId: details.key,
-        userNames: details.val().userName
+        displayName: details.val().displayName
       };
       usersDetails.push(usersInGroup);
     });
@@ -273,7 +273,7 @@ export const newUsersInGroup = (req, res) => {
     let newUsers = {};
     snap.forEach((details) => {
       newUsers = {
-        userNames: details.val().newUser
+        newUser: details.val().displayName
       };
       users.push(newUsers);
     });
