@@ -114,25 +114,25 @@ class MessageBoard extends React.Component {
  * @memberof MessageBoard
  */
   render() {
-    const messageList = this.state.groupMessage.map((groupMessage, index) =>
-      <div key={index} className="row">
+    const messageList = this.state.groupMessage.map((KeyName, KeyIndex) =>
+      <div key={KeyIndex} className="row">
         <div className="col-sm-12">
           <div className="well">
             <div className="row">
               <div className="col-sm-9">
-                <p id="message-text">{groupMessage.message}</p>
+                <p id="message-text">{KeyName.message}</p>
               </div>
               <div className="col-sm-3">
-                <small>Priority level: <cite>{groupMessage.priority}</cite></small>
+                <small>Priority level: <cite>{KeyName.priority}</cite></small>
               </div>
             </div>
 
             <div className="row">
               <div className="col-sm-9">
-                <time id="time-tag">sent on: {groupMessage.timeStamp}</time>
+                <time id="time-tag">sent on: {KeyName.timeStamp}</time>
               </div>
               <div className="col-sm-3">
-                <small>sent by: {groupMessage.displayName}</small>
+                <small>sent by: {KeyName.displayName}</small>
               </div>
             </div>
           </div>
