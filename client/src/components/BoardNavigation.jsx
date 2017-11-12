@@ -35,9 +35,9 @@ const BoardNavigation = () => ({
                 <span className="sr-only">Toggle navigation</span>
               </button>
               <Link to='/dashboard'className="navbar-brand">
-                <h1>
+                <h3 id="clear">
                   Welcome, { displayName || userName }
-                </h1>
+                </h3>
               </Link>
             </div>
             <div className="collapse navbar-collapse">
@@ -45,8 +45,8 @@ const BoardNavigation = () => ({
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li onClick={logOut} >
-                  <Link to= '/'>
-                    <span>Sign Out</span>
+                  <Link to= '/' type="button" className="btn btn-danger">
+                    <span id="clear" className="glyphicon glyphicon-log-out">LogOut</span>
                   </Link>
                 </li>
               </ul>

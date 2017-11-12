@@ -9,6 +9,8 @@ import GroupList from './GroupList.jsx';
  *
  * @class Group
  *
+ * @param { object } event
+ *
  * @extends {React.Component}
  */
 class Group extends React.Component {
@@ -111,10 +113,12 @@ class Group extends React.Component {
 
     };
     AppActions.createGroup(groupDetail)
-    .then(() => {
-      this.setState({
-        group: '',
-      });
+    .then((res) => {
+      if (res) {
+        this.setState({
+          group: '',
+        });
+      }
     });
     AppActions.loadGroups(this.state.userId);
   }
@@ -134,7 +138,7 @@ class Group extends React.Component {
     return (
       <div>
         <form id='group-form'>
-          <h4><center> Group List</center><hr /></h4>
+          <h4 id="clear"><center> Group List</center><hr /></h4>
           <button
             type="button"
             className="btn btn-success btn-block"

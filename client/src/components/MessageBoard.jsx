@@ -120,7 +120,7 @@ class MessageBoard extends React.Component {
           <div className="well">
             <div className="row">
               <div className="col-sm-9">
-                <p id="message-text">{KeyName.message}</p>
+                <h4 id="message-text">{KeyName.message}</h4>
               </div>
               <div className="col-sm-3">
                 <small>Priority level: <cite>{KeyName.priority}</cite></small>
