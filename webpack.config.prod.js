@@ -1,10 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const ExtractTextPluginConfig = new ExtractTextPlugin('main.css');
 const config = {
   entry: [
-    path.join(__dirname, 'client/src/index.js')
+    path.join(__dirname, 'client/src/index.js'),
+    path.join(__dirname, 'client/app/css/style.scss')
   ],
   devtool: 'source-map',
   output: {
@@ -12,7 +15,40 @@ const config = {
     publicPath: '/',
     filename: 'bundle.js',
   },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: [
+          'react-hot-loader',
+          'babel-loader'
+        ]
+      },
+      { test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: 'css-loader?importLoaders=1' })
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          'url-loader?limit=10000',
+          'img-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
+    ExtractTextPluginConfig,
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: false
@@ -32,29 +68,6 @@ const config = {
       sourceMap: true,
     }),
   ],
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: [
-          'react-hot-loader',
-          'babel-loader'
-        ]
-      },
-      {
-        test: /\.css?$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          'url-loader?limit=10000',
-          'img-loader'
-        ]
-      }
-    ]
-  },
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
@@ -63,6 +76,7 @@ const config = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    dns: 'empty'
   },
 };
 

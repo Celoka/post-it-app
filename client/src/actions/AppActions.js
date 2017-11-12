@@ -86,6 +86,7 @@ const AppActions = {
           groupName
         });
         $('#myModal').modal('hide');
+        return true;
       })
      .catch(ToastrError);
   },
@@ -95,6 +96,7 @@ const AppActions = {
  * API call to the server for a get request to fetch
  * all user groups
  *
+ * @param { object } userId
  *
  * @returns { Object } returns all user groups group details
  */

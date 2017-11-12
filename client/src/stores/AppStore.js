@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import jwt from 'jsonwebtoken';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 
@@ -110,8 +109,8 @@ function setNewMember (usersDetails) {
  *
  * @returns { String } returns name of group as string
  */
-function currentGroup(group) {
-  groupStore = group;
+function currentGroup(groupName) {
+  groupStore = groupName;
   return groupStore;
 }
 
@@ -318,7 +317,7 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       AppStore.emitChange();
       break;
     case AppConstants.CREATE_GROUP:
-      currentGroup(action.group);
+      currentGroup(action.groupName);
       AppStore.emitChange();
       break;
     case AppConstants.SET_GROUP:

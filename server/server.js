@@ -22,7 +22,8 @@ const config = require(configPath);
 const app = express();
 const port = process.env.PORT || 8000;
 const compiler = webpack(config);
-const publicPath = express.static(path.join(__dirname, '../client/app/js'));
+const publicPath = express.static(path.join(__dirname,
+   '../client/app/index.html'));
 
 
 app.use((req, res, next) => {
@@ -46,7 +47,7 @@ app.use('/', publicPath);
 
 app.use(routes);
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/app/js/index.html'));
+  res.sendFile(path.join(__dirname, '../client/app/index.html'));
 });
 
 app.listen(port);

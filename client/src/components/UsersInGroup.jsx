@@ -140,13 +140,13 @@ class UsersInGroup extends React.Component {
   render() {
     const memberList = this.state.newMember.map((KeyName, KeyIndex) =>
     <div key={KeyIndex} className="list-group">
-        <p id="member-list"> {KeyName.newUser} </p>
+        <h5 id="member-list"> {KeyName.newUser} </h5>
     </div>
   );
     return (
       <div>
         <form id='userlist-form'>
-            <h4><center>User List</center><hr/></h4>
+            <h4 id="clear"><center>User List</center><hr/></h4>
             <button
                 type="button"
                 className="btn btn-success btn-block"

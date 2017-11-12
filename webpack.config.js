@@ -1,13 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const DotEnvPlugin = require('dotenv-webpack');
 
 const dotEnvPlugin = new DotEnvPlugin({
   path: './.env',
 });
+const ExtractTextPluginConfig = new ExtractTextPlugin('main.css');
+
 const config = {
   entry: [
     path.join(__dirname, 'client/src/index.js'),
+    path.join(__dirname, 'client/app/css/style.scss'),
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client'
   ],
@@ -17,10 +21,6 @@ const config = {
     publicPath: '/',
     filename: 'bundle.js',
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    dotEnvPlugin
-  ],
   devServer: {
     contentBase: './dist',
     inline: true,
@@ -42,9 +42,18 @@ const config = {
           'babel-loader'
         ]
       },
+      { test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: 'css-loader?importLoaders=1' })
+      },
       {
-        test: /\.css?$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -55,6 +64,11 @@ const config = {
       }
     ]
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    dotEnvPlugin,
+    ExtractTextPluginConfig
+  ],
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },

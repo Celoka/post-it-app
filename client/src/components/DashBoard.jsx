@@ -1,4 +1,5 @@
 import React from 'react';
+import jwt from 'jsonwebtoken';
 import AppActions from '../actions/AppActions';
 import Group from '../components/Group.jsx';
 import AppStore from '../stores/AppStore';
@@ -25,6 +26,7 @@ class DashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayName: jwt.decode(localStorage.token).displayName,
       groupId: null,
       groupName: '',
       groupMessage: [],
@@ -120,7 +122,16 @@ class DashBoard extends React.Component {
             <div className="col-sm-12 col-md-9 ">
               {
                 (this.state.groupId === null) ?
-                <h1>WELCOME TO POSTIT</h1> :
+            <div className="white-board black-text">
+            <img height="30%" id="mail-box"
+            src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510496726/mssg_qswl1m.png"
+            alt="message" />
+            <h4 id="clear"><span className="caps">{this.state.displayName}</span></h4>
+            <h6 id="clear"> You Currently have no group selected.
+             Please pick one by clicking on the<br/><br/> group on the
+             left window
+             pane to access the group options or create one.</h6>
+          </div> :
                 <MessageBoard groupId={this.state.groupId}
                   groupName={this.state.groupName}
                   groupMessage={this.state.groupMessage}/>
