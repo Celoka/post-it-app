@@ -66,6 +66,7 @@
     "material-design-icons": "^3.0.1",
     "mocha": "^3.5.3",
     "moment": "^2.19.1",
+    "node-sass": "^4.6.1",    
     "nexmo": "^2.0.2",
     "nodemailer": "^4.1.0",
     "nyc": "^11.2.1",
