@@ -90,9 +90,9 @@ export const logIn = (req, res) => {
     const errorCode = error.code;
     const errorMessage = error.message;
     if (errorCode === 'auth/user-not-found') {
-      res.status(404).json({
+      res.status(401).json({
         message:
-          'User not found. Make sure your email or password is correct'
+          'Make sure your email or password is correct'
       });
     } else {
       res.status(500).json({
@@ -232,9 +232,9 @@ export const logOut = (req, res) => {
 export const getAllUsers = (req, res) => {
   const usersDetails = [];
   db.database().ref('users')
-  .once('value', (snap) => {
+  .once('value', (snapShot) => {
     let usersInGroup = {};
-    snap.forEach((details) => {
+    snapShot.forEach((details) => {
       usersInGroup = {
         userId: details.key,
         displayName: details.val().displayName
@@ -269,11 +269,12 @@ export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const users = [];
   db.database().ref(`groups/${groupId}/users`)
-  .once('value', (snap) => {
+  .once('value', (snapShot) => {
     let newUsers = {};
-    snap.forEach((details) => {
+    snapShot.forEach((details) => {
       newUsers = {
-        newUser: details.val().displayName
+        userId: details.val().userId,
+        displayName: details.val().displayName
       };
       users.push(newUsers);
     });

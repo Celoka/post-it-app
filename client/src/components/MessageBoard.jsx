@@ -26,7 +26,7 @@ class MessageBoard extends React.Component {
       groupId: '',
       groupName: '',
       groupMessage: [],
-      displayName: jwt.decode(localStorage.token).displayName
+      displayName: JSON.parse(localStorage.getItem('displayName'))
     };
   }
 
@@ -114,38 +114,50 @@ class MessageBoard extends React.Component {
  * @memberof MessageBoard
  */
   render() {
-    const messageList = this.state.groupMessage.map((KeyName, KeyIndex) =>
-      <div key={KeyIndex} className="row">
-        <div className="col-sm-12">
-          <div className="well">
-            <div className="row">
-              <div className="col-sm-9">
-                <h4 id="message-text">{KeyName.message}</h4>
-              </div>
-              <div className="col-sm-3">
-                <small>Priority level: <cite>{KeyName.priority}</cite></small>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-sm-9">
-                <time id="time-tag">sent on: {KeyName.timeStamp}</time>
-              </div>
-              <div className="col-sm-3">
-                <small>sent by: {KeyName.displayName}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
     return (
       <div>
         <form id="message-display">
           <h1 className="group-title">
             Group Name: {this.props.groupName}
           </h1>
-          {messageList}
+          {
+            this.state.groupMessage.length === 0 ? (
+            <h3 className="center-align">
+              You have no messages in this Group
+            </h3>
+            ) : this.state.groupMessage.map((KeyName, KeyIndex) =>
+            <div key={KeyIndex} className="row">
+              <div className="col-sm-12">
+                <div className="well">
+                  <div className="row">
+                    <div className="col-sm-9">
+                      <h4 id="message-text">
+                        {KeyName.message}
+                      </h4>
+                    </div>
+                    <div className="col-sm-3">
+                      <small>
+                        Priority level: <cite>{KeyName.priority}</cite>
+                      </small>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-9">
+                      <time id="time-tag">
+                        sent on: {KeyName.timeStamp}
+                      </time>
+                    </div>
+                    <div className="col-sm-3">
+                      <small>
+                        sent by: {KeyName.displayName}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            )
+          }
         </form>
         <div id='message' className='container-fluid'>
           <form id="messageboard" onSubmit={this.onSubmit}>

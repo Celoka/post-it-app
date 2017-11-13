@@ -79,11 +79,12 @@ const AppActions = {
     return axios
       .post('/api/v1/group', groupDetail)
       .then((response) => {
-        const groupName = response.data.groupName;
+        const { groupName } = response.data;
+        const groupData = response.data;
         toastr.success(`${groupName} created successfully`);
         AppDispatcher.dispatch({
-          actionType: AppConstants.CREATE_GROUP,
-          groupName
+          actionType: AppConstants.SET_GROUP_NAME,
+          groupData
         });
         $('#myModal').modal('hide');
         return true;
@@ -106,7 +107,7 @@ const AppActions = {
       .then((response) => {
         const { userGroups } = response.data;
         AppDispatcher.dispatch({
-          actionType: AppConstants.SET_GROUP,
+          actionType: AppConstants.LOAD_GROUP_NAMES,
           userGroups
         });
       })
@@ -145,13 +146,13 @@ const AppActions = {
  *
  * @returns { Object } returns group message and details
  */
-  loadMessage(groupId) {
+  loadGroupMessage(groupId) {
     return axios
       .get(`/api/v1/group/${groupId}`)
       .then((response) => {
         const message = response.data.groupMessage;
         AppDispatcher.dispatch({
-          actionType: AppConstants.LOAD_GROUP_MESSAGE,
+          actionType: AppConstants.LOAD_GROUP_MESSAGES,
           message,
         });
       })
@@ -172,7 +173,7 @@ const AppActions = {
       .then((response) => {
         const usersDetails = response.data.users;
         AppDispatcher.dispatch({
-          actionType: AppConstants.GET_NEW_USERS,
+          actionType: AppConstants.LOAD_NEW_USERS,
           usersDetails
         });
       })
@@ -193,12 +194,14 @@ const AppActions = {
     return axios
     .post('/api/v1/group/groupId/user', userDetails)
     .then((response) => {
-      const message = response.data.message;
-      toastr.success(response.data.message);
+      const memberDisplayName = response.data.displayName;
+      const userData = response.data;
+      toastr.success(`${memberDisplayName} added successfully`);
       AppDispatcher.dispatch({
-        actionType: AppConstants.ADD_MEMBER_TO_GROUP,
-        message
+        actionType: AppConstants.ADD_USER_TO_GROUP,
+        userData
       });
+      $('#my-Modal').modal('hide');
     })
     .catch(ToastrError);
   },

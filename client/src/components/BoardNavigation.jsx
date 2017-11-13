@@ -23,7 +23,6 @@ const BoardNavigation = () => ({
  * @function BoardNavigation
  */
   render() {
-    const displayName = JSON.parse(localStorage.getItem('displayName'));
     const userName = JSON.parse(localStorage.getItem('userName'));
     return (
       <div>
@@ -36,7 +35,7 @@ const BoardNavigation = () => ({
               </button>
               <Link to='/dashboard'className="navbar-brand">
                 <h3 id="clear">
-                  Welcome, { displayName || userName }
+                  Welcome, { this.props.displayName || userName }
                 </h3>
               </Link>
             </div>
@@ -45,8 +44,10 @@ const BoardNavigation = () => ({
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li onClick={logOut} >
-                  <Link to= '/' type="button" className="btn btn-danger">
-                    <span id="clear" className="glyphicon glyphicon-log-out">LogOut</span>
+                  <Link to= '/'>
+                    <button id="clear" type="button" className="btn">
+                      LogOut
+                    </button>
                   </Link>
                 </li>
               </ul>

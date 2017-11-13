@@ -69,7 +69,7 @@ class UsersInGroup extends React.Component {
 /**
  * @description This method validates the input string
  *
- * @param { String } userName
+ * @param { String } displayName
  *
  * @return { String } usersInGroup
  *
@@ -119,13 +119,14 @@ class UsersInGroup extends React.Component {
         error: toastr.error('User does not exist'),
       });
     } else {
-      AppActions.addUserToGroup(userDetails);
-      this.setState({
-        newUser: '',
+      AppActions.addUserToGroup(userDetails)
+      .then(() => {
+        this.setState({
+          newUser: '',
+        });
       });
     }
   }
-
   openAddMemberModal = (event) => {
     event.preventDefault();
     $('#my-Modal').modal({
@@ -140,7 +141,7 @@ class UsersInGroup extends React.Component {
   render() {
     const memberList = this.state.newMember.map((KeyName, KeyIndex) =>
     <div key={KeyIndex} className="list-group">
-        <h5 id="member-list"> {KeyName.newUser} </h5>
+        <h5 id="member-list"> {KeyName.displayName} </h5>
     </div>
   );
     return (
@@ -150,7 +151,9 @@ class UsersInGroup extends React.Component {
             <button
                 type="button"
                 className="btn btn-success btn-block"
-                onClick={this.openAddMemberModal}>
+                onClick={this.openAddMemberModal}
+                data-toggle="my-Modal"
+                data-target=".myModal2">
                 Add User To Group
                <i className="material-icons">person_add</i>
             </button>
@@ -179,16 +182,16 @@ class UsersInGroup extends React.Component {
                     </div>
                     <div className="modal-footer">
                       <button type="button"
-                          className="btn btn-danger"
-                          data-dismiss="modal">
-                          Close
+                        className="btn btn-danger"
+                        data-dismiss="modal">
+                        Close
                       </button>
                       <button type="button"
-                          onClick={this.onClick}
-                          className="btn btn-success"
-                          type="submit"
-                          name="submit">
-                         Add
+                        onClick={this.onClick}
+                        className="btn btn-success"
+                        type="submit"
+                        name="submit">
+                        Add
                       </button>
                     </div>
                   </div>
