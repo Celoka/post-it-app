@@ -6,13 +6,13 @@ const CHANGE_EVENT = 'change';
 
 let newMember = [];
 let currentUser = [];
-let groupStore = '';
+const groupStore = [];
 let usersGroups = [];
 const newMessage = [];
 let allMessages = [];
 let allUserDetails = [];
 let googleUsers = [];
-let addRegisteredUser = '';
+const addRegisteredUser = [];
 
 /**
  * @description describes a function that sets a new message
@@ -81,8 +81,8 @@ function setAllUsers(allUsers) {
  *
  * @returns { String } returns name of added user
  */
-function setAddMember(message) {
-  addRegisteredUser = message;
+function setAddMember(userData) {
+  addRegisteredUser.push(userData);
   return addRegisteredUser;
 }
 
@@ -109,8 +109,8 @@ function setNewMember (usersDetails) {
  *
  * @returns { String } returns name of group as string
  */
-function currentGroup(groupName) {
-  groupStore = groupName;
+function currentGroup(groupData) {
+  groupStore.push(groupData);
   return groupStore;
 }
 
@@ -316,11 +316,12 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       setCurrentUser(action.userDetails);
       AppStore.emitChange();
       break;
-    case AppConstants.CREATE_GROUP:
-      currentGroup(action.groupName);
+    case AppConstants.SET_GROUP_NAME:
+      usersGroups.push(action.groupData);
+      currentGroup(action.groupData);
       AppStore.emitChange();
       break;
-    case AppConstants.SET_GROUP:
+    case AppConstants.LOAD_GROUP_NAMES:
       setUserGroup(action.userGroups);
       AppStore.emitChange();
       break;
@@ -329,7 +330,7 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       saveGroupMessage(action.groupMessage);
       AppStore.emitChange();
       break;
-    case AppConstants.LOAD_GROUP_MESSAGE:
+    case AppConstants.LOAD_GROUP_MESSAGES:
       allGroupMessages(action.message);
       AppStore.emitChange();
       break;
@@ -337,11 +338,12 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       setAllUsers(action.allUsers);
       AppStore.emitChange();
       break;
-    case AppConstants.ADD_MEMBER_TO_GROUP:
-      setAddMember(action.message);
+    case AppConstants.ADD_USER_TO_GROUP:
+      newMember.push(action.userData);
+      setAddMember(action.userData);
       AppStore.emitChange();
       break;
-    case AppConstants.GET_NEW_USERS:
+    case AppConstants.LOAD_NEW_USERS:
       setNewMember(action.usersDetails);
       AppStore.emitChange();
       break;

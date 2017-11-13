@@ -68,7 +68,8 @@ class Login extends React.Component {
     if (!validateEmail(this.state.email)) {
       toastr.error('Enter a valid email');
     } else {
-      AppActions.loginUser(signInDetails).then(() => {
+      AppActions.loginUser(signInDetails)
+      .then(() => {
         AppStore.on('login_success', this.getCurrentUser);
         this.props.history.push('/dashboard');
       });

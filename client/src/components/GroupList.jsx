@@ -17,7 +17,7 @@ const GroupList = () => ({
     return (
       <div onClick={() => {
         AppActions.getNewUsers(this.props.KeyName.groupId);
-        AppActions.loadMessage(this.props.KeyName.groupId);
+        AppActions.loadGroupMessage(this.props.KeyName.groupId);
         this.props.setGroupId(this.props.KeyName.groupId,
           this.props.KeyName.groupName);
       }}>

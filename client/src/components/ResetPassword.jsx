@@ -1,5 +1,4 @@
 import React from 'react';
-import toastr from 'toastr';
 import AppActions from '../actions/AppActions';
 import Navbar from '../components/Navbar.jsx';
 
@@ -24,8 +23,7 @@ class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      message: ''
+      email: ''
     };
   }
 /**
@@ -59,9 +57,9 @@ class ResetPassword extends React.Component {
       email: this.state.email
     };
     AppActions.resetPassword(resetEmail)
-      .then(() => {
-        this.props.history.push('/signin');
-      });
+    .then(() => {
+      this.props.history.push('/signin');
+    });
   }
 /**
  * @return { jsx } rendered jsx element

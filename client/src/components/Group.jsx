@@ -26,7 +26,7 @@ class Group extends React.Component {
     super(props);
     this.state = {
       userId: jwt.decode(localStorage.token).uid,
-      displayName: jwt.decode(localStorage.token).displayName,
+      displayName: JSON.parse(localStorage.getItem('displayName')),
       group: '',
       groupName: []
     };
@@ -120,9 +120,7 @@ class Group extends React.Component {
         });
       }
     });
-    AppActions.loadGroups(this.state.userId);
   }
-
   openCreateGroupModal = (event) => {
     event.preventDefault();
     $('#myModal').modal({

@@ -26,7 +26,7 @@ class DashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayName: jwt.decode(localStorage.token).displayName,
+      displayName: JSON.parse(localStorage.getItem('displayName')),
       groupId: null,
       groupName: '',
       groupMessage: [],
@@ -48,7 +48,6 @@ class DashBoard extends React.Component {
    */
   componentDidMount() {
     AppActions.getAllUsers();
-    AppActions.getNewUsers(this.state.groupId);
     AppStore.addChangeListener(this.onStoreChange);
   }
 /**
@@ -109,7 +108,8 @@ class DashBoard extends React.Component {
   render() {
     return (
     <div id="background">
-      <BoardNavigation googleUser={this.state.googleUser}/>
+      <BoardNavigation googleUser={this.state.googleUser}
+       displayName={this.state.displayName}/>
       <div className="container-fluid">
           <div id="profile" className="container">
             <div className="row">

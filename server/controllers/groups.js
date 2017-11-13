@@ -7,7 +7,6 @@ import {
 sendEmailNotifications,
 sendSMSNotifications,
 normalizeString } from '../utils/helpers';
-import Utils from '../utils/index';
 
 require('dotenv').config();
 /**
@@ -23,7 +22,7 @@ export const createGroup = (req, res) => {
   const { group, userId, displayName } = req.body;
   const timeStamp = new Date().toString();
   const groupName = normalizeString(group);
-  db.database().ref('groups')
+  db.database().ref(`/users/${userId}/groups`)
   .once('value', (snapShot) => {
     const groupNames = [];
     snapShot.forEach((details) => {
@@ -50,7 +49,7 @@ export const createGroup = (req, res) => {
           message: 'User group created successfully',
           groupName,
           dateCreated: timeStamp,
-          groupKey
+          groupId: groupKey
         });
       })
       .catch((error) => {
@@ -116,7 +115,9 @@ export const addMemberToGroup = (req, res) => {
       })
       .then(() => {
         res.status(201).json({
-          message: 'User added successfully'
+          message: 'User added successfully',
+          userId,
+          displayName
         });
       });
     } else {
@@ -190,21 +191,28 @@ export const postMessage = (req, res) => {
  *
  * @return { object } return an object containing user groups
  */
-export const getGroup = (req, res) => {
+export const getUserGroup = (req, res) => {
   const userId = req.params.userId;
+  const userGroups = [];
   db.database().ref(`/users/${userId}/groups`)
-  .orderByKey()
-  .once('value', (snapshot) => {
-    const childData = snapshot.val();
-    const userGroups = Utils.normalizeData(childData);
-    return res.status(200).json({
-      status: 'Message retrieved successfully',
+  .once('value', (snapShot) => {
+    let groupDetail = {};
+    snapShot.forEach((details) => {
+      groupDetail = {
+        groupId: details.key,
+        displayName: details.val().displayName,
+        groupName: details.val().groupName
+      };
+      userGroups.push(groupDetail);
+    });
+    res.status(200).json({
+      status: 'User groups retrived succcessfully',
       userGroups
     });
   })
   .catch((error) => {
     res.status(500).json({
-      message: `An error occured ${error.message}`
+      message: error.message
     });
   });
 };
@@ -264,7 +272,7 @@ export const getUserInGroup = (req, res) => {
     let usersInGroup = {};
     snap.forEach((details) => {
       usersInGroup = {
-        userName: details.val().newUser,
+        userName: details.val().displayName,
         userId: details.val().userId
       };
       users.push(usersInGroup);
