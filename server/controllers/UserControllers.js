@@ -3,7 +3,7 @@
  */
 import firebase from 'firebase';
 import db from '../config/config';
-import { normalizeString, token } from '../utils/helpers';
+import { normalizeString, token } from '../helpers/Validate';
 
 
 /**

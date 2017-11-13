@@ -6,7 +6,7 @@ import db from '../config/config';
 import {
 sendEmailNotifications,
 sendSMSNotifications,
-normalizeString } from '../utils/helpers';
+normalizeString } from '../helpers/Validate';
 
 require('dotenv').config();
 /**

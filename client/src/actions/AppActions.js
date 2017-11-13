@@ -2,7 +2,7 @@ import axios from 'axios';
 import toastr from 'toastr';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import { ToastrError, setCurrentUser } from '../vendors/';
+import { ToastrError, setCurrentUser } from '../utils/';
 
 
 const AppActions = {
