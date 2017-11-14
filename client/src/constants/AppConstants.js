@@ -10,5 +10,6 @@ export default keyMirror({
   GET_ALL_USERS: null,
   ADD_USER_TO_GROUP: null,
   LOAD_NEW_USERS: null,
-  GOOGLE_LOGIN: null
+  GOOGLE_LOGIN: null,
+  GOOGLE_UPDATE: null
 });

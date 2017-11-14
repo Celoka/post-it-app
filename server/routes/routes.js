@@ -14,7 +14,8 @@ import {
   resetPassword,
   getAllUsers,
   newUsersInGroup,
-  googleSignIn
+  googleSignIn,
+  googleUpdate
 } from '../controllers/UserControllers';
 import {
   createGroup,
@@ -26,7 +27,7 @@ import {
 } from '../controllers/GroupControllers';
 
 const router = express.Router();
-
+router.post('/api/v1/user/googleupdate', googleUpdate);
 router.post('/api/v1/user/signup', validateCreateUser, createUser);
 router.post('/api/v1/user/signin', validateLogin, logIn);
 router.post('/api/v1/user/googlesignin', googleSignIn);

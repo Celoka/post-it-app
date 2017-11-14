@@ -1,8 +1,9 @@
 import axios from 'axios';
 import toastr from 'toastr';
+import jwt from 'jsonwebtoken';
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import { ToastrError, setCurrentUser } from '../utils/';
+import { ToastrError, setCurrentUser, setAuthToken } from '../utils/';
 
 
 const AppActions = {
@@ -46,26 +47,49 @@ const AppActions = {
    * google login API with a resolved promised from google
    * sign in with popup
    *
-   * @param { Object } result
+   * @param { Object } googleUserDetails
    *
    * @returns { Object } return google
    */
-  googleLogin(result) {
+  googleLogin(googleUserDetails) {
     return axios
-      .post('/api/v1/user/googlesignin', result)
+      .post('/api/v1/user/googlesignin', googleUserDetails)
       .then((response) => {
-        const googleUser = response.data.user;
-        const displayName = response.data.user.displayName;
-        toastr.success(`Welcome ${displayName}`);
+        const { jwtToken } = response.data;
+        localStorage.setItem('token', jwtToken);
+        setAuthToken(jwtToken);
+        const userDetails = jwt.decode(localStorage.token);
+        localStorage.setItem('displayName',
+        JSON.stringify(userDetails.displayName));
+        localStorage.setItem('email',
+        JSON.stringify(userDetails.email));
+        localStorage.setItem('uid', userDetails.uid);
+        const googleData = response.data;
         AppDispatcher.dispatch({
           actionType: AppConstants.GOOGLE_LOGIN,
-          googleUser
+          googleData
         });
+        return { isConfirmed: response.data.isConfirmed };
       })
       .catch((error) => {
         toastr.error(error.message);
       });
   },
+
+  googleUpdate(credential) {
+    return axios.post('/api/v1/user/googleupdate', credential)
+    .then((response) => {
+      const userData = response.data;
+      AppDispatcher.dispatch({
+        actionType: AppConstants.GOOGLE_UPDATE,
+        userData
+      });
+    })
+    .catch((error) => {
+      toastr.error(error.message);
+    });
+  },
+
 /**
  * @description describes an action that makes
  * API call to the server for a post request to create

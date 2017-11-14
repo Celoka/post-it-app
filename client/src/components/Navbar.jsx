@@ -13,7 +13,7 @@ const NavBar = () => ({
   render() {
     return (
       <div>
-        <nav className="navbar navbar-default">
+        <nav className="menu navbar navbar-default">
           <div className="container-fluid">
             <ul className='nav navbar-nav'>
               <li><h2><Link to='/'><strong>Post It</strong></Link></h2></li>

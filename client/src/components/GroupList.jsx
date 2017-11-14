@@ -21,9 +21,9 @@ const GroupList = () => ({
         this.props.setGroupId(this.props.KeyName.groupId,
           this.props.KeyName.groupName);
       }}>
-          <h5 id ="style-group"className="list-group-item">
-            {this.props.KeyName.groupName}
-          </h5>
+        <h5 id ="style-group"className="list-group-item">
+          {this.props.KeyName.groupName}
+        </h5>
       </div>
 
     );

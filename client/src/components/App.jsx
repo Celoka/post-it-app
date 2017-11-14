@@ -13,7 +13,7 @@ const App = () => ({
  */
   render() {
     return (
-      <div>
+      <div className="wrapper">
          <BrowserRouter>
             <Routes />
         </BrowserRouter>

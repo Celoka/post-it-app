@@ -1,7 +1,25 @@
+html, body, #app, .wrapper, main, #background, .container-fluid, .container{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+body {
+  background: #f0f0f0!important;
+  color: #888;
+  font-family: "Roboto", sans-serif;;
+}
+.menu {
+  background-color: #fff;
+  border-color: #e7e7e7;
+  height: 73px;
+  border-bottom: solid 1px #dddddd;
+  border-radius: 0;
+  padding-top: 10px;
+  padding-left: 26px;
+}
 after {
     box-sizing: border-box;
   }
-  
   form {
     background-color: white;
     border: 1px solid #c6c7ce;
@@ -23,11 +41,6 @@ after {
     border-radius: 5px;
   }
   
-  body {
-    background: #293f50;
-    color: #888;
-    font: 300 16px/22px "Lato", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
   
   section {
     float: auto;
@@ -44,6 +57,10 @@ after {
     border: 0;
     font-size: 100%;
     font: inherit;
+  }
+  h3 {
+    font-weight: 300;
+    margin-top: 32px;
   }
   
   input {
@@ -155,15 +172,14 @@ after {
   }
   
   h1 {
-    font-size: 36px;
-    line-height: 44px;
-    margin: auto;
     text-align: center;
+    font-weight: 400;
   }
   
   h2 {
     font-size: 24px;
     line-height: 44px;
+    
   }
   
   p {
@@ -171,13 +187,16 @@ after {
   }
   
   #sign {
-    background: linear-gradient(#49708f, #293f50);
     border: 0;
-    color: #fff;
     cursor: pointer;
-    font-weight: bold;
-    float: left;
+    float: right;
     padding: 8px 16px;
+    background-color: white;
+    color: green;
+    border: solid 1px;
+    border-radius: 4px;
+    width: 97px;
+    font-weight: 400;
   }
   
   #userlist-form {
@@ -220,15 +239,11 @@ after {
   }
   
   .register {
-    border-radius: 4px;
-    background-color: greenyellow;
-    border: none;
-    color: #FFFFFF;
-    text-align: center;
-    font-size: 28px;
-    padding: 20px;
-    width: 200px;
-    transition: all 0.5s;
+    border-radius: 2px;
+    background-color: #f0f0f0;
+    border: solid 1px;
+    padding: 8px 40px;
+    width: 167px;
     cursor: pointer;
     margin: 5px;
     span {
