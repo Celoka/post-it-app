@@ -3,7 +3,7 @@
  */
 import firebase from 'firebase';
 import db from '../config/config';
-import { normalizeString, token } from '../utils/helpers';
+import { registerUser, normalizeString, token } from '../helpers/Helpers';
 
 
 /**
@@ -27,41 +27,11 @@ export const createUser = (req, res) => {
     if (names.indexOf(displayName) > -1) {
       res.status(409).json({ message: 'Username already exists' });
     } else {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        const { uid } = user;
-        user.updateProfile({
-          displayName
-        });
-        db.database().ref(`users/${uid}`).set({
-          email,
-          password,
-          displayName,
-          phoneNumber
-        });
-        db.database().ref('usernames').push({
-          displayName
-        });
-        const jwtToken = token(uid, displayName);
-        res.status(201).json({
-          message: 'Registration success',
-          jwtToken,
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === 'auth/email-already-in-use') {
-          res.status(401).json({
-            message: 'Email already in use'
-          });
-        } else {
-          res.status(500).json({
-            message: errorMessage
-          });
-        }
-      });
+      registerUser(req, res, email, password, displayName, phoneNumber);
     }
+  })
+  .catch(() => {
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
   });
 };
 
@@ -88,7 +58,6 @@ export const logIn = (req, res) => {
   })
   .catch((error) => {
     const errorCode = error.code;
-    const errorMessage = error.message;
     if (errorCode === 'auth/user-not-found') {
       res.status(401).json({
         message:
@@ -96,7 +65,7 @@ export const logIn = (req, res) => {
       });
     } else {
       res.status(500).json({
-        message: errorMessage
+        message: 'Hey..Stop! Something went wrong.'
       });
     }
   });
@@ -110,56 +79,61 @@ export const logIn = (req, res) => {
  *
  * @return { object } returns a google user object
  */
+
 export const googleSignIn = (req, res) => {
-  const result = req.body;
-  const credential =
-  firebase.auth.GoogleAuthProvider.credential(result.credential.idToken);
-  db.database().ref(`users/${result.user.uid}`)
-  .once('value', (snap) => {
-    if (!snap.exists()) {
-      db.database().ref(`users/${result.user.uid}`)
-      .set({
-        userName: result.user.displayName,
-        email: result.user.email,
-        phoneNumber: result.user.phoneNumber
+  const { email, uid, userName } = req.body;
+  const displayName = normalizeString(userName);
+  const jwtToken = token(uid, displayName, email);
+  db.database().ref('users')
+  .once('value', (snapShot) => {
+    const emails = [];
+    snapShot.forEach((details) => {
+      emails.push(details.val().email);
+    });
+    if (emails.indexOf(email) > -1) {
+      db.database().ref('usernames').push({
+        displayName,
       });
-      firebase.auth().signInWithCredential(credential)
-      .then((user) => {
-        res.status(200).json({
-          message: 'Google sign in successful',
-          user
-        });
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        res.status(500).json({
-          message: errorMessage
-        });
+      res.status(201).json({
+        message: 'Login successful',
+        jwtToken,
+        isConfirmed: true
       });
     } else {
-      firebase.auth().signInWithCredential(credential)
-      .then((user) => {
-        res.status(200).json({
-          message: 'Google sign in successful',
-          user
-        });
-      })
-      .catch((err) => {
-        const errMessage = err.message;
-        res.status(500).json({
-          message: errMessage
-        });
+      res.status(200).json({
+        message: 'Another step is required ',
+        isConfirmed: false,
+        jwtToken
       });
     }
   })
-  .catch((err) => {
-    const errMessage = err.message;
-    res.status(500).json({
-      message: errMessage
-    });
+  .catch(() => {
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
   });
 };
 
+export const googleUpdate = (req, res) => {
+  const { phoneNumber, uid, displayName, email } = req.body;
+  db.database().ref(`users/${uid}`)
+  .set({
+    email,
+    displayName,
+    phoneNumber
+  })
+  .then(() => {
+    const jwtToken = token(uid, displayName, email);
+    res.status(201).json({
+      message: 'Update was succcessful',
+      jwtToken,
+      isConfirmed: true
+    });
+  })
+  .catch(() => {
+    res.status(500).json({
+      message: 'Hey..Stop! Something went wrong.'
+    });
+  });
+};
 
 /**
  * @description This controller handles a user reset password
@@ -180,14 +154,13 @@ export const resetPassword = (req, res) => {
   })
   .catch((error) => {
     const errorCode = error.code;
-    const errorMessage = error.message;
     if (errorCode === 'auth/user-not-found') {
       res.status(404).json({
         message: 'Email does not exist'
       });
     } else {
       res.status(500).send({
-        errorMessage
+        message: 'Hey..Stop! Something went wrong.'
       });
     }
   });
@@ -210,10 +183,9 @@ export const logOut = (req, res) => {
       message: 'Signed out!',
     });
   })
-  .catch((error) => {
-    const errorMessage = error.message;
+  .catch(() => {
     res.status(500).json({
-      message: `An error occured ${errorMessage}`
+      message: 'Hey..Stop! Something went wrong.'
     });
   });
 };
@@ -246,10 +218,9 @@ export const getAllUsers = (req, res) => {
       usersDetails
     });
   })
-  .catch((error) => {
-    const errorMessage = error.message;
+  .catch(() => {
     res.status(500).json({
-      message: `An error occured ${errorMessage}`
+      message: 'Hey..Stop! Something went wrong.'
     });
   });
 };
@@ -282,10 +253,9 @@ export const newUsersInGroup = (req, res) => {
       users
     });
   })
-  .catch((error) => {
-    const errorMessage = error.message;
+  .catch(() => {
     res.status(500).json({
-      message: `An error occure ${errorMessage}`
+      message: 'Hey..Stop! Something went wrong.'
     });
   });
 };

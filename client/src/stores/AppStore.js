@@ -12,6 +12,7 @@ const newMessage = [];
 let allMessages = [];
 let allUserDetails = [];
 let googleUsers = [];
+let googleUserUpdate = [];
 const addRegisteredUser = [];
 
 /**
@@ -77,7 +78,7 @@ function setAllUsers(allUsers) {
  *
  * @function setAddMember
  *
- * @param { String } message
+ * @param { String } userData
  *
  * @returns { String } returns name of added user
  */
@@ -105,7 +106,7 @@ function setNewMember (usersDetails) {
  *
  * @function setNewMember
  *
- * @param { String } group
+ * @param { String } groupData
  *
  * @returns { String } returns name of group as string
  */
@@ -135,16 +136,28 @@ function setUserGroup(userGroups) {
  *
  * @function setNewGoogleUser
  *
- * @param { Object } googleUser
+ * @param { Object } googleData
  *
  * @returns { Array } details of a google user
  */
-function setNewGoogleUser(googleUser) {
-  localStorage.setItem('token',
-   JSON.stringify(googleUser.stsTokenManager.accessToken));
-  localStorage.setItem('userName', JSON.stringify(googleUser.displayName));
-  googleUsers = googleUser;
+function setNewGoogleUser(googleData) {
+  googleUsers = googleData;
   return googleUsers;
+}
+
+/**
+ * @description describes a function that sets a user
+ * updating account with phone number
+ *
+ * @function setGoogleUpdate
+ *
+ * @param { Object } userData
+ *
+ * @returns { Array } google user update details
+ */
+function setGoogleUpdate(userData) {
+  googleUserUpdate = userData;
+  return googleUserUpdate;
 }
 
 /**
@@ -307,6 +320,18 @@ class AppStoreClass extends EventEmitter {
   getNewGoogleUser() {
     return googleUsers;
   }
+
+  /**
+ * @description describes a method that gets a google users
+ * sign in details
+ *
+ * @memberof AppStoreClass
+ *
+ * @returns { Array } returns object containing google user details
+ */
+  getGoogleUpdate() {
+    return googleUserUpdate;
+  }
 }
 
 const AppStore = new AppStoreClass();
@@ -348,10 +373,15 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       AppStore.emitChange();
       break;
     case AppConstants.GOOGLE_LOGIN:
-      setNewGoogleUser(action.googleUser);
+      setNewGoogleUser(action.googleData);
+      AppStore.emitChange();
+      break;
+    case AppConstants.GOOGLE_UPDATE:
+      setGoogleUpdate(action.userData);
       AppStore.emitChange();
       break;
     default:
+
   }
 });
 

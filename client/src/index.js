@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import App from './components/App.jsx';
 import AppConstants from '../src/constants/AppConstants';
 import AppDispatcher from '../src/dispatcher/AppDispatcher';
-import { setAuthToken } from '../src/vendors/';
+import { setAuthToken } from '../src/utils/';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);

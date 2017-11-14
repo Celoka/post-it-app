@@ -50,7 +50,8 @@
         "getCurrentGroup",
         "getCurrentUser",
         "getGroupMessage",
-        "getNewGoogleUser"
+        "getNewGoogleUser",
+        "getGoogleUpdate"
       ]
     }],
     "no-shadow": [

@@ -188,9 +188,11 @@ class Group extends React.Component {
           </div>
           <div >
             <div className="list-group">
-              {this.state.groupName.map((KeyName, KeyIndex) =>
-                 (<GroupList setGroupId={this.props.setGroupId}
-                  KeyName={KeyName} key={KeyIndex} />))}
+              {
+                this.state.groupName.map((KeyName, KeyIndex) =>
+                (<GroupList setGroupId={this.props.setGroupId}
+                  KeyName={KeyName} key={KeyIndex} />))
+              }
             </div>
           </div>
         </form>

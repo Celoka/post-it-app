@@ -1,5 +1,4 @@
 import React from 'react';
-import jwt from 'jsonwebtoken';
 import AppActions from '../actions/AppActions';
 
 /**

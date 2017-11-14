@@ -1,7 +1,7 @@
 import React from 'react';
 import toastr from 'toastr';
 import Navbar from '../components/Navbar.jsx';
-import { validateEmail } from '../vendors/';
+import { validateEmail } from '../utils/';
 import AppActions from '../actions/AppActions';
 
 /**

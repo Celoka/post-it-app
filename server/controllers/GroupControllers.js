@@ -6,7 +6,9 @@ import db from '../config/config';
 import {
 sendEmailNotifications,
 sendSMSNotifications,
-normalizeString } from '../utils/helpers';
+normalizeString,
+userValidation,
+setGroupDetails } from '../helpers/Helpers';
 
 require('dotenv').config();
 /**
@@ -31,39 +33,11 @@ export const createGroup = (req, res) => {
     if (groupNames.indexOf(groupName) > -1) {
       res.status(409).json({ message: 'Groupname already exists' });
     } else {
-      const groupKey = db.database().ref('/groups').push({
-        groupName,
-        dateCreated: timeStamp
-      }).key;
-      db.database().ref(`/groups/${groupKey}/users`)
-      .push({
-        displayName
-      });
-      db.database().ref(`/users/${userId}/groups`)
-      .child(groupKey).set({
-        groupName,
-        displayName
-      })
-      .then(() => {
-        res.status(201).send({
-          message: 'User group created successfully',
-          groupName,
-          dateCreated: timeStamp,
-          groupId: groupKey
-        });
-      })
-      .catch((error) => {
-        if (!userId) {
-          res.status(401).json({
-            message: 'Login to perform this operation'
-          });
-        } else {
-          res.status(500).json({
-            message: `An error occured ${error.message}`
-          });
-        }
-      });
+      setGroupDetails(req, res, groupName, timeStamp, displayName, userId);
     }
+  })
+  .catch(() => {
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
   });
 };
 
@@ -77,60 +51,27 @@ export const createGroup = (req, res) => {
  * @return {object} return an object containg an added user details
  */
 export const addMemberToGroup = (req, res) => {
-  const { groupId, userId, newUser: displayName } = req.body;
-  db.database().ref(`groups/${groupId}/users/`)
-  .push({
-    displayName
-  });
-  db.database().ref(`/users/${userId}`)
-  .once('value', (snapshot) => {
-    if (snapshot.exists()) {
-      const { email, phoneNumber } = snapshot.val();
-      db.database().ref(`groups/${groupId}`)
-      .once('value', (snap) => {
-        const groupName = snap.val().groupName;
-        db.database().ref(`/users/${userId}/groups/${groupId}`)
-        .update({
-          displayName,
-          groupName
-        });
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: `An error occure ${error.message}`
-        });
-      });
-      db.database().ref(`groups/${groupId}/groupName`)
-      .once('value', (groupSnapshot) => {
-        if (groupSnapshot.exists()) {
-          db.database().ref(`groups/${groupId}/email`)
-          .push(email);
-          db.database().ref(`groups/${groupId}/phoneNumber`)
-          .push(phoneNumber);
-        } else {
-          res.status(403).json({
-            message: 'Group does not exists'
-          });
-        }
-      })
-      .then(() => {
-        res.status(201).json({
-          message: 'User added successfully',
-          userId,
-          displayName
-        });
-      });
+  const { groupId, userId, newUser } = req.body;
+  const displayName = normalizeString(newUser);
+  db.database().ref(`groups/${groupId}/users`)
+  .once('value', (snapShot) => {
+    const names = [];
+    snapShot.forEach((details) => {
+      names.push(details.val().displayName);
+    });
+    if (names.indexOf(displayName) > -1) {
+      res.status(409).json({ message: 'User is already in group' });
     } else {
-      res.status(404).json({
-        message: 'User details not found'
+      db.database().ref(`groups/${groupId}/users/`)
+      .push({
+        displayName
       });
+      userValidation(req, res, userId, groupId, displayName);
     }
   })
-    .catch((error) => {
-      res.status(500).json({
-        message: `An error occured ${error.message}`
-      });
-    });
+  .catch(() => {
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+  });
 };
 /**
  * @description This controller posts message to a group
@@ -173,13 +114,13 @@ export const postMessage = (req, res) => {
       groupName
     });
   })
-  .catch((error) => {
+  .catch(() => {
     res.status(500).json({
-      message: `An error occured ${error.message}`
+      message: 'Hey..Stop! Something went wrong.'
     });
   });
-  sendEmailNotifications(groupId, priority, groupName);
-  sendSMSNotifications(groupId, priority, groupName);
+  sendEmailNotifications(groupId, priority);
+  sendSMSNotifications(groupId, priority);
 };
 
 /**
@@ -210,9 +151,9 @@ export const getUserGroup = (req, res) => {
       userGroups
     });
   })
-  .catch((error) => {
+  .catch(() => {
     res.status(500).json({
-      message: error.message
+      message: 'Hey..Stop. Something went wrong.'
     });
   });
 };
@@ -248,9 +189,9 @@ export const getGroupMessage = (req, res) => {
       groupMessage,
     });
   })
-  .catch((error) => {
+  .catch(() => {
     res.status(500).json({
-      message: `An error occured ${error.message}`
+      message: 'Hey..Stop. Something went wrong.'
     });
   });
 };
@@ -282,9 +223,9 @@ export const getUserInGroup = (req, res) => {
       users
     });
   })
-  .catch((error) => {
+  .catch(() => {
     res.status(500).json({
-      message: `An error occured ${error.message}`
+      message: 'Hey..Stop. Something went wrong.'
     });
   });
 };

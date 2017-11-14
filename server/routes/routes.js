@@ -5,8 +5,8 @@ import {
   validateCreateGroup,
   validateAddmember,
   validateResetPassword
- } from '../utils/helpers';
-import jwtVerify from '../utils/authentication';
+ } from '../helpers/Validate';
+import jwtVerify from '../helpers/Auth';
 import {
   createUser,
   logIn,
@@ -14,8 +14,9 @@ import {
   resetPassword,
   getAllUsers,
   newUsersInGroup,
-  googleSignIn
-} from '../controllers/users';
+  googleSignIn,
+  googleUpdate
+} from '../controllers/UserControllers';
 import {
   createGroup,
   addMemberToGroup,
@@ -23,10 +24,10 @@ import {
   getUserGroup,
   getGroupMessage,
   getUserInGroup
-} from '../controllers/groups';
+} from '../controllers/GroupControllers';
 
 const router = express.Router();
-
+router.post('/api/v1/user/googleupdate', googleUpdate);
 router.post('/api/v1/user/signup', validateCreateUser, createUser);
 router.post('/api/v1/user/signin', validateLogin, logIn);
 router.post('/api/v1/user/googlesignin', googleSignIn);
