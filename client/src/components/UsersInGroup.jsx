@@ -116,20 +116,33 @@ class UsersInGroup extends React.Component {
     };
     if (!userDetails.userId) {
       this.setState({
-        error: toastr.error('User does not exist'),
+        error: toastr.error('User does not exist or Invalid input'),
       });
     } else {
       AppActions.addUserToGroup(userDetails)
-      .then(() => {
-        this.setState({
-          newUser: '',
-        });
+      .then((res) => {
+        if (res) {
+          this.setState({
+            newUser: '',
+          });
+        }
       });
     }
   }
+  /**
+   * @description describes a function that dynamically
+   * controls the behaviour of a modal
+   *
+   * @param { string } event
+   *
+   * @return { void }
+   *
+   * @memberof Group
+   */
   openAddMemberModal = (event) => {
     event.preventDefault();
-    $('#my-Modal').modal({
+    const $myModal = $('#my-Modal');
+    $myModal.modal({
       backdrop: false,
     });
   }

@@ -5,7 +5,6 @@ import firebase from 'firebase';
 import db from '../config/config';
 import { registerUser, normalizeString, token } from '../helpers/Helpers';
 
-
 /**
  * @description This controller creates a new user
  * POST:/api/v1/user/signup
@@ -17,22 +16,36 @@ import { registerUser, normalizeString, token } from '../helpers/Helpers';
  */
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
+  req.check('phoneNumber', 'Phone number is required').notEmpty().matches(/\d/);
+  req.check('password', 'Password is required').notEmpty();
+  const errors = req.validationErrors();
   const displayName = normalizeString(userName);
-  db.database().ref('usernames')
-  .once('value', (snapShot) => {
-    const names = [];
-    snapShot.forEach((details) => {
-      names.push(details.val().displayName);
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).json({
+      message
     });
-    if (names.indexOf(displayName) > -1) {
-      res.status(409).json({ message: 'Username already exists' });
-    } else {
-      registerUser(req, res, email, password, displayName, phoneNumber);
-    }
-  })
-  .catch(() => {
-    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
-  });
+  } else {
+    db.database().ref('usernames')
+    .once('value', (snapShot) => {
+      const names = [];
+      snapShot.forEach((details) => {
+        names.push(details.val().displayName);
+      });
+      if (names.indexOf(displayName) > -1) {
+        res.status(409).json({
+          message: 'Username already exists'
+        });
+      } else {
+        registerUser(req, res, email, password, displayName, phoneNumber);
+      }
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
+    });
+  }
 };
 
 /**
@@ -59,14 +72,21 @@ export const logIn = (req, res) => {
   .catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/user-not-found') {
-      res.status(400).json({ message:
-         'Make sure your email or password is correct' });
+      res.status(400).json({
+        message: 'Make sure your email or password is correct'
+      });
     } else if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({ message: 'invalid email' });
+      res.status(400).json({
+        message: 'invalid email'
+      });
     } else if (errorCode === 'auth/wrong-password') {
-      res.status(400).json({ message: 'Wrong password' });
+      res.status(400).json({
+        message: 'Wrong password'
+      });
     } else {
-      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     }
   });
 };
@@ -92,7 +112,9 @@ export const googleSignIn = (req, res) => {
       emails.push(details.val().email);
     });
     if (emails.indexOf(email) > -1) {
-      db.database().ref('usernames').push({ displayName });
+      db.database().ref('usernames').push({
+        displayName
+      });
       res.status(201).json({
         message: 'Login successful',
         jwtToken,
@@ -107,7 +129,9 @@ export const googleSignIn = (req, res) => {
     }
   })
   .catch(() => {
-    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+    res.status(500).json({
+      message: 'Hey..Stop! Something went wrong.'
+    });
   });
 };
 
@@ -137,7 +161,9 @@ export const googleUpdate = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+    res.status(500).json({
+      message: 'Hey..Stop! Something went wrong.'
+    });
   });
 };
 
@@ -162,11 +188,17 @@ export const resetPassword = (req, res) => {
   .catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/user-not-found') {
-      res.status(404).json({ message: 'Email does not exist' });
+      res.status(404).json({
+        message: 'Email does not exist'
+      });
     } else if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({ message: 'Invalid email' });
+      res.status(400).json({
+        message: 'Invalid email'
+      });
     } else {
-      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     }
   });
 };
@@ -258,7 +290,9 @@ export const newUsersInGroup = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+    res.status(500).json({
+      message: 'Hey..Stop! Something went wrong.'
+    });
   });
 };
 

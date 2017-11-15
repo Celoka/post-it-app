@@ -165,7 +165,9 @@ export const pushMemberDetails = (
     });
   })
   .catch(() => {
-    res.status(500).json({ message: 'Hey..Stop! Something went wrong' });
+    res.status(500).json({
+      message: 'Hey..Stop! Something went wrong'
+    });
   });
 };
 /**
@@ -253,9 +255,13 @@ export const setGroupDetails = (
   })
   .catch(() => {
     if (!userId) {
-      res.status(401).json({ message: 'Login to perform this operation' });
+      res.status(401).json({
+        message: 'Login to perform this operation'
+      });
     } else {
-      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     }
   });
 };
@@ -300,8 +306,16 @@ export const registerUser = (
   .catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/email-already-in-use') {
-      res.status(401).json({
+      res.status(409).json({
         message: 'Email already in use'
+      });
+    } else if (errorCode === 'auth/invalid-email') {
+      res.status(400).json({
+        message: 'invalid email'
+      });
+    } else if (errorCode === 'auth/weak-password') {
+      res.status(400).json({
+        message: 'password strength is too week'
       });
     } else {
       res.status(500).json({

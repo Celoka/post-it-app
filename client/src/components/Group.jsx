@@ -25,7 +25,7 @@ class Group extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: jwt.decode(localStorage.token).uid,
+      userId: localStorage.getItem('uid'),
       displayName: JSON.parse(localStorage.getItem('displayName')),
       group: '',
       groupName: []
@@ -121,9 +121,20 @@ class Group extends React.Component {
       }
     });
   }
+  /**
+   * @description describes a function that dynamically
+   * controls the behaviour of a modal
+   *
+   * @param { string } event
+   *
+   * @return { void }
+   *
+   * @memberof Group
+   */
   openCreateGroupModal = (event) => {
     event.preventDefault();
-    $('#myModal').modal({
+    const $myModal = $('#myModal');
+    $myModal.modal({
       backdrop: false,
     });
   }

@@ -47,7 +47,8 @@ class GoogleUpdate extends React.Component {
   }
 
   /**
-   * @description method fires an action to update a users google account
+   * @description describes method fires an action to update
+   * a users google account
    *
    * @param { object } event
    *
