@@ -1,13 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DotEnvPlugin = require('dotenv-webpack');
+const DotEnv = require('dotenv-webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-
-const dotEnvPlugin = new DotEnvPlugin({
-  path: './.env',
-});
 const ExtractTextPluginConfig = new ExtractTextPlugin('main.css');
 const config = {
   entry: [
@@ -54,7 +50,10 @@ const config = {
   },
   plugins: [
     ExtractTextPluginConfig,
-    dotEnvPlugin,
+    new DotEnv({
+      path: '.env',
+      safe: false
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: false

@@ -8,12 +8,12 @@ import { registerUser, normalizeString, token } from '../helpers/Helpers';
 
 /**
  * @description This controller creates a new user
- * POST:/user/signup
+ * POST:/api/v1/user/signup
  *
  * @param {object} req request object
  * @param {object} res response object
  *
- * @return {object} return an obejct containing a user
+ * @return {object} return an object containing a user
  */
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
@@ -37,7 +37,7 @@ export const createUser = (req, res) => {
 
 /**
  * @description This controller signs a registered user in
- * POST:/user/signin
+ * POST:/api/v1/user/signin
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -59,20 +59,21 @@ export const logIn = (req, res) => {
   .catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/user-not-found') {
-      res.status(401).json({
-        message:
-          'Make sure your email or password is correct'
-      });
+      res.status(400).json({ message:
+         'Make sure your email or password is correct' });
+    } else if (errorCode === 'auth/invalid-email') {
+      res.status(400).json({ message: 'invalid email' });
+    } else if (errorCode === 'auth/wrong-password') {
+      res.status(400).json({ message: 'Wrong password' });
     } else {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
     }
   });
 };
 
 /**
  * @description describes a controller for google sign up
+ * POST:/api/v1/user/googlesignin
  *
  * @param { object } req request object
  * @param { object } res response object
@@ -91,9 +92,7 @@ export const googleSignIn = (req, res) => {
       emails.push(details.val().email);
     });
     if (emails.indexOf(email) > -1) {
-      db.database().ref('usernames').push({
-        displayName,
-      });
+      db.database().ref('usernames').push({ displayName });
       res.status(201).json({
         message: 'Login successful',
         jwtToken,
@@ -112,6 +111,15 @@ export const googleSignIn = (req, res) => {
   });
 };
 
+/**
+ * @description describes a controller for google update
+ * POST:/api/v1/user/googleupdate
+ *
+ * @param { object } req request object
+ * @param { object } res response object
+ *
+ * @return { object } user object encoded in jwt
+ */
 export const googleUpdate = (req, res) => {
   const { phoneNumber, uid, displayName, email } = req.body;
   db.database().ref(`users/${uid}`)
@@ -129,15 +137,13 @@ export const googleUpdate = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
   });
 };
 
 /**
  * @description This controller handles a user reset password
- * POST:/user/passwordreset
+ * POST:/api/v1/user/passwordreset
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -147,29 +153,27 @@ export const googleUpdate = (req, res) => {
 export const resetPassword = (req, res) => {
   const email = req.body.email;
   firebase.auth().sendPasswordResetEmail(email)
-  .then(() => {
+  .then((user) => {
     res.status(200).json({
       message: 'Mail sent succesfully',
+      user
     });
   })
   .catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/user-not-found') {
-      res.status(404).json({
-        message: 'Email does not exist'
-      });
+      res.status(404).json({ message: 'Email does not exist' });
+    } else if (errorCode === 'auth/invalid-email') {
+      res.status(400).json({ message: 'Invalid email' });
     } else {
-      res.status(500).send({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
     }
   });
 };
 
-
 /**
  * @description This method handles a user sign out
- * POST:/user/signout
+ * POST:/api/v1/user/signout
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -194,7 +198,7 @@ export const logOut = (req, res) => {
  * @description This controller fetches all registered
  * user in the app
  *
- * GET:/user/group
+ * GET:/api/v1/allusers
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -229,7 +233,7 @@ export const getAllUsers = (req, res) => {
  * @description This controller fetches all users
  * added to a group
  *
- * GET:/groups/:groupId/members
+ * GET:/api/v1/groups/:groupId/members
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -254,9 +258,7 @@ export const newUsersInGroup = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
+    res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
   });
 };
 

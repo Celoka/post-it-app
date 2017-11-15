@@ -5,6 +5,15 @@ dotenv.config();
 const secret = process.env.SECRET_TOKEN;
 
 
+/**
+ * @description describes a function that verifies a jwt Token
+ *
+ * @param { object } req requests object
+ * @param { object } res response object
+ * @param { function } next this runs the next block of code
+ *
+ * @return { object } error response when the jwt Token is not verified
+ */
 const jwtVerify = (req, res, next) => {
   const token = req.headers.authorization || req.headers['x-access-token'] ||
    req.header('authorization');

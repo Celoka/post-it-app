@@ -13,12 +13,12 @@ setGroupDetails } from '../helpers/Helpers';
 require('dotenv').config();
 /**
  * @description This controller creates a user group
- * POST: /group
+ * POST: /api/v1/group
  *
- * @param {object} req request object
- * @param {object} res response object
+ * @param { object } req request object
+ * @param { object } res response object
  *
- * @return {object} return an object containing group details;
+ * @return { object } return an object containing group details;
  */
 export const createGroup = (req, res) => {
   const { group, userId, displayName } = req.body;
@@ -43,7 +43,7 @@ export const createGroup = (req, res) => {
 
 /**
  * @description This controller adds a member to a group
- * POST:/group/groupId/user
+ * POST:/api/v1/group/groupId/user
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -75,7 +75,7 @@ export const addMemberToGroup = (req, res) => {
 };
 /**
  * @description This controller posts message to a group
- * POST:/groups/:groupId/message
+ * POST:/api/v1/groups/:groupId/message
  *
  * @param {object} req request object
  * @param {object} res response
@@ -125,7 +125,7 @@ export const postMessage = (req, res) => {
 
 /**
  * @description This controller fetches a user group
- * GET:/groups
+ * GET:/api/v1/:userId/groups
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -152,15 +152,13 @@ export const getUserGroup = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop. Something went wrong.'
-    });
+    res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
   });
 };
 
 /**
  * @description This controller fetches a particular group messages
- * GET:/group/:groupId
+ * GET:/api/v1/group/:groupId
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -190,15 +188,13 @@ export const getGroupMessage = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop. Something went wrong.'
-    });
+    res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
   });
 };
 
 /**
  * @description This controller fetches a users in a particular group
- * GET:/group/:groupId/users
+ * GET:/api/v1/group/:groupId/users
  *
  * @param {object} req request object
  * @param {object} res response object
@@ -224,8 +220,6 @@ export const getUserInGroup = (req, res) => {
     });
   })
   .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop. Something went wrong.'
-    });
+    res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
   });
 };

@@ -8,9 +8,12 @@ import AppActions from '../actions/AppActions';
 
 
 /**
+ * @description describes a function that pops a notification
+ * when an error occurs
+ *
  * @function ToastrError
  *
- * @param { object } error
+ * @param { object } error messages
  *
  * @return { object } error message
  */
@@ -27,7 +30,15 @@ export const ToastrError = (error) => {
   const status = error.response.data.message;
   toastr.error(status);
 };
-
+/**
+ * @description describes a function that sets the token to the header
+ * for subsequent persistence of request to the server
+ *
+ * @param { string } token encoded here in is the user object.
+ * details like uid, displayname
+ *
+ * @return { void }
+ */
 export const setAuthToken = (token) => {
   if (token) {
     axios.defaults.headers.common['x-access-token'] = token;
@@ -35,6 +46,15 @@ export const setAuthToken = (token) => {
     delete axios.defaults.headers.common['x-access-token'];
   }
 };
+
+/**
+ * @description describes a function that receives user object from the server
+ * and dispatches this data to the store
+ *
+ * @param { object } response contains the user object encoded in jwt code
+ *
+ * @return { void }
+ */
 export const setCurrentUser = (response) => {
   const { jwtToken } = response.data;
   localStorage.setItem('token', jwtToken);
@@ -50,6 +70,14 @@ export const setCurrentUser = (response) => {
   });
 };
 
+/**
+ * @description describes a function that checks and validates a user
+ * email
+ *
+ * @param { string } email this is the user email to be validated
+ *
+ * @return { string } this returns an email after the validation
+ */
 export const validateEmail = (email) => {
   const regexForEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regexForEmail.test(email);

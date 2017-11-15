@@ -6,7 +6,7 @@ import Navbar from './Navbar.jsx';
  * @description describes a stateless component that has
  * child components
  *
- * @return { jsx } rendered jsx element
+ * @return { jsx } jsx markup element
  *
  * @function Home
  */

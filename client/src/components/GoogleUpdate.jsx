@@ -13,15 +13,14 @@ import AppActions from '../actions/AppActions';
  */
 class GoogleUpdate extends React.Component {
 /**
- *
- * @param { object } props
+ * @description Creates an instance of GoogleUpdate.
  *
  * @return { void }
  *
  * @memberof GoogleUpdate
  */
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       phoneNumber: '',
       email: JSON.parse(localStorage.getItem('email')),
@@ -30,12 +29,34 @@ class GoogleUpdate extends React.Component {
     };
   }
 
+  /**
+  * @description Monitors changes in the components and change the state
+  *
+  * @param { string } event
+  *
+  * @method onChange
+  *
+  * @return { void }
+  *
+  * @memberof Login
+  */
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
+  /**
+   * @description method fires an action to update a users google account
+   *
+   * @param { object } event
+   *
+   * @method onSubmit
+   *
+   * @return { void }
+   *
+   * @memberof Login
+   */
   onSubmit = (event) => {
     const credential = { ...this.state };
     event.preventDefault();

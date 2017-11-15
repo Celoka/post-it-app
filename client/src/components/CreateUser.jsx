@@ -16,14 +16,12 @@ class CreateUser extends React.Component {
 /**
  * @description Creates an instance of MessageBoard
  *
- * @param { object } props
- *
  * @return { void }
  *
  * @memberof CreateUser
  */
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: '',
@@ -39,7 +37,7 @@ class CreateUser extends React.Component {
 /**
  * @description Monitors changes in the components and change the state
  *
- * @param { string } event
+ * @param { string } event this contains string of characters
  *
  * @method onChange
  *
@@ -57,7 +55,7 @@ class CreateUser extends React.Component {
  * @description method fires an action to register a user with email,
  * phonenumber, username and password
  *
- * @param { object } event
+ * @param { object } event this contains string of characters
  *
  * @method onSubmit
  *

@@ -18,14 +18,12 @@ class Login extends React.Component {
 
   /**
    *
-   * @param {object} props
-   *
    * @return {void}
    *
    * @memberof SignIn
    */
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: '',
@@ -53,7 +51,7 @@ class Login extends React.Component {
   /**
    * @description method fires an action to sign in a user
    *
-   * @param { object } event
+   * @param { object } event default behaviour of a submit method
    *
    * @method onSubmit
    *
@@ -107,11 +105,9 @@ class Login extends React.Component {
           }
         });
       });
-  }
-
-
+  };
   /**
-   * @return { jsx } rendered jsx element
+   * @return { jsx } jsx markup element
    *
    * @memberof Login
    */
