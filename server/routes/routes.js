@@ -4,7 +4,8 @@ import {
   validateLogin,
   validateCreateGroup,
   validateAddmember,
-  validateResetPassword
+  validateResetPassword,
+  validateGetGroup
  } from '../helpers/Validate';
 import jwtVerify from '../helpers/Auth';
 import {
@@ -39,7 +40,7 @@ router.post('/api/v1/group/groupId/user', jwtVerify,
 router.post('/api/v1/groups/:groupId/message', jwtVerify, postMessage);
 router.get('/api/v1/groups/:groupId/members', jwtVerify, newUsersInGroup);
 router.get('/api/v1/allusers', jwtVerify, getAllUsers);
-router.get('/api/v1/:userId/groups', jwtVerify, getUserGroup);
+router.get('/api/v1/:userId/groups', jwtVerify, validateGetGroup, getUserGroup);
 router.get('/api/v1/group/:groupId', jwtVerify, getGroupMessage);
 router.get('/api/v1/group/:groupId/users', jwtVerify, getUserInGroup);
 

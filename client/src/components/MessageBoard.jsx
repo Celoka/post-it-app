@@ -32,7 +32,7 @@ class MessageBoard extends React.Component {
 /**
  * @description this receives props from the parent component(dashboard)
  *
- * @param { String } nextProps
+ * @param { String } nextProps this includes groupId, groupmessage, groupname
  *
  * @method componentWillReceiveProps
  *
@@ -85,7 +85,7 @@ class MessageBoard extends React.Component {
 /**
  * @description fires an action on click of a button
  *
- * @param { Object } event
+ * @param { Object } event behaviour of a submit method 
  *
  * @method onSubmit
  *

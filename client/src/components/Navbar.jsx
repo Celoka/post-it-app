@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  * @description describes a stateless component
  * that controls navigation of app.
  *
- * @return { void }
+ * @return { jsx } jsx markup element
  *
  * @function NavBar
  */

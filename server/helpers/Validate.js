@@ -87,9 +87,10 @@ export const validateCreateGroup = (req, res, next) => {
  * @description describes a function that validates string for input field
  * when a member is being added to a group
  *
- * @param { object } req
- * @param { object } res
- * @param { function } next
+ * @param { object } req request object containg user details
+ * @param { object } res response object containing the user details
+ * @param { function } next function that runs the next
+ * block of code when conditions is true
  *
  * @function validateAddmember
  *
@@ -112,9 +113,10 @@ export const validateAddmember = (req, res, next) => {
  * @description describes a function that validates input string
  * for email when requesting for a password reset
  *
- * @param { object } req
- * @param { object } res
- * @param { function } next
+ * @param { object } req request object containg user details
+ * @param { object } res response object containing the user details
+ * @param { function } next function that runs the next
+ * block of code when conditions is true
  *
  * @function validateResetPassword
  *
@@ -129,6 +131,15 @@ export const validateResetPassword = (req, res, next) => {
     res.status(400).json({ message });
   } else {
     next();
+  }
+};
+
+export const validateGetGroup = (req, res, next) => {
+  req.check('userId', 'userId isrequired').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).json({ message });
   }
 };
 

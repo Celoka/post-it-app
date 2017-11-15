@@ -87,8 +87,10 @@ class DashBoard extends React.Component {
  *
  * @method setGroupId
  *
- * @param { String } groupId
- * @param { String } groupName
+ * @param { String } groupId this contains group id of
+ * a user group passed as props
+ * @param { String } groupName this is the current group
+ * name passed as props
  *
  * @return { void }
  *
@@ -112,7 +114,6 @@ class DashBoard extends React.Component {
             displayName={this.state.displayName}/>
           <div className="container-fluid">
             <div id="profile" className="container">
-              {/*<div className="row">*/}
                 <div className="col-sm-12 col-md-3 leftsidenav">
                   <Group setGroupId={this.setGroupId}/>
                   <UsersInGroup groupId={this.state.groupId}
@@ -124,8 +125,9 @@ class DashBoard extends React.Component {
                     (this.state.groupId === null) ?
                     <div className="white-board black-text">
                       <img height="30%" id="mail-box"
-                      src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510496726/mssg_qswl1m.png"
-                      alt="message" />
+                        src=
+  "http://res.cloudinary.com/dnsteufwj/image/upload/v1510496726/mssg_qswl1m.png"
+                        alt="message" />
                       <h4 id="clear">
                         <span className="caps">
                           {this.state.displayName}
@@ -142,9 +144,8 @@ class DashBoard extends React.Component {
                      <MessageBoard groupId={this.state.groupId}
                       groupName={this.state.groupName}
                       groupMessage={this.state.groupMessage}/>
-                    }
+                  }
                 </div>
-              {/*</div>*/}
             </div>
           </div>
       </div>

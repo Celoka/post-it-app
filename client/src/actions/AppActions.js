@@ -12,9 +12,10 @@ const AppActions = {
    * API call to the server for a post request
    * to register a user
    *
-   * @param { Object } credentials
+   * @param { Object } credentials contains registration details of a new user
+   * email, password, username, phonenumber
    *
-   * @returns { Object } returns registered user registration details
+   * @returns { void }
    */
   registerUser(credentials) {
     return axios
@@ -30,9 +31,10 @@ const AppActions = {
  * API call to the server for a post request to sign in
  * a user
  *
- * @param { Object } signInDetails
+ * @param { Object } signInDetails contains the login details of a
+ * user
  *
- * @returns { Object } returns registered user details
+ * @returns { void }
  */
   loginUser(signInDetails) {
     return axios
@@ -47,9 +49,10 @@ const AppActions = {
    * google login API with a resolved promised from google
    * sign in with popup
    *
-   * @param { Object } googleUserDetails
+   * @param { Object } googleUserDetails contains details of a user
+   * from google
    *
-   * @returns { Object } return google
+   * @returns { boolean } this confirms the status of a google user
    */
   googleLogin(googleUserDetails) {
     return axios
@@ -76,6 +79,15 @@ const AppActions = {
       });
   },
 
+  /**
+   * @description describes an actions that makes a call to
+   * API, posts a first time google user account details to for update
+   *
+   * @param { Object } credential contains details the phone number, uid
+   * displayName of a the google user
+   *
+   * @returns { boolean } this confirms the status of a google user
+   */
   googleUpdate(credential) {
     return axios.post('/api/v1/user/googleupdate', credential)
     .then((response) => {
@@ -95,9 +107,11 @@ const AppActions = {
  * API call to the server for a post request to create
  * a user group
  *
- * @param { Object } groupDetail
+ * @param { Object } groupDetail contains the details of a
+ * a user group
  *
- * @returns { Object } returns created group details
+ * @returns { boolean } return a boolean after promise has been resolved
+ * to close modal
  */
   createGroup(groupDetail) {
     return axios
@@ -121,7 +135,8 @@ const AppActions = {
  * API call to the server for a get request to fetch
  * all user groups
  *
- * @param { object } userId
+ * @param { string } userId contains the user id of the current
+ * user to for the aim of fetching groups
  *
  * @returns { Object } returns all user groups group details
  */
@@ -143,8 +158,9 @@ const AppActions = {
  * API call to the server for a post/get request to post
  * a message to user group
  *
- * @param { Object } messageDetail
- * @param {String } groupId
+ * @param { Object } messageDetail contains messagedetails
+ * @param {String } groupId contains the group id of a speciific
+ * usergroup that a message has been posted to
  *
  * @returns { Object } returns group message and details
  */
@@ -166,7 +182,8 @@ const AppActions = {
  * API call to the server for a get request to get
  * message in a group
  *
- * @param { String } groupId
+ * @param { String } groupId this group id is used to
+ * fetch group messages in a particular user group
  *
  * @returns { Object } returns group message and details
  */
@@ -187,7 +204,8 @@ const AppActions = {
  * API call to the server for a get request to fetch users
  * added to user group
  *
- * @param {String } groupId
+ * @param {String } groupId this group id is used to fetch
+ * group member that has just been added to the group
  *
  * @returns { Object } returns user details of added member
  */
@@ -209,7 +227,8 @@ const AppActions = {
  * API call to the server for a post request to add
  * a member to a user group
  *
- * @param { Object } userDetails
+ * @param { Object } userDetails contains the name and uid of
+ * the user to be added to group
  *
  * @returns { Object } returns user details and a message
  *
@@ -254,7 +273,8 @@ const AppActions = {
  * API call to the server for a post request to send
  * reset password link to a registered user
  *
- * @param { Object } resetEmail
+ * @param { Object } resetEmail this contains email
+ * address of a user
  *
  * @returns { Object } returns email and success message
  *
