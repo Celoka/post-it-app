@@ -21,9 +21,6 @@ describe('<GroupList/>', () => {
   it('should update the state on click of a button', () => {
     wrapper.find('div').simulate('click');
   });
-  it('should have children that matches name to exist', () => {
-    expect(wrapper.node.props.children.props.children).toMatch('name');
-  });
   it('should have style name to exist', () => {
     expect(wrapper.node.props.children.props.className)
     .toMatch('list-group-item');

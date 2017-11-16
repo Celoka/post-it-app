@@ -1,16 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Link } from 'react-router-dom';
-import { expect } from 'chai';
-
+import AppActions from '../src/actions/AppActions';
 import BoardNavigation from '../src/components/BoardNavigation.jsx';
-import mockApiCall from '../__mocks__/axios.js';
 
 describe('<BoardNavigation />', () => {
-  beforeEach(() => {
-    jest.mock('axios', () => mockApiCall);
-  });
-  const wrapper = mount(<BoardNavigation />,
+  const props = {
+    userName: 'test',
+  };
+  const wrapper = mount(<BoardNavigation {...props} />,
     {
       childContextTypes: { router: React.PropTypes.object },
       context: { router: {
@@ -22,10 +19,9 @@ describe('<BoardNavigation />', () => {
       } }
     }
   );
-  it('it should contain link', () => {
-    expect(wrapper.find(Link)).to.have.length(2);
-  });
-  it('simulates click event', () => {
+  it('it should sign out a user', () => {
+    const logOutSpy = jest.spyOn(AppActions, 'logOut');
     wrapper.find('li').simulate('click');
+    expect(logOutSpy).toHaveBeenCalled();
   });
 });

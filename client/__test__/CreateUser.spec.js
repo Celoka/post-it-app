@@ -1,35 +1,85 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
 import CreateUser from '../src/components/CreateUser.jsx';
-import mockApiCall from '../__mocks__/axios';
-import Navbar from '../src/components/Navbar.jsx';
 import AppActions from '../src/actions/AppActions';
 
 
 describe('<Signup/>', () => {
-  const registerUserSpy = jest.spyOn(AppActions, 'registerUser');
+  const props = {
+    auth: {
+      isLoggedIn: false
+    },
+    history: { push: jest.fn() },
+    router: {
+      history: { push: jest.fn() },
+    },
+    signUserIn: jest.fn(() => Promise.reject())
+  };
 
-  beforeEach(() => {
-    jest.mock('axios', () => mockApiCall);
-  });
+  const wrapper = mount(<CreateUser />,
+    {
+      childContextTypes: { router: React.PropTypes.object },
+      context: { router: {
+        history: {
+          push: () => null,
+          createHref: () => null,
+          replace: () => null,
+          path: '/signup',
+          component: '[function CreateUser]',
+          location: {
+            pathname: '/signup',
+            search: '',
+            hash: '',
+            key: 'xmsy02'
+          },
+          computedMatch: {
+            path: '/signup',
+            url: '/signup',
+            isExact: true,
+            params: {}
+          }
 
-  const wrapper = mount(<MemoryRouter><CreateUser /></MemoryRouter>);
-  it('should contain a <Navbar /> component', () => {
-    expect(wrapper.find(Navbar).length).toEqual(0);
-  });
-  it('should test that the node contains a function', () => {
-    expect(wrapper.nodes[0].props.children.type).toBeDefined();
-  });
+        }
+      } }
+    }
+  );
+
   it('should redirect to dashboard on click of submit', () => {
-    expect(wrapper.find('form').length).toEqual(1);
+    const registerUserSpy = jest.spyOn(AppActions, 'registerUser');
+    wrapper.setState({
+      email: 'test@yahoo.com',
+      password: 'andela2',
+      confirmPassword: 'andela2',
+      userName: 'TestUser',
+      phoneNumber: '2347876445637'
+    });
     wrapper.find('form').simulate('submit');
     expect(registerUserSpy).toHaveBeenCalled();
   });
-  it('should contain a label', () => {
-    expect(wrapper.find('label').length).toEqual(4);
+  it('should call onChange method', () => {
+    const onChangeSpy = jest.spyOn(
+      wrapper.instance(), 'onChange'
+    );
+    const event = {
+      target: {
+        email: 'user@email.com'
+      }
+    };
+    wrapper.instance().onChange(event);
+    expect(onChangeSpy).toHaveBeenCalled();
   });
-  it('should contain a fieldset', () => {
-    expect(wrapper.find('fieldset').length).toEqual(1);
+  it('should', () => {
+    const onSubmitSpy = jest.spyOn(
+      wrapper.instance(), 'onSubmit'
+    );
+    const event = {
+      preventDefault: jest.fn()
+    };
+    wrapper.setState({
+      email: 'user@email.com',
+      password: 'asdf;lkj'
+    });
+    wrapper.instance().onSubmit(event);
+    expect(onSubmitSpy).toHaveBeenCalled();
   });
 });

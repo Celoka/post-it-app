@@ -23,12 +23,11 @@ after {
     background-color: white;
     border: 1px solid #c6c7ce;
     border-radius: 5px;
-    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow: hidden;
-    height: 450px;
     padding: 10px 25px 10px 25px;
     width: inherit;
     position: relative;
+    margin-bottom: 40px;
   }
   
   #groupnav {
@@ -58,13 +57,16 @@ after {
     font: inherit;
   }
   h3 {
-    font-weight: 300;
+    font-weight: 100;
     margin-top: 32px;
+    margin-bottom: 25px;
+    font-size: 21px;
   }
-  
+  input[type=checkbox], input[type=radio] {
+    margin: 4px 11px 0 -18px;
+  }
   input {
     border-radius: 5px;
-    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0;
   }
   
@@ -83,6 +85,7 @@ after {
       color: #636466;
       padding: 6px;
       margin-top: 6px;
+      margin-bottom: 28px;
       width: 100%;
     }
   }
@@ -110,7 +113,7 @@ after {
   
   #signup, #signin {
     width: 300px;
-    margin: 150px auto 0px auto;
+    margin: 75px auto 0px auto;
   }
   
   #messageboard {
@@ -172,7 +175,8 @@ after {
   
   h1 {
     text-align: center;
-    font-weight: 400;
+    font-weight: 100;
+    font-size: 43px;
   }
   
   h2 {
@@ -182,7 +186,8 @@ after {
   }
   
   p {
-    color: white;
+    font-size: 23px;
+    line-height: 30px;
   }
   
   #sign {
@@ -272,9 +277,6 @@ after {
     padding-top: 6px;
   }
   
-  .navbar-brand {
-    padding-top: 0 !important;
-  }
   
   .message-icon {
     padding-top: 11px;

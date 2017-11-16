@@ -148,7 +148,9 @@ class CreateUser extends React.Component {
             <button
               id="sign"
               type="submit"
-              name="submit">
+              name="submit"
+              style= {{ width: 118, marginBottom: 10 }}
+              >
               Register Now
             </button>
           </form>

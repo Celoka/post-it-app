@@ -49,7 +49,6 @@ describe('<ResetPassword />', () => {
   });
   it('should have initial state set to empty', () => {
     expect(wrapper.state().email).toEqual('');
-    expect(wrapper.state().message).toEqual('');
   });
   it('should find fieldset', () => {
     expect(wrapper.find('fieldset')).toHaveLength(1);
@@ -64,5 +63,17 @@ describe('<ResetPassword />', () => {
   it('should redirect to home page after button click', () => {
     wrapper.find('form').simulate('submit');
     expect(resetPasswordSpy).toHaveBeenCalled();
+  });
+  it('should call onChange method', () => {
+    const onChangeSpy = jest.spyOn(
+      wrapper.instance(), 'onChange'
+    );
+    const event = {
+      target: {
+        email: 'user@email.com'
+      }
+    };
+    wrapper.instance().onChange(event);
+    expect(onChangeSpy).toHaveBeenCalled();
   });
 });

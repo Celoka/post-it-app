@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { shallow } from 'enzyme';
 
 import Navbar from '../src/components/Navbar.jsx';

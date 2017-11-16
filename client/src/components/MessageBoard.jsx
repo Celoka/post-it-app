@@ -85,7 +85,7 @@ class MessageBoard extends React.Component {
 /**
  * @description fires an action on click of a button
  *
- * @param { Object } event behaviour of a submit method 
+ * @param { Object } event behaviour of a submit method
  *
  * @method onSubmit
  *
