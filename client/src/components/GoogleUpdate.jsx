@@ -12,13 +12,13 @@ import AppActions from '../actions/AppActions';
  * @extends { React.Component }
  */
 class GoogleUpdate extends React.Component {
-/**
- * @description Creates an instance of GoogleUpdate.
- *
- * @return { void }
- *
- * @memberof GoogleUpdate
- */
+  /**
+   * @description Creates an instance of GoogleUpdate.
+   *
+   * @return { void }
+   *
+   * @memberof GoogleUpdate
+   */
   constructor() {
     super();
     this.state = {
@@ -47,7 +47,8 @@ class GoogleUpdate extends React.Component {
   }
 
   /**
-   * @description method fires an action to update a users google account
+   * @description describes method fires an action to update
+   * a users google account
    *
    * @param { object } event
    *
@@ -61,15 +62,15 @@ class GoogleUpdate extends React.Component {
     const credential = { ...this.state };
     event.preventDefault();
     AppActions.googleUpdate(credential)
-    .then(() => {
-      this.props.history.push('/dashboard');
-    });
+      .then(() => {
+        this.props.history.push('/dashboard');
+      });
   }
-/**
- * @return { jsx } jsx markup
- *
- * @memberof GoogleUpdate
- */
+  /**
+   * @return { jsx } jsx markup
+   *
+   * @memberof GoogleUpdate
+   */
   render() {
     return (
       <div>
@@ -78,29 +79,31 @@ class GoogleUpdate extends React.Component {
           <h1>Google Update</h1>
           <form onSubmit={this.onSubmit}>
             <fieldset
-            id="signinfieldset"
-            className="account-info">
+              id="signinfieldset"
+              className="account-info">
               <h3>
                 Dear {this.state.displayName}, this final step is
                 required for the completion of your registration.
               </h3>
-               <label>
+              <label>
                 Phone Number
                 <input
-                 value={this.state.phoneNumber}
-                 onChange={this.onChange}
-                 className='form-control'
-                 type="inputPhone"
-                 name="phoneNumber"
-                 pattern="[234][0-9]{12}"
-                 placeholder="ex.2349000000000"
-                 required />
+                  value={this.state.phoneNumber}
+                  onChange={this.onChange}
+                  className='form-control'
+                  type="inputPhone"
+                  name="phoneNumber"
+                  pattern="[234][0-9]{12}"
+                  placeholder="ex.2349000000000"
+                  required />
               </label>
             </fieldset>
             <button
-            id="sign"
-            type="submit"
-            name="submit">
+              id="sign"
+              type="submit"
+              name="submit"
+              style={{ marginBottom: 10 }}
+            >
               Submit
             </button>
           </form>

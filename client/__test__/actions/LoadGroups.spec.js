@@ -13,9 +13,9 @@ describe('LoadGroups.js', () => {
 
   it('should get all groups', () => {
     AppActions.loadGroups()
-    .then(() => {
-      const checkVariable = dispatch.mock.calls[0][0];
-      expect(checkVariable.actionType).toEqual(AppConstants.SET_GROUP);
-    });
+      .then(() => {
+        const checkVariable = dispatch.mock.calls[0][0];
+        expect(checkVariable.actionType).toEqual(AppConstants.LOAD_GROUP_NAMES);
+      });
   });
 });

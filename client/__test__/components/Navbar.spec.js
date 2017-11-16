@@ -1,9 +1,9 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { Link } from 'react-router-dom';
 import { expect } from 'chai';
 
-import Navbar from '../src/components/Navbar';
+import Navbar from '../../src/components/Navbar';
 
 describe('<Navbar />', () => {
   it('should contain links', () => {

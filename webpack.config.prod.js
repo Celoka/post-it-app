@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DotEnv = require('dotenv-webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const ExtractTextPluginConfig = new ExtractTextPlugin('main.css');
@@ -50,10 +49,6 @@ const config = {
   },
   plugins: [
     ExtractTextPluginConfig,
-    new DotEnv({
-      path: '.env',
-      safe: false
-    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: false
@@ -61,6 +56,12 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
+        apiKey: JSON.stringify(process.env.apiKey),
+        authDomain: JSON.stringify(process.env.authDomain),
+        databaseURL: JSON.stringify(process.env.databaseURL),
+        projectId: JSON.stringify(process.env.projectId),
+        storageBucket: JSON.stringify(process.env.storageBucket),
+        messagingSenderId: JSON.stringify(process.env.messagingSenderId)
       }
     }),
     new UglifyJsPlugin({

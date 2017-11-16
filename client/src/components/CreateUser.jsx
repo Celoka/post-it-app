@@ -13,13 +13,13 @@ import AppActions from '../actions/AppActions';
  */
 class CreateUser extends React.Component {
 
-/**
- * @description Creates an instance of MessageBoard
- *
- * @return { void }
- *
- * @memberof CreateUser
- */
+  /**
+   * @description Creates an instance of MessageBoard
+   *
+   * @return { void }
+   *
+   * @memberof CreateUser
+   */
   constructor() {
     super();
     this.state = {
@@ -34,35 +34,35 @@ class CreateUser extends React.Component {
   }
 
 
-/**
- * @description Monitors changes in the components and change the state
- *
- * @param { string } event this contains string of characters
- *
- * @method onChange
- *
- * @return { void }
- *
- * @memberof CreateUser
- */
+  /**
+   * @description Monitors changes in the components and change the state
+   *
+   * @param { string } event this contains string of characters
+   *
+   * @method onChange
+   *
+   * @return { void }
+   *
+   * @memberof CreateUser
+   */
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
-/**
- * @description method fires an action to register a user with email,
- * phonenumber, username and password
- *
- * @param { object } event this contains string of characters
- *
- * @method onSubmit
- *
- * @return {void }
- *
- * @memberof CreateUser
- */
+  /**
+   * @description method fires an action to register a user with email,
+   * phonenumber, username and password
+   *
+   * @param { object } event this contains string of characters
+   *
+   * @method onSubmit
+   *
+   * @return {void }
+   *
+   * @memberof CreateUser
+   */
   onSubmit = (event) => {
     event.preventDefault();
     const credentials = { ...this.state };
@@ -72,16 +72,18 @@ class CreateUser extends React.Component {
       toastr.error('Password does not match');
     } else {
       AppActions.registerUser(credentials)
-     .then(() => {
-       this.props.history.push('/dashboard');
-     });
+        .then((res) => {
+          if (res) {
+            this.props.history.push('/dashboard');
+          }
+        });
     }
   }
-/**
- * @return { jsx } rendered jsx element
- *
- * @memberof CreateUser
- */
+  /**
+   * @return { jsx } rendered jsx element
+   *
+   * @memberof CreateUser
+   */
   render() {
     return (
       <div>
@@ -90,8 +92,8 @@ class CreateUser extends React.Component {
           <h1>Create Account</h1>
           <form onSubmit={this.onSubmit} >
             <fieldset
-             id="signupfieldset"
-             className="account-info">
+              id="signupfieldset"
+              className="account-info">
               <label>
                 Email Address
                 <input
@@ -101,7 +103,7 @@ class CreateUser extends React.Component {
                   type="email"
                   name="email"
                   className='form-control'
-                  required/>
+                  required />
               </label>
               <label>
                 Password
@@ -111,17 +113,17 @@ class CreateUser extends React.Component {
                   type="password"
                   name="password"
                   className='form-control'
-                  required/>
+                  required />
               </label>
               <label>
-               Confirm Password
+                Confirm Password
                 <input
                   value={this.state.confirmPassword}
                   onChange={this.onChange}
                   className='form-control'
                   type="password"
                   name="confirmPassword"
-                  required/>
+                  required />
               </label>
               <label>
                 Username
@@ -131,7 +133,7 @@ class CreateUser extends React.Component {
                   className='form-control'
                   type="text"
                   name="userName"
-                  required/>
+                  required />
               </label>
               <label>
                 Phonenumber
@@ -148,7 +150,9 @@ class CreateUser extends React.Component {
             <button
               id="sign"
               type="submit"
-              name="submit">
+              name="submit"
+              style={{ width: 118, marginBottom: 10 }}
+            >
               Register Now
             </button>
           </form>

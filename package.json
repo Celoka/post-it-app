@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production babel-node ./server/server.js",
     "start-dev": "NODE_ENV=development babel-watch ./server/server.js && webpack -w --hot",
     "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=lcov mocha --timeout 150000 ",
-    "client-test": "NODE_ENV=test jest ./client/__test__ --coverage",
+    "client-test": "NODE_ENV=test jest ./client/__test__  --coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "heroku-postbuild": "babel-node ./server/build.js"
   },

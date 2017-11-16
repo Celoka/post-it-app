@@ -14,9 +14,9 @@ describe('LoginUser.js action ', () => {
 
   it('should successfully match the user login details', () => {
     AppActions.postMessage('/groups/id/message')
-    .then(() => {
-      const messageResult = dispatch.mock.calls[0][0];
-      expect(messageResult.actionType).toEqual(AppConstants.SET_GROUP_MESSAGE);
-    });
+      .then(() => {
+        const messageResult = dispatch.mock.calls[0][0];
+        expect(messageResult.actionType).toEqual(AppConstants.SET_GROUP_MESSAGE);
+      });
   });
 });
