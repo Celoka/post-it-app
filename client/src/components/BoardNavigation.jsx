@@ -15,13 +15,13 @@ const logOut = () => {
 };
 
 const BoardNavigation = () => ({
-/**
- * @method render
- *
- * @returns { Jsx } jsx markup
- *
- * @function BoardNavigation
- */
+  /**
+   * @method render
+   *
+   * @returns { Jsx } jsx markup
+   *
+   * @function BoardNavigation
+   */
   render() {
     const userName = JSON.parse(localStorage.getItem('userName'));
     return (
@@ -33,18 +33,16 @@ const BoardNavigation = () => ({
                 data-toggle="collapse" data-target=".navbar-collapse">
                 <span className="sr-only">Toggle navigation</span>
               </button>
-              <Link to='/dashboard'className="navbar-brand">
-                <h3 id="clear">
-                  Welcome, { this.props.displayName || userName }
-                </h3>
-              </Link>
+              <h3 id="clear">
+                Welcome, {this.props.displayName || userName}
+              </h3>
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav">
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li onClick={logOut} >
-                  <Link to= '/'>
+                  <Link to='/'>
                     <button id="clear" type="button" className="btn">
                       LogOut
                     </button>

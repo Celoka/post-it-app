@@ -9,6 +9,8 @@ import allGroupMembers from './allGroupMembers.json';
 import resetPassword from './resetPassword.json';
 import signOut from './signOut.json';
 import postMessage from './postMessage.json';
+import googleLogin from './googleLogin.json';
+import googleUpdate from './googleUpdate.json';
 
 const mockApiCall = {
   get(url) {
@@ -34,6 +36,10 @@ const mockApiCall = {
       return Promise.resolve(resetPassword);
     } else if (url === '/user/signout') {
       return Promise.resolve(signOut);
+    } else if (url === '/user/googlesignin') {
+      return Promise.resolve(googleLogin);
+    } else if (url === '/user/googleupdate') {
+      return Promise.resolve(googleUpdate);
     }
     return Promise.resolve(postMessage);
   }

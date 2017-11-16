@@ -3,7 +3,12 @@
  */
 import firebase from 'firebase';
 import db from '../config/config';
-import { registerUser, normalizeString, token } from '../helpers/Helpers';
+import {
+  registerUser,
+  normalizeString,
+  token,
+  mapCodeToObj
+} from '../helpers/Helpers';
 
 /**
  * @description This controller creates a new user
@@ -16,17 +21,8 @@ import { registerUser, normalizeString, token } from '../helpers/Helpers';
  */
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
-  req.check('phoneNumber', 'Phone number is required').notEmpty().matches(/\d/);
-  req.check('password', 'Password is required').notEmpty();
-  const errors = req.validationErrors();
   const displayName = normalizeString(userName);
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).json({
-      message
-    });
-  } else {
-    db.database().ref('usernames')
+  db.database().ref('usernames')
     .once('value', (snapShot) => {
       const names = [];
       snapShot.forEach((details) => {
@@ -45,7 +41,6 @@ export const createUser = (req, res) => {
         message: 'Hey..Stop! Something went wrong.'
       });
     });
-  }
 };
 
 /**
@@ -60,35 +55,27 @@ export const createUser = (req, res) => {
 export const logIn = (req, res) => {
   const { email, password } = req.body;
   firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((user) => {
-    const { uid, displayName } = user;
-    const jwtToken = token(uid, displayName);
-    res.status(200).send({
-      message: 'User Signed in!',
-      user,
-      jwtToken
-    });
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/user-not-found') {
-      res.status(400).json({
-        message: 'Make sure your email or password is correct'
+    .then((user) => {
+      const { uid, displayName } = user;
+      const jwtToken = token(uid, displayName);
+      res.status(200).send({
+        message: 'User Signed in!',
+        user,
+        jwtToken,
+        isConfirmed: true
       });
-    } else if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'invalid email'
-      });
-    } else if (errorCode === 'auth/wrong-password') {
-      res.status(400).json({
-        message: 'Wrong password'
-      });
-    } else {
-      res.status(500).json({
+    })
+    .catch((error) => {
+      const codeObj = mapCodeToObj[error.code];
+      if (codeObj) {
+        return res.status(codeObj.status).json({
+          message: codeObj.message
+        });
+      }
+      return res.status(500).json({
         message: 'Hey..Stop! Something went wrong.'
       });
-    }
-  });
+    });
 };
 
 /**
@@ -106,33 +93,30 @@ export const googleSignIn = (req, res) => {
   const displayName = normalizeString(userName);
   const jwtToken = token(uid, displayName, email);
   db.database().ref('users')
-  .once('value', (snapShot) => {
-    const emails = [];
-    snapShot.forEach((details) => {
-      emails.push(details.val().email);
+    .once('value', (snapShot) => {
+      const emails = [];
+      snapShot.forEach((details) => {
+        emails.push(details.val().email);
+      });
+      if (emails.indexOf(email) > -1) {
+        res.status(200).json({
+          message: 'Login successful',
+          jwtToken,
+          isConfirmed: true
+        });
+      } else {
+        res.status(200).json({
+          message: 'Another step is required ',
+          jwtToken,
+          isConfirmed: false
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     });
-    if (emails.indexOf(email) > -1) {
-      db.database().ref('usernames').push({
-        displayName
-      });
-      res.status(201).json({
-        message: 'Login successful',
-        jwtToken,
-        isConfirmed: true
-      });
-    } else {
-      res.status(200).json({
-        message: 'Another step is required ',
-        isConfirmed: false,
-        jwtToken
-      });
-    }
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
-  });
 };
 
 /**
@@ -147,24 +131,27 @@ export const googleSignIn = (req, res) => {
 export const googleUpdate = (req, res) => {
   const { phoneNumber, uid, displayName, email } = req.body;
   db.database().ref(`users/${uid}`)
-  .set({
-    email,
-    displayName,
-    phoneNumber
-  })
-  .then(() => {
-    const jwtToken = token(uid, displayName, email);
-    res.status(201).json({
-      message: 'Update was succcessful',
-      jwtToken,
-      isConfirmed: true
+    .set({
+      email,
+      displayName,
+      phoneNumber
+    })
+    .then(() => {
+      const jwtToken = token(uid, displayName, email);
+      db.database().ref('usernames').push({
+        displayName
+      });
+      res.status(201).json({
+        message: 'Update was succcessful',
+        jwtToken,
+        isConfirmed: true
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     });
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
-  });
 };
 
 /**
@@ -179,28 +166,23 @@ export const googleUpdate = (req, res) => {
 export const resetPassword = (req, res) => {
   const email = req.body.email;
   firebase.auth().sendPasswordResetEmail(email)
-  .then((user) => {
-    res.status(200).json({
-      message: 'Mail sent succesfully',
-      user
-    });
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/user-not-found') {
-      res.status(404).json({
-        message: 'Email does not exist'
+    .then((user) => {
+      res.status(200).json({
+        message: 'Mail sent succesfully',
+        user
       });
-    } else if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'Invalid email'
-      });
-    } else {
-      res.status(500).json({
+    })
+    .catch((error) => {
+      const codeObj = mapCodeToObj[error.code];
+      if (codeObj) {
+        return res.status(codeObj.status).json({
+          message: codeObj.message
+        });
+      }
+      return res.status(500).json({
         message: 'Hey..Stop! Something went wrong.'
       });
-    }
-  });
+    });
 };
 
 /**
@@ -214,16 +196,16 @@ export const resetPassword = (req, res) => {
  */
 export const logOut = (req, res) => {
   firebase.auth().signOut()
-  .then(() => {
-    res.status(200).json({
-      message: 'Signed out!',
+    .then(() => {
+      res.status(200).json({
+        message: 'Signed out!',
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     });
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
-  });
 };
 
 /**
@@ -240,25 +222,25 @@ export const logOut = (req, res) => {
 export const getAllUsers = (req, res) => {
   const usersDetails = [];
   db.database().ref('users')
-  .once('value', (snapShot) => {
-    let usersInGroup = {};
-    snapShot.forEach((details) => {
-      usersInGroup = {
-        userId: details.key,
-        displayName: details.val().displayName
-      };
-      usersDetails.push(usersInGroup);
+    .once('value', (snapShot) => {
+      let usersInGroup = {};
+      snapShot.forEach((details) => {
+        usersInGroup = {
+          userId: details.key,
+          displayName: details.val().displayName
+        };
+        usersDetails.push(usersInGroup);
+      });
+      res.status(200).json({
+        message: 'Users retrieved successfully',
+        usersDetails
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     });
-    res.status(200).json({
-      message: 'Users retrieved successfully',
-      usersDetails
-    });
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
-  });
 };
 
 /**
@@ -276,23 +258,23 @@ export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const users = [];
   db.database().ref(`groups/${groupId}/users`)
-  .once('value', (snapShot) => {
-    let newUsers = {};
-    snapShot.forEach((details) => {
-      newUsers = {
-        userId: details.val().userId,
-        displayName: details.val().displayName
-      };
-      users.push(newUsers);
+    .once('value', (snapShot) => {
+      let newUsers = {};
+      snapShot.forEach((details) => {
+        newUsers = {
+          userId: details.val().userId,
+          displayName: details.val().displayName
+        };
+        users.push(newUsers);
+      });
+      res.status(200).json({
+        users
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
+      });
     });
-    res.status(200).json({
-      users
-    });
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
-    });
-  });
 };
 

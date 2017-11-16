@@ -66,8 +66,12 @@ class Login extends React.Component {
       toastr.error('Enter a valid email');
     } else {
       AppActions.loginUser(signInDetails)
-        .then(() => {
-          this.props.history.push('/dashboard');
+        .then((res) => {
+          if (res) {
+            this.props.history.push('/dashboard');
+          } else {
+            this.props.history.push('/signin');
+          }
         });
     }
   }
@@ -97,13 +101,13 @@ class Login extends React.Component {
           userName
         };
         AppActions.googleLogin(googleUserDetails)
-        .then((res) => {
-          if (res.isConfirmed) {
-            this.props.history.push('/dashboard');
-          } else {
-            this.props.history.push('/googlepage');
-          }
-        });
+          .then((res) => {
+            if (res.isConfirmed) {
+              this.props.history.push('/dashboard');
+            } else {
+              this.props.history.push('/googlepage');
+            }
+          });
       });
   };
   /**

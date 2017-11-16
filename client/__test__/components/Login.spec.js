@@ -2,12 +2,12 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
-import mockApiCall from '../__mocks__/axios';
-import firebase from '../src/firebase/index';
-import Login from '../src/components/Login.jsx';
-import AppActions from '../src/actions/AppActions';
+import mockApiCall from '../../__mocks__/axios';
+import firebase from '../../src/firebase/index';
+import Login from '../../src/components/Login.jsx';
+import AppActions from '../../src/actions/AppActions';
 
-jest.mock('../src/firebase/index', () => {
+jest.mock('../../src/firebase/index', () => {
 /**
  * @description describes a function that mocks firebase module,
  * fires it action to make an Api call, returns a promise that is mocked

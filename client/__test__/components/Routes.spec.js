@@ -1,17 +1,17 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import Routes from '../src/Routes.jsx';
-import Home from '../src/components/Home.jsx';
-import Login from '../src/components/Login.jsx';
-import NotFoundPage from '../src/components/NotFoundPage.jsx';
-import DashBoard from '../src/components/DashBoard.jsx';
-import ResetPassword from '../src/components/ResetPassword.jsx';
+import Routes from '../../src/Routes.jsx';
+import Home from '../../src/components/Home.jsx';
+import Login from '../../src/components/Login.jsx';
+import NotFoundPage from '../../src/components/NotFoundPage.jsx';
+import DashBoard from '../../src/components/DashBoard.jsx';
+import ResetPassword from '../../src/components/ResetPassword.jsx';
 
 
 describe('<Routes.jsx/>', () => {
   const wrapper = mount(<MemoryRouter><Routes /></MemoryRouter>);
-  it('should have all the', () => {
+  it('should contain all the child component in the component', () => {
     expect(wrapper.find(Home).root).toHaveLength(1);
     expect(wrapper.find(Login).root).toHaveLength(1);
     expect(wrapper.find(NotFoundPage).root).toHaveLength(1);

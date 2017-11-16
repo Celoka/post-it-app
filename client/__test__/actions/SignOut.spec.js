@@ -13,8 +13,8 @@ describe(' action SignOut.js', () => {
 
   it('should successfully return a promise after API call', () => {
     AppActions.logOut('/user/signout')
-    .then(() => {
-      expect(dispatch.mock.calls).toHaveLength(0);
-    });
+      .then(() => {
+        expect(dispatch.mock.calls).toHaveLength(0);
+      });
   });
 });

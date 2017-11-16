@@ -1,6 +1,9 @@
 import { EventEmitter } from 'events';
+import jwt from 'jsonwebtoken';
+import toastr from 'toastr';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
+import { setAuthToken } from '../utils/';
 
 const CHANGE_EVENT = 'change';
 
@@ -50,11 +53,17 @@ function allGroupMessages(message) {
  *
  * @function setCurrentUser
  *
- * @param { Object } userDetails
+ * @param { Object } credentials
  *
  * @returns { Array } returns an array of object of new user
  */
-function setCurrentUser(userDetails) {
+function setCurrentUser(credentials) {
+  const jwtToken = credentials.jwtToken;
+  localStorage.setItem('token', jwtToken);
+  const userDetails = jwt.decode(localStorage.token);
+  localStorage.setItem('displayName',
+    JSON.stringify(userDetails.displayName));
+  localStorage.setItem('uid', userDetails.uid);
   currentUser = userDetails;
   return currentUser;
 }
@@ -97,19 +106,19 @@ function setAddMember(userData) {
  *
  * @returns { Array } returns details of a member added to group
  */
-function setNewMember (usersDetails) {
+function setNewMember(usersDetails) {
   newMember = usersDetails;
   return newMember;
 }
- /**
- * @description describes a function that sets a group
- *
- * @function setNewMember
- *
- * @param { String } groupData
- *
- * @returns { String } returns name of group as string
- */
+/**
+* @description describes a function that sets a group
+*
+* @function setNewMember
+*
+* @param { String } groupData
+*
+* @returns { String } returns name of group as string
+*/
 function currentGroup(groupData) {
   groupStore.push(groupData);
   return groupStore;
@@ -141,6 +150,15 @@ function setUserGroup(userGroups) {
  * @returns { Array } details of a google user
  */
 function setNewGoogleUser(googleData) {
+  const jwtToken = googleData.jwtToken;
+  localStorage.setItem('token', jwtToken);
+  setAuthToken(jwtToken);
+  const userDetails = jwt.decode(localStorage.token);
+  localStorage.setItem('displayName',
+    JSON.stringify(userDetails.displayName));
+  localStorage.setItem('email',
+    JSON.stringify(userDetails.email));
+  localStorage.setItem('uid', userDetails.uid);
   googleUsers = googleData;
   return googleUsers;
 }
@@ -156,6 +174,9 @@ function setNewGoogleUser(googleData) {
  * @returns { Array } google user update details
  */
 function setGoogleUpdate(userData) {
+  const jwtToken = userData.jwtToken;
+  const displayName = jwt.decode(jwtToken).displayName;
+  toastr.success(`Welcome, ${displayName}`);
   googleUserUpdate = userData;
   return googleUserUpdate;
 }
@@ -168,155 +189,155 @@ function setGoogleUpdate(userData) {
  */
 class AppStoreClass extends EventEmitter {
 
-/**
- * @description AppStore emit event change
- *
- * @memberof AppStoreClass
- *
- * @method emitChange
- *
- * @returns { void }
- */
+  /**
+   * @description AppStore emit event change
+   *
+   * @memberof AppStoreClass
+   *
+   * @method emitChange
+   *
+   * @returns { void }
+   */
   emitChange() {
     this.emit(CHANGE_EVENT);
   }
 
-/**
- * @description AppStore change listener. Listens to change from the store
- * with respect to the listener in the component
- *
- * @param { Object } callback
- *
- * @method addChangeListener
- *
- * @memberof AppStoreClass
- *
- * @returns {void}
- */
+  /**
+   * @description AppStore change listener. Listens to change from the store
+   * with respect to the listener in the component
+   *
+   * @param { Object } callback
+   *
+   * @method addChangeListener
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {void}
+   */
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
 
-/**
- * @description Remove AppStore change listener
- *
- * @param { Object } callback
- *
- * @method removeChangeListener
- *
- * @memberof AppStoreClass
- *
- * @returns { void }
- */
+  /**
+   * @description Remove AppStore change listener
+   *
+   * @param { Object } callback
+   *
+   * @method removeChangeListener
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { void }
+   */
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-/**
- * @description This returns an array of group messages
- *
- * @method getGroupMessage
- *
- * @memberof AppStoreClass
- *
- * @returns { Array } Returns an array of group messages
- */
+  /**
+   * @description This returns an array of group messages
+   *
+   * @method getGroupMessage
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Array } Returns an array of group messages
+   */
   getGroupMessage() {
     return newMessage;
   }
 
-/**
- * @description describes a method that gets a set current user
- * for listening in the component
- *
- * @method getCurrentUser
- *
- * @memberof AppStoreClass
- *
- * @returns {Array} Returns an array of group messages
- */
+  /**
+   * @description describes a method that gets a set current user
+   * for listening in the component
+   *
+   * @method getCurrentUser
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns {Array} Returns an array of group messages
+   */
   getCurrentUser() {
     return currentUser;
   }
 
-/**
- * @description describes a method that gets set groups
- * in app
- *
- * @method getCurrentGroup
- *
- * @memberof AppStoreClass
- *
- * @returns { String } Returns all group names
- */
+  /**
+   * @description describes a method that gets set groups
+   * in app
+   *
+   * @method getCurrentGroup
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { String } Returns all group names
+   */
   getCurrentGroup() {
     return groupStore;
   }
-/**
- * @description describes a method that gets
- * a registered users groups
- *
- * @memberof AppStoreClass
- *
- * @returns { Object } Returns group details
- */
+  /**
+   * @description describes a method that gets
+   * a registered users groups
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Object } Returns group details
+   */
   getUserGroup() {
     return usersGroups;
   }
 
-/**
- * @description describes a method that gets all messages in app
- *
- * @memberof AppStoreClass
- *
- * @returns { Array} Returns an array of all messages
- */
+  /**
+   * @description describes a method that gets all messages in app
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Array} Returns an array of all messages
+   */
   getAllMessages() {
     return allMessages;
   }
 
-/**
- * @description describes a method that gets all users in a group
- *
- * @memberof AppStoreClass
- *
- * @returns { Array } Returns an array of users
- */
+  /**
+   * @description describes a method that gets all users in a group
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Array } Returns an array of users
+   */
   getAllUsers() {
     return allUserDetails;
   }
 
-/**
- * @description describes a method that gets names of rmembers
- * added to groups
- *
- * @memberof AppStoreClass
- *
- * @returns { String } Returns a string of user names
- */
+  /**
+   * @description describes a method that gets names of rmembers
+   * added to groups
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { String } Returns a string of user names
+   */
   getAddMember() {
     return addRegisteredUser;
   }
 
-/**
- * @description describes a method that gets the full user details of
- * a new member of a group
- *
- * @memberof AppStoreClass
- *
- * @returns { Array } Returns an array of users and their details
- */
+  /**
+   * @description describes a method that gets the full user details of
+   * a new member of a group
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Array } Returns an array of users and their details
+   */
   getNewMember() {
     return newMember;
   }
-/**
- * @description describes a method that gets a google users
- * sign in details
- *
- * @memberof AppStoreClass
- *
- * @returns { Array } returns object containing google user details
- */
+  /**
+   * @description describes a method that gets a google users
+   * sign in details
+   *
+   * @memberof AppStoreClass
+   *
+   * @returns { Array } returns object containing google user details
+   */
   getNewGoogleUser() {
     return googleUsers;
   }
@@ -338,7 +359,7 @@ const AppStore = new AppStoreClass();
 AppStore.dispatchToken = AppDispatcher.register((action) => {
   switch (action.actionType) {
     case AppConstants.SET_USER:
-      setCurrentUser(action.userDetails);
+      setCurrentUser(action.credentials);
       AppStore.emitChange();
       break;
     case AppConstants.SET_GROUP_NAME:
@@ -381,7 +402,6 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       AppStore.emitChange();
       break;
     default:
-
   }
 });
 

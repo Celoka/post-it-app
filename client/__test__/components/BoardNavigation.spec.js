@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import AppActions from '../src/actions/AppActions';
-import BoardNavigation from '../src/components/BoardNavigation.jsx';
+import AppActions from '../../src/actions/AppActions';
+import BoardNavigation from '../../src/components/BoardNavigation.jsx';
 
 describe('<BoardNavigation />', () => {
   const props = {
@@ -10,13 +10,15 @@ describe('<BoardNavigation />', () => {
   const wrapper = mount(<BoardNavigation {...props} />,
     {
       childContextTypes: { router: React.PropTypes.object },
-      context: { router: {
-        history: {
-          push: () => null,
-          createHref: () => null,
-          replace: () => null
+      context: {
+        router: {
+          history: {
+            push: () => null,
+            createHref: () => null,
+            replace: () => null
+          }
         }
-      } }
+      }
     }
   );
   it('it should sign out a user', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { assert } from 'chai';
-import NotFoundPage from '../src/components/NotFoundPage.jsx';
+import NotFoundPage from '../../src/components/NotFoundPage.jsx';
 
 describe('<NotFoundPage/>', () => {
   const wrapper = mount(<NotFoundPage/>,
@@ -29,7 +29,6 @@ describe('<NotFoundPage/>', () => {
       } }
     }
 );
- 
   it('should redirect to gome page on click of a button', () => {
     wrapper.find('Link').at(1).simulate('click');
   });

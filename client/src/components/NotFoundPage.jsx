@@ -15,13 +15,13 @@ const NotFoundPage = () => ({
     return (
       <div>
         <Navbar />
-          <img src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510500970/404_e9uzrw.jpg"
-            id="not-found"/>
-            <Link to="/" id="not-found-text">
-              <h3>
-                Click to Go back to Home
-              </h3>
-            </Link>
+        <img src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510500970/404_e9uzrw.jpg"
+          id="not-found" />
+        <Link to="/" id="not-found-text">
+          <h3>
+            Click to Go back to Home
+          </h3>
+        </Link>
       </div>
     );
   }

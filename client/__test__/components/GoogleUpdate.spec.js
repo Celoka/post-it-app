@@ -1,33 +1,34 @@
 import React from 'react';
 import { mount } from 'enzyme';
-
-import GoogeleUpdate from '../src/components/GoogleUpdate';
+import GoogeleUpdate from '../../src/components/GoogleUpdate';
 
 describe('<GoogleUpdate />', () => {
-  const wrapper = mount(<GoogeleUpdate/>,
+  const wrapper = mount(<GoogeleUpdate />,
     {
       childContextTypes: { router: React.PropTypes.object },
-      context: { router: {
-        history: {
-          push: () => null,
-          createHref: () => null,
-          replace: () => null,
-          path: '/googlepage',
-          component: '[function GoogleUpdate]',
-          location: {
-            pathname: '/googlepage',
-            search: '',
-            hash: ''
-          },
-          computedMatch: {
+      context: {
+        router: {
+          history: {
+            push: () => null,
+            createHref: () => null,
+            replace: () => null,
             path: '/googlepage',
-            url: '/googlepage',
-            isExact: true,
-            params: {}
-          }
+            component: '[function GoogleUpdate]',
+            location: {
+              pathname: '/googlepage',
+              search: '',
+              hash: ''
+            },
+            computedMatch: {
+              path: '/googlepage',
+              url: '/googlepage',
+              isExact: true,
+              params: {}
+            }
 
+          }
         }
-      } }
+      }
     }
   );
   it('should show wrapper', () => {

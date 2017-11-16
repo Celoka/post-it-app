@@ -14,9 +14,9 @@ describe('action RegisterUser.js ', () => {
 
   it('should return a matching action type and payload', () => {
     AppActions.registerUser('/user/signup')
-    .then(() => {
-      const messageResult = dispatch.mock.calls[0][0];
-      expect(messageResult.actionType).toEqual(AppConstants.NEW_USER);
-    });
+      .then(() => {
+        const messageResult = dispatch.mock.calls[0][0];
+        expect(messageResult.actionType).toEqual(AppConstants.NEW_USER);
+      });
   });
 });

@@ -9,6 +9,23 @@ import db from '../config/config';
 
 require('dotenv').config();
 
+/**
+ * @description describes an object that abstracts errors
+ */
+export const mapCodeToObj = {
+  'auth/email-already-in-use': {
+    status: 409, message: 'Email is already in use'
+  },
+  'auth/user-not-found': {
+    status: 404, message: 'Make sure your email or password is correct'
+  },
+  'auth/invalid-email': {
+    status: 400, message: 'Invalid email'
+  },
+  'auth/wrong-password': {
+    status: 400, message: 'Wrong password'
+  }
+};
 
 /**
  * @description describes a function that takes in a string,
@@ -41,9 +58,10 @@ export const token = (uid, userName, email) => {
   const jwtToken = jwt.sign({
     uid,
     displayName: userName,
-    email },
-  process.env.SECRET_TOKEN,
-  { expiresIn: 60 * 60 });
+    email
+  },
+    process.env.SECRET_TOKEN,
+    { expiresIn: 60 * 60 });
   return jwtToken;
 };
 
@@ -63,34 +81,34 @@ export const token = (uid, userName, email) => {
 export const sendEmailNotifications = (groupId, priority) => {
   const email = [];
   db.database().ref(`groups/${groupId}/email`)
-  .once('value', (snapShot) => {
-    snapShot.forEach((details) => {
-      email.push(details.val());
+    .once('value', (snapShot) => {
+      snapShot.forEach((details) => {
+        email.push(details.val());
+      });
+      const emails = email.join(',');
+      if ((priority === 'Urgent') || (priority === 'Critical')) {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.USER_NAME,
+            pass: process.env.PASSWORD
+          }
+        });
+        const mailOptions = {
+          from: ' "Post It Admin" <eloka.chima@gmail.com>',
+          to: emails,
+          subject: 'Urgent Message',
+          text: 'Post it App',
+          html: '<h3>An urgent message has been posted on post it </h3>'
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message sent: %s', info);
+        });
+      }
     });
-    const emails = email.join(',');
-    if ((priority === 'Urgent') || (priority === 'Critical')) {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.USER_NAME,
-          pass: process.env.PASSWORD
-        }
-      });
-      const mailOptions = {
-        from: ' "Post It Admin" <eloka.chima@gmail.com>',
-        to: emails,
-        subject: 'Urgent Message',
-        text: 'Post it App',
-        html: '<h3>An urgent message has been posted on post it </h3>'
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.log(error);
-        }
-        console.log('Message sent: %s', info);
-      });
-    }
-  });
 };
 
 
@@ -109,21 +127,21 @@ export const sendEmailNotifications = (groupId, priority) => {
 export const sendSMSNotifications = (groupId, priority) => {
   const phoneNumber = [];
   db.database().ref(`groups/${groupId}/phoneNumber`)
-  .once('value', (snap) => {
-    snap.forEach((details) => {
-      phoneNumber.push(details.val());
-    });
-    if (priority === 'Critical') {
-      const nexmo = new Nexmo({
-        apiKey: process.env.API_KEY,
-        apiSecret: process.env.API_SECRET
+    .once('value', (snap) => {
+      snap.forEach((details) => {
+        phoneNumber.push(details.val());
       });
-      const from = 'Post It Admin';
-      const to = phoneNumber;
-      const text = 'A critical message has been posted on post it';
-      nexmo.message.sendSms(from, to, text);
-    }
-  });
+      if (priority === 'Critical') {
+        const nexmo = new Nexmo({
+          apiKey: process.env.API_KEY,
+          apiSecret: process.env.API_SECRET
+        });
+        const from = 'Post It Admin';
+        const to = phoneNumber;
+        const text = 'A critical message has been posted on post it';
+        nexmo.message.sendSms(from, to, text);
+      }
+    });
 };
 
 /**
@@ -142,33 +160,33 @@ export const sendSMSNotifications = (groupId, priority) => {
  * @return { void }
  */
 export const pushMemberDetails = (
-    req, res, groupId, email, phoneNumber, userId, displayName
-  ) => {
+  req, res, groupId, email, phoneNumber, userId, displayName
+) => {
   db.database().ref(`groups/${groupId}/groupName`)
-  .once('value', (groupSnapshot) => {
-    if (groupSnapshot.exists()) {
-      db.database().ref(`groups/${groupId}/email`)
-      .push(email);
-      db.database().ref(`groups/${groupId}/phoneNumber`)
-      .push(phoneNumber);
-    } else {
-      res.status(403).json({
-        message: 'Group does not exists'
+    .once('value', (groupSnapshot) => {
+      if (groupSnapshot.exists()) {
+        db.database().ref(`groups/${groupId}/email`)
+          .push(email);
+        db.database().ref(`groups/${groupId}/phoneNumber`)
+          .push(phoneNumber);
+      } else {
+        res.status(403).json({
+          message: 'Group does not exists'
+        });
+      }
+    })
+    .then(() => {
+      res.status(201).json({
+        message: 'User added successfully',
+        userId,
+        displayName
       });
-    }
-  })
-  .then(() => {
-    res.status(201).json({
-      message: 'User added successfully',
-      userId,
-      displayName
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong'
+      });
     });
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong'
-    });
-  });
 };
 /**
  * @description describes a function that checks if a user exists in agroup
@@ -183,37 +201,37 @@ export const pushMemberDetails = (
  */
 export const userValidation = (req, res, userId, groupId, displayName) => {
   db.database().ref(`/users/${userId}`)
-  .once('value', (userSnapShot) => {
-    if (userSnapShot.exists()) {
-      const { email, phoneNumber } = userSnapShot.val();
-      db.database().ref(`groups/${groupId}`)
-      .once('value', (snap) => {
-        const groupName = snap.val().groupName;
-        db.database().ref(`/users/${userId}/groups/${groupId}`)
-        .update({
-          displayName,
-          groupName
-        });
-      })
-      .catch(() => {
-        res.status(500).json({
-          message: 'Hey..Stop! Something went wrong.'
-        });
-      });
-      pushMemberDetails(
+    .once('value', (userSnapShot) => {
+      if (userSnapShot.exists()) {
+        const { email, phoneNumber } = userSnapShot.val();
+        db.database().ref(`groups/${groupId}`)
+          .once('value', (snap) => {
+            const groupName = snap.val().groupName;
+            db.database().ref(`/users/${userId}/groups/${groupId}`)
+              .update({
+                displayName,
+                groupName
+              });
+          })
+          .catch(() => {
+            res.status(500).json({
+              message: 'Hey..Stop! Something went wrong.'
+            });
+          });
+        pushMemberDetails(
           req, res, groupId, email, phoneNumber, userId, displayName
         );
-    } else {
-      res.status(404).json({
-        message: 'User details not found'
+      } else {
+        res.status(404).json({
+          message: 'User details not found'
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: 'Hey..Stop! Something went wrong.'
       });
-    }
-  })
-  .catch(() => {
-    res.status(500).json({
-      message: 'Hey..Stop! Something went wrong.'
     });
-  });
 };
 /**
  * @description describes a function that sets the group details to the group
@@ -231,39 +249,39 @@ export const userValidation = (req, res, userId, groupId, displayName) => {
 export const setGroupDetails = (
   req, res, groupName, timeStamp, displayName, userId) => {
   const groupKey = db.database().ref('/groups')
-  .push({
-    groupName,
-    dateCreated: timeStamp
-  }).key;
-  db.database().ref(`/groups/${groupKey}/users`)
-  .push({
-    displayName
-  });
-  db.database().ref(`/users/${userId}/groups`)
-  .child(groupKey)
-  .set({
-    groupName,
-    displayName
-  })
-  .then(() => {
-    res.status(201).send({
-      message: 'User group created successfully',
+    .push({
       groupName,
-      dateCreated: timeStamp,
-      groupId: groupKey
+      dateCreated: timeStamp
+    }).key;
+  db.database().ref(`/groups/${groupKey}/users`)
+    .push({
+      displayName
     });
-  })
-  .catch(() => {
-    if (!userId) {
-      res.status(401).json({
-        message: 'Login to perform this operation'
+  db.database().ref(`/users/${userId}/groups`)
+    .child(groupKey)
+    .set({
+      groupName,
+      displayName
+    })
+    .then(() => {
+      res.status(201).send({
+        message: 'User group created successfully',
+        groupName,
+        dateCreated: timeStamp,
+        groupId: groupKey
       });
-    } else {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
-    }
-  });
+    })
+    .catch(() => {
+      if (!userId) {
+        res.status(401).json({
+          message: 'Login to perform this operation'
+        });
+      } else {
+        res.status(500).json({
+          message: 'Hey..Stop! Something went wrong.'
+        });
+      }
+    });
 };
 
 /**
@@ -282,45 +300,35 @@ export const setGroupDetails = (
 export const registerUser = (
   req, res, email, password, displayName, phoneNumber) => {
   firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((user) => {
-    const { uid } = user;
-    user.updateProfile({
-      displayName
-    });
-    db.database().ref(`users/${uid}`).set({
-      email,
-      password,
-      displayName,
-      phoneNumber
-    });
-    db.database().ref('usernames').push({
-      displayName,
-      phoneNumber
-    });
-    const jwtToken = token(uid, displayName);
-    res.status(201).json({
-      message: 'Registration success',
-      jwtToken,
-    });
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/email-already-in-use') {
-      res.status(409).json({
-        message: 'Email already in use'
+    .then((user) => {
+      const { uid } = user;
+      user.updateProfile({
+        displayName
       });
-    } else if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'invalid email'
+      db.database().ref(`users/${uid}`).set({
+        email,
+        password,
+        displayName,
+        phoneNumber
       });
-    } else if (errorCode === 'auth/weak-password') {
-      res.status(400).json({
-        message: 'password strength is too week'
+      db.database().ref('usernames').push({
+        displayName,
+        phoneNumber
       });
-    } else {
-      res.status(500).json({
+      const jwtToken = token(uid, displayName);
+      res.status(201).json({
+        message: 'Registration success',
+        jwtToken,
+        isConfirmed: true
+      });
+    })
+    .catch((error) => {
+      const codeObj = mapCodeToObj[error.code];
+      if (codeObj) {
+        return res.status(codeObj.status).json({ message: codeObj.message });
+      }
+      return res.status(500).json({
         message: 'Hey..Stop! Something went wrong.'
       });
-    }
-  });
+    });
 };

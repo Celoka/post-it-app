@@ -1,46 +1,37 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import CreateUser from '../src/components/CreateUser.jsx';
-import AppActions from '../src/actions/AppActions';
+import CreateUser from '../../src/components/CreateUser.jsx';
+import AppActions from '../../src/actions/AppActions';
 
 
 describe('<Signup/>', () => {
-  const props = {
-    auth: {
-      isLoggedIn: false
-    },
-    history: { push: jest.fn() },
-    router: {
-      history: { push: jest.fn() },
-    },
-    signUserIn: jest.fn(() => Promise.reject())
-  };
-
   const wrapper = mount(<CreateUser />,
     {
       childContextTypes: { router: React.PropTypes.object },
-      context: { router: {
-        history: {
-          push: () => null,
-          createHref: () => null,
-          replace: () => null,
-          path: '/signup',
-          component: '[function CreateUser]',
-          location: {
-            pathname: '/signup',
-            search: '',
-            hash: '',
-            key: 'xmsy02'
-          },
-          computedMatch: {
+      context: {
+        router: {
+          history: {
+            push: () => null,
+            createHref: () => null,
+            replace: () => null,
             path: '/signup',
-            url: '/signup',
-            isExact: true,
-            params: {}
-          }
+            component: '[function CreateUser]',
+            location: {
+              pathname: '/signup',
+              search: '',
+              hash: '',
+              key: 'xmsy02'
+            },
+            computedMatch: {
+              path: '/signup',
+              url: '/signup',
+              isExact: true,
+              params: {}
+            }
 
+          }
         }
-      } }
+      }
     }
   );
 

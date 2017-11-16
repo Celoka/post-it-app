@@ -1,4 +1,4 @@
-html, body, #app, .wrapper, main, #background, .container-fluid, .container{
+html, #app, .wrapper, main, #background, .container-fluid, .container{
   height: 100%;
   width: 100%;
 }
@@ -120,6 +120,8 @@ after {
     height: 18.5vh;
     margin-left: -15px;
     margin-right: -15px;
+    width: 100%;
+    margin-left: 1px;
   }
   
   #resetpassword {
@@ -274,7 +276,7 @@ after {
   }
   
   .brand-header {
-    padding-top: 6px;
+    padding-top: 21px;
   }
   
   
@@ -289,6 +291,7 @@ after {
     background-size: cover;
     .container-fluid {
       margin-top: -20px;
+      padding-bottom: 50px;
       padding-top: 15px;
       margin-bottom: 20px;      
       background-color: rgba(0, 0, 0, 0.5);
@@ -327,6 +330,15 @@ after {
     margin-right: 25%;
     margin-top: 3%;
     background: rgba(240, 236, 236, 0.604);
-    padding-left: 1.5%;
-    padding-top: 3%
+    padding: 5%;
+    margin-bottom: 50px;
+  }
+
+  h3#clear {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  form#message-display {
+    margin-bottom: 5px;
   }

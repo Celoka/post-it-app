@@ -13,10 +13,10 @@ describe('LoadMessage.js', () => {
   });
 
   it('should get all messages', () => {
-    AppActions.loadMessage('test')
-    .then(() => {
-      const messageResult = dispatch.mock.calls[0][0];
-      expect(messageResult.actionType).toEqual(AppConstants.LOAD_GROUP_MESSAGE);
-    });
+    AppActions.loadGroupMessage('test')
+      .then(() => {
+        const messageResult = dispatch.mock.calls[0][0];
+        expect(messageResult.actionType).toEqual(AppConstants.LOAD_GROUP_MESSAGES);
+      });
   });
 });

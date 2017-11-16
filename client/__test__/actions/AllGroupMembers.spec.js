@@ -11,9 +11,8 @@ describe('AllGroupMembers.js', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
-
   it('should get all group messages', () => {
-    AppActions.getUsersInGroup('/user/allusers')
+    AppActions.getAllUsers('/user/allusers')
     .then(() => {
       const messageResult = dispatch.mock.calls[0][0];
       expect(messageResult.actionType).toEqual(AppConstants.GET_ALL_USERS);

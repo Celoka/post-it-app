@@ -9,15 +9,15 @@ import AppActions from '../actions/AppActions';
  * @extends {React.Component}
  */
 class MessageBoard extends React.Component {
-/**
- * @description Creates an instance of MessageBoard
- *
- * @param { object } props
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
+  /**
+   * @description Creates an instance of MessageBoard
+   *
+   * @param { object } props
+   *
+   * @return { void }
+   *
+   * @memberof MessageBoard
+   */
   constructor() {
     super();
     this.state = {
@@ -29,17 +29,17 @@ class MessageBoard extends React.Component {
     };
   }
 
-/**
- * @description this receives props from the parent component(dashboard)
- *
- * @param { String } nextProps this includes groupId, groupmessage, groupname
- *
- * @method componentWillReceiveProps
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
+  /**
+   * @description this receives props from the parent component(dashboard)
+   *
+   * @param { String } nextProps this includes groupId, groupmessage, groupname
+   *
+   * @method componentWillReceiveProps
+   *
+   * @return { void }
+   *
+   * @memberof MessageBoard
+   */
   componentWillReceiveProps(nextProps) {
     this.setState({
       groupId: nextProps.groupId,
@@ -48,51 +48,51 @@ class MessageBoard extends React.Component {
     });
   }
 
-/**
- * @description this changes the state of the component
- * for a controlled input
- *
- * @param { String } event
- *
- * @method handlePriority
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
+  /**
+   * @description this changes the state of the component
+   * for a controlled input
+   *
+   * @param { String } event
+   *
+   * @method handlePriority
+   *
+   * @return { void }
+   *
+   * @memberof MessageBoard
+   */
   handlePriority = (event) => {
     this.setState({
       priority: event.target.value
     });
   }
-/**
- * @description changes the state of the component on input
- *
- * @param { String } event
- *
- * @method onChange
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
+  /**
+   * @description changes the state of the component on input
+   *
+   * @param { String } event
+   *
+   * @method onChange
+   *
+   * @return { void }
+   *
+   * @memberof MessageBoard
+   */
   onChange = (event) => {
     this.setState({
       message: event.target.value
     });
   }
 
-/**
- * @description fires an action on click of a button
- *
- * @param { Object } event behaviour of a submit method
- *
- * @method onSubmit
- *
- * @return { void }
- *
- * @memberof MessageBoard
- */
+  /**
+   * @description fires an action on click of a button
+   *
+   * @param { Object } event behaviour of a submit method
+   *
+   * @method onSubmit
+   *
+   * @return { void }
+   *
+   * @memberof MessageBoard
+   */
   onSubmit = (event) => {
     event.preventDefault();
     const messageDetail = {
@@ -107,11 +107,11 @@ class MessageBoard extends React.Component {
       this.refs.type.value = 'Normal';
     }
   }
-/**
- * @return { jsx } rendered jsx element
- *
- * @memberof MessageBoard
- */
+  /**
+   * @return { jsx } rendered jsx element
+   *
+   * @memberof MessageBoard
+   */
   render() {
     return (
       <div>
@@ -121,69 +121,67 @@ class MessageBoard extends React.Component {
           </h1>
           {
             this.state.groupMessage.length === 0 ? (
-            <h3 className="center-align">
-              You have no messages in this Group
+              <h3 className="center-align">
+                You have no messages in this Group
             </h3>
             ) : this.state.groupMessage.map((KeyName, KeyIndex) =>
-            <div key={KeyIndex} className="row">
-              <div className="col-sm-12">
-                <div className="well">
-                  <div className="row">
-                    <div className="col-sm-9">
-                      <h4 id="message-text">
-                        {KeyName.message}
-                      </h4>
+              <div key={KeyIndex} className="row">
+                <div className="col-sm-12">
+                  <div className="well">
+                    <div className="row">
+                      <div className="col-sm-9">
+                        <h4 id="message-text">
+                          {KeyName.message}
+                        </h4>
+                      </div>
+                      <div className="col-sm-3">
+                        <small>
+                          Priority level: <cite>{KeyName.priority}</cite>
+                        </small>
+                      </div>
                     </div>
-                    <div className="col-sm-3">
-                      <small>
-                        Priority level: <cite>{KeyName.priority}</cite>
-                      </small>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-9">
-                      <time id="time-tag">
-                        sent on: {KeyName.timeStamp}
-                      </time>
-                    </div>
-                    <div className="col-sm-3">
-                      <small>
-                        sent by: {KeyName.displayName}
-                      </small>
+                    <div className="row">
+                      <div className="col-sm-9">
+                        <time id="time-tag">
+                          sent on: {KeyName.timeStamp}
+                        </time>
+                      </div>
+                      <div className="col-sm-3">
+                        <small>
+                          sent by: {KeyName.displayName}
+                        </small>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             )
           }
         </form>
-        <div id='message' className='container-fluid'>
-          <form id="messageboard" onSubmit={this.onSubmit}>
-            <div className="row">
-              <div id="message-box" className="form-group">
-                <textarea className="form-control"
-                  value={this.state.message}
-                  onChange={this.onChange}
-                  placeholder='type a message..'
-                  required>
-                </textarea>
-              </div>
-              <button type="submit"
-                className="btn btn-success">
-                Submit
-              </button>
-              <select ref="type"
-               style={{ color: 'black', float: 'left' }}
-                className="select_btn">
-                <option value='Normal'>Normal</option>
-                <option value='Urgent'>Urgent</option>
-                <option value='Critical'>Critical</option>
-              </select>
+        <form id="messageboard" onSubmit={this.onSubmit}>
+          <div className="row">
+            <div id="message-box" className="form-group">
+              <textarea className="form-control"
+                value={this.state.message}
+                onChange={this.onChange}
+                placeholder='type a message..'
+                required>
+              </textarea>
             </div>
-          </form>
+            <button type="submit"
+              className="btn btn-success">
+              Submit
+            </button>
+            <select ref="type"
+              style={{ color: 'black', float: 'left' }}
+              className="select_btn">
+              <option value='Normal'>Normal</option>
+              <option value='Urgent'>Urgent</option>
+              <option value='Critical'>Critical</option>
+            </select>
+          </div>
+        </form>
         </div>
-      </div>
     );
   }
 }

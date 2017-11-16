@@ -19,8 +19,8 @@ import AppActions from '../actions/AppActions';
  */
 export const ToastrError = (error) => {
   if (error.message === 'Request failed with status code 401' ||
-  error.message === 'Request failed with status code 403'
-) {
+    error.message === 'Request failed with status code 403'
+  ) {
     AppActions.logOut();
   } else if (error.message === 'Request failed with status code 500') {
     toastr.error('An unexpected error occurred.');
@@ -57,16 +57,11 @@ export const setAuthToken = (token) => {
  */
 export const setCurrentUser = (response) => {
   const { jwtToken } = response.data;
-  localStorage.setItem('token', jwtToken);
   setAuthToken(jwtToken);
-  const userDetails = jwt.decode(localStorage.token);
-  localStorage.setItem('displayName',
-   JSON.stringify(userDetails.displayName));
-  localStorage.setItem('uid', userDetails.uid);
-  toastr.success(`Welcome, ${userDetails.displayName}`);
+  const credentials = response.data;
   AppDispatcher.dispatch({
     actionType: AppConstants.SET_USER,
-    userDetails
+    credentials
   });
 };
 

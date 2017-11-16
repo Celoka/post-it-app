@@ -14,9 +14,9 @@ describe('LoginUser.js action ', () => {
 
   it('should successfully match the user login details', () => {
     AppActions.loginUser('/user/signin')
-    .then(() => {
-      const messageResult = dispatch.mock.calls[0][0];
-      expect(messageResult.actionType).toEqual(AppConstants.SET_USER);
-    });
+      .then(() => {
+        const messageResult = dispatch.mock.calls[0][0];
+        expect(messageResult.actionType).toEqual(AppConstants.SET_USER);
+      });
   });
 });
