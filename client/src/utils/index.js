@@ -57,11 +57,16 @@ export const setAuthToken = (token) => {
  */
 export const setCurrentUser = (response) => {
   const { jwtToken } = response.data;
+  localStorage.setItem('token', jwtToken);
   setAuthToken(jwtToken);
-  const credentials = response.data;
+  const userDetails = jwt.decode(localStorage.token);
+  localStorage.setItem('displayName',
+   JSON.stringify(userDetails.displayName));
+  localStorage.setItem('uid', userDetails.uid);
+  toastr.success(`Welcome, ${userDetails.displayName}`);
   AppDispatcher.dispatch({
     actionType: AppConstants.SET_USER,
-    credentials
+    userDetails
   });
 };
 

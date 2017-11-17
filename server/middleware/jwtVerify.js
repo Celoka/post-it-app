@@ -19,18 +19,18 @@ const jwtVerify = (req, res, next) => {
     req.header('authorization');
   if (!token) {
     return res.status(403).json({
-      message: 'Permission denied'
+      message: 'Permission denied!hjhjhbjbj'
     });
   }
   jwt.verify(token, secret, (error, decoded) => {
     if (error) {
       if (error.message === 'jwt expired') {
         return res.status(401).json({
-          message: 'Unathorized operation'
+          message: 'Unauthorized operation'
         });
       }
       return res.status(401).Json({
-        message: 'Unathorized operation'
+        message: 'Unauthorized operation'
       });
     }
     req.decoded = decoded;

@@ -1,6 +1,6 @@
 import express from 'express';
-import validateRequestBody from '../helpers/Validate';
-import jwtVerify from '../helpers/Auth';
+import jwtVerify from '../middleware/jwtVerify';
+import validateRequestBody from '../middleware/validateRequestBody';
 import {
   createUser,
   logIn,

@@ -53,17 +53,11 @@ function allGroupMessages(message) {
  *
  * @function setCurrentUser
  *
- * @param { Object } credentials
+ * @param { Object } userDetails
  *
  * @returns { Array } returns an array of object of new user
  */
-function setCurrentUser(credentials) {
-  const jwtToken = credentials.jwtToken;
-  localStorage.setItem('token', jwtToken);
-  const userDetails = jwt.decode(localStorage.token);
-  localStorage.setItem('displayName',
-    JSON.stringify(userDetails.displayName));
-  localStorage.setItem('uid', userDetails.uid);
+function setCurrentUser(userDetails) {
   currentUser = userDetails;
   return currentUser;
 }
