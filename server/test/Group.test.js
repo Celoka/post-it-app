@@ -97,7 +97,7 @@ describe('Group routes', () => {
   });
   describe('Add member route', () => {
     const credentials = {
-      groupId: '-Kz9zqUnMh9D8Y1ngpO0',
+      groupId: '-KzDbXdaFYGVW3AsfTyM',
       newUser: 'Antonietta_cormier48',
       userId: '0U5mpd4aRjfRYVlhiFtGFxfNwyU2'
     };
