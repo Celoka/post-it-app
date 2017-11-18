@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 const env = process.env.NODE_ENV;
 let checkProcess = '';
 
-
 if (env === 'test') {
   checkProcess = 'TEST';
 } else if (env === 'production') {

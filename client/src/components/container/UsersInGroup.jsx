@@ -1,6 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
-import AppActions from '../actions/AppActions';
+import AppActions from '../../actions/AppActions';
 
 /**
  * @description creates a class users in a particular

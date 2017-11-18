@@ -31,7 +31,7 @@ describe('AppStore', () => {
     const all = AppStore.getAddMember();
     expect(all).toEqual([]);
   });
-  it('should call getNewMember method when data is receieved ', () => {
+  it('should call getAddMember method when data is receieved ', () => {
     callback(getAddedMember);
     const emitChange = jest.fn();
     emitChange();

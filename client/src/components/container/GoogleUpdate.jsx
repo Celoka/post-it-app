@@ -1,6 +1,7 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-import AppActions from '../actions/AppActions';
+import Navbar from '../presentation/Navbar';
+import AppActions from '../../actions/AppActions';
+
 
 /**
  * @description creates a class sign up as a react component

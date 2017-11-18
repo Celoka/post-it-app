@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import UsersInGroup from '../../src/components/UsersInGroup.jsx';
+import UsersInGroup from '../../src/components/container/UsersInGroup.jsx';
 import AppActions from '../../src/actions/AppActions';
 import { newProperty, nextProps, event } from '../../__mocks__/seeders';
 
@@ -17,8 +17,10 @@ describe('<UsersInGroup/>', () => {
       },
     ]
   };
+  const modal = jest.fn();
   const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup');
-  const wrapper = mount(<UsersInGroup newProperty={newProperty} {...props} />);
+  const wrapper = mount(<UsersInGroup newProperty={newProperty}
+   {...props} modal = {modal} />);
   it('should call onChange method', () => {
     const onChangeSpy = jest.spyOn(
       wrapper.instance(), 'onChange'
@@ -32,6 +34,18 @@ describe('<UsersInGroup/>', () => {
     );
     wrapper.instance().componentWillReceiveProps(nextProps);
     expect(componentWillReceivePropsSpy).toHaveBeenCalled();
+  });
+  it('should call onChange method', () => {
+    const onChangeSpy = jest.spyOn(
+      wrapper.instance(), 'onChange'
+    );
+    const events = {
+      target: {
+        group: 'Andela'
+      }
+    };
+    wrapper.instance().onChange(events);
+    expect(onChangeSpy).toHaveBeenCalled();
   });
 
   it('should add a memebr to group when condition is met', () => {
@@ -50,23 +64,11 @@ describe('<UsersInGroup/>', () => {
   });
 
   it('should call userValidation method', () => {
-    global.modal = () => null;
     const userValidationSpy = jest.spyOn(
       wrapper.instance(), 'userValidation'
     );
     const displayName = 'user';
     wrapper.instance().userValidation(displayName);
     expect(userValidationSpy).toHaveBeenCalled();
-  });
-
-  it('should call openAddMemberModal', () => {
-    const openAddMemberModalSpy = jest.spyOn(
-      wrapper.instance(), 'openAddMemberModal'
-    );
-    const event3 = {
-      preventDefault: jest.fn()
-    };
-    wrapper.instance().openAddMemberModal(event3);
-    expect(openAddMemberModalSpy).toHaveBeenCalled();
   });
 });

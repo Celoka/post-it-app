@@ -1,5 +1,5 @@
 import React from 'react';
-import AppActions from '../actions/AppActions';
+import AppActions from '../../actions/AppActions';
 
 /**
  * @description a stateless component

@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import AppStore from '../../src/stores/AppStore';
-import MessageBoard from '../../src/components/MessageBoard.jsx';
-import UsersInGroup from '../../src/components/UsersInGroup.jsx';
-import Group from '../../src/components/Group.jsx';
-import DashBoard from '../../src/components/DashBoard.jsx';
+import MessageBoard from '../../src/components/container/MessageBoard.jsx';
+import UsersInGroup from '../../src/components/container/UsersInGroup.jsx';
+import Group from '../../src/components/container/Group.jsx';
+import DashBoard from '../../src/components/container/DashBoard.jsx';
 
 describe('<DashBoard />', () => {
   const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
@@ -48,14 +48,18 @@ describe('<DashBoard />', () => {
       },
     });
 
-  it('should', () => {
+  it('should show the initial state of the component when component will mount', () => {
     expect(wrapper.state().displayName).toBe(null);
     expect(wrapper.state().groupId).toBe(null);
     expect(wrapper.state().groupName).toEqual('');
     expect(wrapper.state().groupMessage).toHaveLength(0);
-    expect(wrapper.state().userId).toBe(undefined);
     expect(wrapper.state().newMember).toHaveLength(0);
     expect(wrapper.state().googleUser).toHaveLength(0);
+    expect(wrapper.state().userId).toEqual([
+      { userId: 'AKFnhd92XHNvMGHmUSHJ2CGt1Au1', userNames: 'West' },
+      { userId: 'HIBpkdz7IfTSyOyLbevWasL78HD3', userNames: 'West' },
+      { userId: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1', userNames: 'Chinwendu' },
+      { userId: 'f9TGDZzckNhTxr4KakHiChiAVYP2', userNames: 'Ebuka' }]);
   });
 
   it('contains a <Group /> component', () => {
@@ -74,17 +78,6 @@ describe('<DashBoard />', () => {
   it('calls componentWillUnmount', () => {
     wrapper.unmount();
     expect(removeChangeListenerSpy).toHaveBeenCalled();
-  });
-  it('calls setGroupId method', () => {
-    const setGroupIdSpy = jest.spyOn(
-      wrapper.instance(), 'setGroupId'
-    );
-    wrapper.setState({
-      groupId: 'hfhfhf',
-      groupName: 'test'
-    });
-    wrapper.instance().setGroupId(groupId, groupName);
-    expect(setGroupIdSpy).toHaveBeenCalled();
   });
 });
 

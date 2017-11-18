@@ -1,8 +1,8 @@
 import React from 'react';
 import toastr from 'toastr';
-import Navbar from '../components/Navbar.jsx';
-import { validateEmail } from '../utils/';
-import AppActions from '../actions/AppActions';
+import Navbar from '../presentation/Navbar';
+import { validateEmail } from '../../utils/';
+import AppActions from '../../actions/AppActions';
 
 /**
  * @description creates a class sign up as a react component

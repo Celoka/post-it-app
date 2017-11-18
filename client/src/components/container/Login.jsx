@@ -2,10 +2,11 @@ import React from 'react';
 import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link } from 'react-router-dom';
-import firebase from '../firebase';
-import { validateEmail } from '../utils/';
-import AppActions from '../actions/AppActions';
-import Navbar from '../components/Navbar.jsx';
+import firebase from '../../firebase/';
+import { validateEmail } from '../../utils/';
+import AppActions from '../../actions/AppActions';
+import Navbar from '../presentation/Navbar';
+
 
 /**
  * @description creates a class sign up as a react component

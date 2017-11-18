@@ -49,14 +49,14 @@ describe('AppStore', () => {
     const all = AppStore.getCurrentGroup();
     expect(all).toEqual([]);
   });
-  it('should call getNewMember method when data is receieved ', () => {
+  it('should call getCurrentGroup method when data is receieved ', () => {
     callback(groupName);
     const emitChange = jest.fn();
     emitChange();
     expect(AppDispatcher.register.mock.calls.length).toBe(1);
     expect(emitChange).toHaveBeenCalled();
   });
-  it('should call the evnt listener when store receives data', () => {
+  it('should call the event listener when store receives data', () => {
     AppStore.addChangeListener(listenerCb);
     const events = AppStore._events;
     expect(Object.keys(events).length).toEqual(1);

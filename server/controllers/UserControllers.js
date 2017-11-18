@@ -168,7 +168,7 @@ export const resetPassword = (req, res) => {
   firebase.auth().sendPasswordResetEmail(email)
     .then((user) => {
       res.status(200).json({
-        message: 'Mail sent succesfully',
+        message: 'Reset link sent succesfully',
         user
       });
     })

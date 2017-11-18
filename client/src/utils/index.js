@@ -6,7 +6,6 @@ import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppActions from '../actions/AppActions';
 
-
 /**
  * @description describes a function that pops a notification
  * when an error occurs

@@ -49,7 +49,7 @@ describe('AppStore', () => {
     const all = AppStore.getAllMessages();
     expect(all).toEqual([]);
   });
-  it('should call getNewMember method when data is receieved ', () => {
+  it('should call getAllMessages method when data is receieved ', () => {
     callback(allGroupMessages);
     const emitChange = jest.fn();
     emitChange();

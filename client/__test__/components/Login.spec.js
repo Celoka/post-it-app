@@ -4,20 +4,21 @@ import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
 import mockApiCall from '../../__mocks__/axios';
 import firebase from '../../src/firebase/index';
-import Login from '../../src/components/Login.jsx';
 import AppActions from '../../src/actions/AppActions';
+import Login from '../../src/components/container/Login.jsx';
+
 
 jest.mock('../../src/firebase/index', () => {
-/**
- * @description describes a function that mocks firebase module,
- * fires it action to make an Api call, returns a promise that is mocked
- *
- * @param { void } void takes no parameter
- *
- * @return { object } mockfirebase object
- *
- * @function Test
- */
+  /**
+   * @description describes a function that mocks firebase module,
+   * fires it action to make an Api call, returns a promise that is mocked
+   *
+   * @param { void } void takes no parameter
+   *
+   * @return { object } mockfirebase object
+   *
+   * @function Test
+   */
   function Test() {
 
   }
@@ -45,30 +46,31 @@ describe('<Signin/>', () => {
     },
     loginUser: jest.fn(() => Promise.resolve())
   };
-  const wrapper = mount(<Login {...props}/>,
+  const wrapper = mount(<Login {...props} />,
     {
       childContextTypes: { router: React.PropTypes.object },
-      context: { router: {
-        history: {
-          push: () => null,
-          replace: () => null,
-          createHref: () => null,
-          path: '/signin',
-          component: '[function SignIn]',
-          location: {
-            pathname: '/signin',
-            search: '',
-            hash: '',
-            key: 'g5nscy'
-          },
-          computedMatch: {
+      context: {
+        router: {
+          history: {
+            push: () => null,
+            replace: () => null,
+            createHref: () => null,
             path: '/signin',
-            url: '/signin',
-            isExact: true,
-            params: {}
+            component: '[function SignIn]',
+            location: {
+              pathname: '/signin',
+              search: '',
+              hash: '',
+              key: 'g5nscy'
+            },
+            computedMatch: {
+              path: '/signin',
+              url: '/signin',
+              isExact: true,
+              params: {}
+            }
           }
         }
-      }
       }
     }
   );
@@ -81,7 +83,7 @@ describe('<Signin/>', () => {
     expect(wrapper.state().password).toEqual('');
     expect(wrapper.state().isConfirmed).toBe(null);
   });
-  it('should find label', () => {
+  it('should find a label', () => {
     expect(wrapper.find('label').length).toEqual(3);
   });
   it('should find a button', () => {
@@ -98,13 +100,13 @@ describe('<Signin/>', () => {
   it('should redirect to another page on click of a button', () => {
     wrapper.find(Link).at(4).simulate('click');
   });
-  it('should contain a google button', () => {
+  it('should contain a google button, and firebase method called', () => {
     wrapper.setState({
       isConfirmed: false
     });
     wrapper.find(GoogleButton).simulate('click');
     expect(firebase.auth.GoogleAuthProvider.prototype.addScope)
-    .toHaveBeenCalledTimes(2);
+      .toHaveBeenCalledTimes(2);
     expect(firebase.auth().signInWithPopup).toHaveBeenCalled();
   });
 

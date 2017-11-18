@@ -2,8 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from 'react-router-dom';
 import { expect } from 'chai';
-
-import Navbar from '../../src/components/Navbar';
+import Navbar from '../../src/components/presentation/Navbar';
 
 describe('<Navbar />', () => {
   it('should contain links', () => {

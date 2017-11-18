@@ -17,7 +17,7 @@ export const mapCodeToObj = {
     status: 409, message: 'Email is already in use'
   },
   'auth/user-not-found': {
-    status: 404, message: 'Make sure your email or password is correct'
+    status: 401, message: 'Make sure your email or password is correct'
   },
   'auth/invalid-email': {
     status: 400, message: 'Invalid email'

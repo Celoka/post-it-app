@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AppActions from '../actions/AppActions';
+import AppActions from '../../actions/AppActions';
 
 /**
  * @description describes a function that fires an
