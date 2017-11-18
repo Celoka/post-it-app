@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Celoka/post-it-app.svg?branch=chore%2Ffeedback-implementation)](https://travis-ci.org/Celoka/post-it-app)
-[![Coverage Status](https://coveralls.io/repos/github/Celoka/post-it-app/badge.svg?branch=chore%2Ffeedback-implementation)](https://coveralls.io/github/Celoka/post-it-app?branch=chore%2Fserver-side-test)
+[![Coverage Status](https://coveralls.io/repos/github/Celoka/post-it-app/badge.svg?branch=chore%2Ffeedback-implementation)](https://coveralls.io/github/Celoka/post-it-app?branch=chore%2Ffeedback-implementation)
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/codeclimate/codeclimate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
 ![hound status](https://img.shields.io/badge/Protected%20by-Hound-green.svg)
