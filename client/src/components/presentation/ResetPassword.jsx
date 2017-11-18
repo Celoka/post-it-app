@@ -1,6 +1,6 @@
 import React from 'react';
-import AppActions from '../actions/AppActions';
-import Navbar from '../components/Navbar.jsx';
+import AppActions from '../../actions/AppActions';
+import Navbar from './Navbar';
 
 /**
  * @description creates a class reset password as a react component
@@ -70,7 +70,7 @@ class ResetPassword extends React.Component {
     return (
       <div>
         <Navbar />
-        <form id="resetpassword" onSubmit={this.onSubmit}>
+        <form id="resetpassword" className="col-sm-12" onSubmit={this.onSubmit}>
           <fieldset className="account-info">
             <label>
               Email Address
@@ -78,7 +78,9 @@ class ResetPassword extends React.Component {
                 type="email" name="email" required />
             </label>
           </fieldset>
-          <button name="login" className="btn btn-primary btn-sm">
+          <button name="login"
+            id="sign"
+            className="btn btn-primary btn-sm">
             Reset Password
           </button>
         </form>

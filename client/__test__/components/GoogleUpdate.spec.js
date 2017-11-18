@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import GoogeleUpdate from '../../src/components/GoogleUpdate';
+import GoogeleUpdate from '../../src/components/container/GoogleUpdate';
 
 describe('<GoogleUpdate />', () => {
   const wrapper = mount(<GoogeleUpdate />,
@@ -31,7 +31,7 @@ describe('<GoogleUpdate />', () => {
       }
     }
   );
-  it('should show wrapper', () => {
+  it('should show the initial state of the component when it mounts', () => {
     expect(wrapper.state().phoneNumber).toEqual('');
     expect(wrapper.state().email).toBe(null);
     expect(wrapper.state().displayName).toBe(null);

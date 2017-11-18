@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import CreateUser from '../../src/components/CreateUser.jsx';
+import CreateUser from '../../src/components/container/CreateUser.jsx';
 import AppActions from '../../src/actions/AppActions';
 
 
@@ -59,7 +59,7 @@ describe('<Signup/>', () => {
     wrapper.instance().onChange(event);
     expect(onChangeSpy).toHaveBeenCalled();
   });
-  it('should', () => {
+  it('should successfully create a user and call onsubmit method', () => {
     const onSubmitSpy = jest.spyOn(
       wrapper.instance(), 'onSubmit'
     );

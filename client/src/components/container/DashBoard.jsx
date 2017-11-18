@@ -1,11 +1,10 @@
 import React from 'react';
-import jwt from 'jsonwebtoken';
-import AppActions from '../actions/AppActions';
-import Group from '../components/Group.jsx';
-import AppStore from '../stores/AppStore';
-import UsersInGroup from '../components/UsersInGroup.jsx';
-import MessageBoard from '../components/MessageBoard.jsx';
-import BoardNavigation from '../components/BoardNavigation.jsx';
+import AppActions from '../../actions/AppActions';
+import Group from '../container/Group';
+import AppStore from '../../stores/AppStore';
+import UsersInGroup from '../container/UsersInGroup';
+import MessageBoard from '../container/MessageBoard';
+import BoardNavigation from '../presentation/BoardNavigation';
 
 
 /**

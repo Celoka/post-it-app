@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar.jsx';
+import Navbar from './Navbar';
 
 /**
  * @description describes a stateless component that has

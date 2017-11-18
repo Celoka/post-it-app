@@ -1,397 +1,571 @@
 /**
  * Import module dependcies
  */
-
-import chaiHttp from 'chai-http';
-import faker from 'faker';
 import chai from 'chai';
-import server from '../server/server';
+import chaiHttp from 'chai-http';
+import assert from 'assert';
+import faker from 'faker';
+import server from '../server';
+
+process.env.NODE_ENV = 'test';
 
 chai.use(chaiHttp);
 chai.should();
 const expect = chai.expect;
 
-const newUser = {
-  email: faker.internet.email(),
-  password: faker.internet.password(),
-  username: faker.internet.userName(),
-  phonenumber: faker.phone.phoneNumber()
-};
-
 
 describe('Sign up route', () => {
-  it('should create a new user', (done) => {
+  it('should create a new user successfully', (done) => {
+    const newUser = {
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      userName: faker.internet.userName(),
+      phoneNumber: '2347032337154'
+    };
     chai.request(server)
       .post('/api/v1/user/signup')
       .send(newUser)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('Registration success');
-        expect(res.body.userDetails[0]).to.haveOwnPropertyDescriptor('email');
-        expect(res.body.userDetails[0]).to.haveOwnPropertyDescriptor('uid');
-        expect(res.body).to.have.property('token');
-        expect(res.req.method).to.equal('POST');
-        expect(res.req.path).to.equal('/api/v1/user/signup');
-        expect(res.body).to.be.an('object');
+        res.should.have.status(201);
+        expect(res.body.message).to.eql('Registration success');
+        expect(res.body.isConfirmed).to.eql(true);
+        expect(res.body).to.have.property('jwtToken');
         if (err) return done();
         done();
       });
   });
 
-  it('should require an email', (done) => {
+  it('should require an email when its not provided', (done) => {
     const userTest = {
       email: '',
       password: 'andela24344',
-      username: 'Andelan',
-      phonenumber: '090335425425'
+      userName: 'Andelan',
+      phoneNumber: '090335425425'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal('{"message":"Email is required"}');
-      expect(res.body.message).to.equal('Email is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Email is required');
+        if (err) return done();
+        done();
+      });
   });
 
-  xit('should require a password', (done) => {
+  it('should require a password when its not provided', (done) => {
     const userTest = {
       email: 'test@test.com',
       password: '',
-      username: 'Andelan',
-      phonenumber: '090335425425'
+      userName: 'Andelan',
+      phoneNumber: '090335425425'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal('{"message":"Password is required"}');
-      expect(res.body.message).to.equal('Password is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Password is required');
+        if (err) return done();
+        done();
+      });
   });
   it('should require password character not to be less than 5', (done) => {
     const userTest = {
       email: 'test@test.com',
       password: 'jhh',
-      username: 'Andelan',
-      phonenumber: '090335425425'
+      userName: 'Andelan',
+      phoneNumber: '090335425425'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal(
-        '{"message":"Password must be at least 6 character and contain number"}'
-      );
-      expect(res.body.message).to.equal(
-        'Password must be at least 6 character and contain number'
-      );
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message)
+          .to.eql('Password must be at least 6 character and contain number');
+        if (err) return done();
+        done();
+      });
   });
 
   it('should require a valid email input', (done) => {
     const userTest = {
       email: 'test',
       password: 'andela24344',
-      username: 'Andelan',
-      phonenumber: '090335425425'
+      userName: 'Andelan',
+      phoneNumber: '090335425425'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal('{"message":"Bad email format"}');
-      expect(res.body.message).to.equal('Bad email format');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Invalid email format');
+        if (err) return done();
+        done();
+      });
   });
 
-  it('should should require a username input', (done) => {
+  it('should require a username input', (done) => {
     const userTest = {
       email: 'andela2@yahoo.com',
       password: 'andela24344',
-      username: '',
-      phonenumber: '090335425425'
+      userName: '',
+      phoneNumber: '090335425425'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal('{"message":"Username is required"}');
-      expect(res.body.message).to.equal('Username is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Username is required');
+        if (err) return done();
+        done();
+      });
   });
 
-  it('should not create a user with existing email', (done) => {
+  it('should register not register an existing user', (done) => {
     const userTest = {
-      email: 'ebuka@yahoo.com',
-      password: 'Asorock1',
-      username: 'Ebuka',
-      phonenumber: '+2347032337154'
+      email: 'lurline_windler@hotmail.com',
+      password: 'vsZdfjNe7RG1JHC',
+      userName: 'Hiram_ondricka',
+      phoneNumber: '2347032337154'
     };
     chai.request(server)
-    .post('/api/v1/user/signup')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(401);
-      expect(res.res.statusMessage).to.equal('Unauthorized');
-      expect(res.req.path).to.equal('/api/v1/user/signup');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.a('object');
-      expect(res.text).to.equal('{"message":"Email already in use"}');
-      expect(res.body.message).to.equal('Email already in use');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(409);
+        expect(res.body.message).to.eql('Username already exists');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a phone number', (done) => {
+    const userTest = {
+      email: 'lurline_windler@hotmail.com',
+      password: 'vsZdfjNe7RG1JHC',
+      userName: 'Hiram_ondricka',
+      phoneNumber: ''
+    };
+    chai.request(server)
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Phone number is required');
+        if (err) return done();
+        done();
+      });
   });
 });
-
 describe('Sign in route', () => {
   it('should successfully sign in a resgistered user', (done) => {
     const userTest = {
-      email: 'eloka.chima@gmail.com',
-      password: 'Asorock1',
+      email: 'Lurline_Windler@hotmail.com',
+      password: 'vsZdfjNe7RG1JHC',
     };
     chai.request(server)
-    .post('/api/v1/user/signin')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/api/v1/user/signin');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body.message).to.equal('User Signed in!');
-      res.body.userDetails[0].email.should.equal('ebuka@yahoo.com');
-      res.body.userId.should.equal('f9TGDZzckNhTxr4KakHiChiAVYP2');
-      expect(res.body.userDetails[0]).to.haveOwnProperty('uid');
-      expect(res.body.userDetails[0]).to.haveOwnProperty('email');
-      expect(res.body.userDetails[0]).to.haveOwnProperty('phoneNumber');
-      expect(res.body.userDetails[0]).to.haveOwnProperty('providerId');
-      expect(res.body).to.have.property('userId');
-      expect(res.body).to.have.property('token');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.eql('User Signed in!');
+        expect(res.body.user.uid).to.eql('JK5rSTmxjRMf5nBTUi008oKx95k2');
+        expect(res.body.user.email).to.eql('lurline_windler@hotmail.com');
+        expect(res.body.isConfirmed).to.eql(true);
+        if (err) return done();
+        done();
+      });
   });
-
   it('should require an email to sign in', (done) => {
     const userTest = {
       email: '',
       password: 'Asorock1'
     };
     chai.request(server)
-    .post('/api/v1/user/signin')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signin');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Email is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Email is required');
+        if (err) return done();
+        done();
+      });
   });
-
   it('should require a valid email format', (done) => {
     const userTest = {
       email: 'test@..',
       password: 'Asorock1'
     };
     chai.request(server)
-    .post('/api/v1/user/signin')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signin');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Invalid email format');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.equal('Invalid email format');
+        if (err) return done();
+        done();
+      });
   });
-
   it('should require a password', (done) => {
     const userTest = {
       email: 'test@yahoo.com',
       password: ''
     };
     chai.request(server)
-    .post('/api/v1/user/signin')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signin');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Password is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Password is required');
+        if (err) return done();
+        done();
+      });
   });
-
   it('should require password not to be less than 5', (done) => {
     const userTest = {
       email: 'test@yahoo.com',
       password: 'erty'
     };
     chai.request(server)
-    .post('/api/v1/user/signin')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/user/signin');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal(
-        'Password must be at least 6 character and contain number'
-      );
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message)
+          .to.eql('Password must be at least 6 character and contain number');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a correct password', (done) => {
+    const userTest = {
+      email: 'Lurline_Windler@hotmail.com',
+      password: 'vsZdfjNe7RG1JH',
+    };
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Wrong password');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a correct password', (done) => {
+    const userTest = {
+      email: 'Lurline_Wivndler@hotmail.com',
+      password: 'vsZdfjNe7RG1JHC',
+    };
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(401);
+        expect(res.body.message)
+          .to.eql('Make sure your email or password is correct');
+        if (err) return done();
+        done();
+      });
   });
 });
 
-describe('Reset password route', () => {
-  it('should successfully send a rest link password to a user', (done) => {
-    const userTest = {
-      email: 'ebuka@yahoo.com'
+describe('Google SignIn Route', () => {
+  it('should redirect a first time google user for update', (done) => {
+    const googleUser = {
+      email: 'andelaTest@yahoo.com',
+      uid: '77477474hhhf',
+      userName: 'Andela Test'
     };
     chai.request(server)
-    .post('/api/v1/user/passwordreset')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.method).to.equal('POST');
-      expect(res.req.path).to.equal('/api/v1/user/passwordreset');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Mail sent succesfully');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.eql('Another step is required ');
+        expect(res.body.isConfirmed).to.eql(false);
+        expect(res.body).to.have.property('jwtToken');
+        if (err) return done();
+        done();
+      });
   });
+  it('should sign in a user in successfully', (done) => {
+    const googleUser = {
+      email: 'Lurline_Windler@hotmail.com',
+      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
+      userName: 'Hiram_ondricka'
+    };
+    chai.request(server)
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.eql('Login successful');
+        expect(res.body.isConfirmed).to.eql(true);
+        expect(res.body).to.have.property('jwtToken');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require email of a google user', (done) => {
+    const googleUser = {
+      email: '',
+      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
+      userName: 'Hiram_ondricka'
+    };
+    chai.request(server)
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Email is required');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a valid email of a google user', (done) => {
+    const googleUser = {
+      email: 'hhfhfhh@hf',
+      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
+      userName: 'Hiram_ondricka'
+    };
+    chai.request(server)
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Invalid email format');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require Id of a google user', (done) => {
+    const googleUser = {
+      email: 'Lurline_Windler@hotmail.com',
+      uid: '',
+      userName: 'Hiram_ondricka'
+    };
+    chai.request(server)
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('User Id is required');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require user name of a google user', (done) => {
+    const googleUser = {
+      email: 'Lurline_Windler@hotmail.com',
+      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
+      userName: ''
+    };
+    chai.request(server)
+      .post('/api/v1/user/googlesignin')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Username is required');
+        if (err) return done();
+        done();
+      });
+  });
+});
 
-  it('should require an email input', (done) => {
-    const userTest = {
-      email: ''
+describe('Google Update Route', () => {
+  it('should sign in a google user successfully after phonenumber update',
+    (done) => {
+      const googleUser = {
+        phoneNumber: '2347032337154',
+        uid: 'yryyrt773664',
+        displayName: faker.internet.userName(),
+        email: faker.internet.email(),
+      };
+      chai.request(server)
+        .post('/api/v1/user/googleupdate')
+        .send(googleUser)
+        .end((err, res) => {
+          res.should.have.status(201);
+          expect(res.body.message).to.eql('Update was succcessful');
+          expect(res.body.isConfirmed).to.eql(true);
+          expect(res.body).to.have.property('jwtToken');
+          if (err) return done();
+          done();
+        });
+    });
+  it('should require a google user phone number', (done) => {
+    const googleUser = {
+      phoneNumber: '',
+      uid: 'yryyrt773664',
+      displayName: faker.internet.userName(),
+      email: faker.internet.email(),
     };
     chai.request(server)
-    .post('/api/v1/user/passwordreset')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.method).to.equal('POST');
-      expect(res.req.path).to.equal('/api/v1/user/passwordreset');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Email is required');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/googleupdate')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Phone number is required');
+        if (err) return done();
+        done();
+      });
   });
-  it('should require a valid email format', (done) => {
-    const userTest = {
-      email: 'test@yahoo'
+  it('should require a google user user Id', (done) => {
+    const googleUser = {
+      phoneNumber: '2347032337154',
+      uid: '',
+      displayName: faker.internet.userName(),
+      email: faker.internet.email(),
     };
     chai.request(server)
-    .post('/api/v1/user/passwordreset')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.method).to.equal('POST');
-      expect(res.req.path).to.equal('/api/v1/user/passwordreset');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Invalid email format');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/googleupdate')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('User Id is required');
+        if (err) return done();
+        done();
+      });
   });
-  it('should not send a link to an unauthenticated email', (done) => {
+  it('should require a google user username ', (done) => {
+    const googleUser = {
+      phoneNumber: '2347032337154',
+      uid: 'yryyrt773664',
+      displayName: '',
+      email: faker.internet.email(),
+    };
+    chai.request(server)
+      .post('/api/v1/user/googleupdate')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Displayname is required');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a google user user name not to be less than 3', (done) => {
+    const googleUser = {
+      phoneNumber: '2347032337154',
+      uid: 'yryyrt773664',
+      displayName: 'ee',
+      email: faker.internet.email(),
+    };
+    chai.request(server)
+      .post('/api/v1/user/googleupdate')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Display name should be at least 3 characters');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require a google user email', (done) => {
+    const googleUser = {
+      phoneNumber: '2347032337154',
+      uid: 'yryyrt773664',
+      displayName: 'eeee',
+      email: '',
+    };
+    chai.request(server)
+      .post('/api/v1/user/googleupdate')
+      .send(googleUser)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Email is required');
+        if (err) return done();
+        done();
+      });
+  });
+});
+
+describe('Password reset route', () => {
+  it('should send a password reset link to a registered member',
+    (done) => {
+      const userTest = {
+        email: 'Ardella.Swift@yahoo.com'
+      };
+      chai.request(server)
+        .post('/api/v1/user/passwordreset')
+        .send(userTest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          expect(res.body.message).to.eql('Reset link sent succesfully');
+          if (err) return done();
+          done();
+        });
+    });
+  it('should not send a link to an unregistered user', (done) => {
     const userTest = {
       email: 'test2333@yahoo.com'
     };
     chai.request(server)
-    .post('/api/v1/user/passwordreset')
-    .send(userTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(404);
-      expect(res.res.statusMessage).to.equal('Not Found');
-      expect(res.req.method).to.equal('POST');
-      expect(res.req.path).to.equal('/api/v1/user/passwordreset');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Email does not exist');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/passwordreset')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(401);
+        expect(res.body.message)
+          .to.eql('Make sure your email or password is correct');
+        if (err) return done();
+        done();
+      });
   });
-});
-describe('Sign out route', () => {
-  before((done) => {
+  it('should not send a link to an invalid email address', (done) => {
+    const userTest = {
+      email: 'test2333com'
+    };
     chai.request(server)
-    .post('api/v1/users/signin')
-    .send({
-      email: 'eloka.chima@gmail.com',
-      password: 'Asorock1'
-    })
-        .end(() => {
-          done();
-        });
+      .post('/api/v1/user/passwordreset')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Invalid email format');
+        if (err) return done();
+        done();
+      });
   });
-  it('should successfully signout a logged in user', (done) => {
+  it('should require an email address', (done) => {
+    const userTest = {
+      email: ''
+    };
     chai.request(server)
-    .post('/api/v1/user/signout')
-    .send()
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.method).to.equal('POST');
-      expect(res.req.path).to.equal('/api/v1/user/signout');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Signed out!');
-      if (err) return done();
-      done();
-    });
+      .post('/api/v1/user/passwordreset')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Email is required');
+        if (err) return done();
+        done();
+      });
   });
 });
 
+describe('Sign out route', () => {
+  before((done) => {
+    chai.request(server)
+      .post('api/v1/users/signin')
+      .send({
+        email: 'Lurline_Windler@hotmail.com',
+        password: 'vsZdfjNe7RG1JHC',
+      })
+      .end(() => {
+        done();
+      });
+  });
+  it('should successfully signout a logged in user', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/signout')
+      .send()
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.eql('Signed out!');
+        if (err) return done();
+        done();
+      });
+  });
+});

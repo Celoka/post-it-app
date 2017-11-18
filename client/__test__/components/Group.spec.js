@@ -3,14 +3,12 @@ import { mount } from 'enzyme';
 import mockApiCall from '../../__mocks__/axios';
 import AppStore from '../../src/stores/AppStore';
 import AppActions from '../../src/actions/AppActions';
-import Group from '../../src/components/Group.jsx';
-import GroupList from '../../src/components/GroupList.jsx';
+import Group from '../../src/components/container/Group.jsx';
+import GroupList from '../../src/components/presentation/GroupList.jsx';
 
 describe('<Group/>', () => {
   beforeAll(() => {
-    global.window.$ = () => {
-      return null;
-    };
+    global.window.$ = () => null;
   });
   const createGroupSpy = jest.spyOn(AppActions, 'createGroup');
   const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
@@ -62,15 +60,5 @@ describe('<Group/>', () => {
   it('calls componentWillUnmount lifecycle method', () => {
     wrapper.unmount();
     expect(removeChangeListenerSpy).toHaveBeenCalled();
-  });
-  it('should call opencCreateGroup method', () => {
-    const openCreateGroupModalSpy = jest.spyOn(
-      wrapper.instance(), 'openCreateGroupModal'
-    );
-    const event = {
-      preventDefault: jest.fn()
-    };
-    wrapper.instance().openCreateGroupModal(event);
-    expect(openCreateGroupModalSpy).toHaveBeenCalled();
   });
 });

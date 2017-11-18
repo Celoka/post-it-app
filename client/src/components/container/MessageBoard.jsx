@@ -1,5 +1,5 @@
 import React from 'react';
-import AppActions from '../actions/AppActions';
+import AppActions from '../../actions/AppActions';
 
 /**
  * @description  creates a class message board as a react component
@@ -181,7 +181,7 @@ class MessageBoard extends React.Component {
             </select>
           </div>
         </form>
-        </div>
+      </div>
     );
   }
 }

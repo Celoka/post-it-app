@@ -1,9 +1,11 @@
 /**
  * Import module dependcies
  */
-import chaiHttp from 'chai-http';
 import chai from 'chai';
-import server from '../server/server';
+import chaiHttp from 'chai-http';
+import server from '../server';
+
+process.env.NODE_ENV = 'test';
 
 chai.use(chaiHttp);
 chai.should();
@@ -11,191 +13,287 @@ const expect = chai.expect;
 
 describe('Group routes', () => {
   const groupTest = {
-    groupname: 'Andela Group',
+    group: 'AndelaGroup22',
+    userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
+    displayName: 'Lester_bode'
   };
+  let token = '';
   before((done) => {
     chai.request(server)
-        .post('/api/v1/user/signin')
-        .send({
-          email: 'eloka.chima@gmail.com',
-          password: 'Asorock1'
-        })
-        .end(() => {
-          done();
-        });
+      .post('/api/v1/user/signin')
+      .send({
+        email: 'Dereck.Maggio@yahoo.com',
+        password: '1f5wZ6vA73ikks6'
+      })
+      .end((err, res) => {
+        token = res.body.jwtToken;
+        done();
+      });
+  });
+  it('should require group name', (done) => {
+    chai.request(server)
+      .post('/api/v1/group')
+      .set('x-access-token', token)
+      .send({
+        group: '',
+        userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
+        displayName: 'Lester_bode'
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message).to.eql('Group name is required');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should require group name to be atleast 3 characters', (done) => {
+    chai.request(server)
+      .post('/api/v1/group')
+      .set('x-access-token', token)
+      .send({
+        group: 'ee',
+        userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
+        displayName: 'Lester_bode'
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        expect(res.body.message)
+          .to.eql('Group name should be at least 3 characters');
+        if (err) return done();
+        done();
+      });
   });
   it('should create a group successfully and return 200', (done) => {
     chai.request(server)
-    .post('/api/v1/group')
-    .send(groupTest)
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(201);
-      expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/api/v1/group');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      res.body.message.should.equal('User group created successfully');
-      res.body.groupname.should.equal('Andela Group');
-      if (err) return done();
-      done();
-    });
-  });
-  it('should require text for group name', (done) => {
-    chai.request(server)
-    .post('/api/v1/group')
-    .send('')
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(400);
-      expect(res.res.statusMessage).to.equal('Bad Request');
-      expect(res.req.path).to.equal('/api/v1/group');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      res.body.message.should.equal('Groupname is required');
-      if (err) return done();
-      done();
-    });
-  });
-  it('should add a member to a group and successfully return 201', (done) => {
-    chai.request(server)
-    .post('/api/v1/group/groupId/user')
-    .send({
-      groupId: '-Ky24zneu7LlYn13dgfP',
-      newUser: 'PostIt App',
-      userId: 'wNIypTsx91aWWRpJ1T5X5HAX11S2'
-    })
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(201);
-      expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/api/v1/group/groupId/user');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('User added successfully');
-      if (err) return done(err);
-      done();
-    });
-  });
-  it('should successfully post a message to a group and return 201', (done) => {
-    const groupId = '-Ky24zneu7LlYn13dgfP';
-    chai.request(server)
-    .post(`/api/v1/groups/${groupId}/message`)
-    .send({
-      message: 'Hello world',
-      priority: 'Normal'
-    })
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(201);
-      expect(res.res.statusMessage).to.equal('Created');
-      expect(res.req.path).to.equal('/api/v1/groups/-Ky24zneu7LlYn13dgfP/message');
-      expect(res.req.method).to.equal('POST');
-      expect(res.body).to.be.an('object');
-      expect(res.body.status).to.equal('Message posted successfully');
-      expect(res.body.message).to.equal('Hello world');
-      expect(res.body.priority).to.equal('Normal');
-      if (err) return done(err);
-      done();
-    });
-  });
-  it(
-    'should get all the groups of a user belongs to and return 200', (done) => {
-      chai.request(server)
-      .get('/api/v1/groups')
-      .send()
+      .post('/api/v1/group')
+      .set('x-access-token', token)
+      .send(groupTest)
       .end((err, res) => {
-        expect(res.statusCode).to.equal(200);
-        expect(res.res.statusMessage).to.equal('OK');
-        expect(res.req.path).to.equal('/api/v1/groups');
-        expect(res.req.method).to.equal('GET');
-        expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('Message retrieved successfully');
-        expect(res.body.userGroups[0].groupId).to.equal('-Ky24zneu7LlYn13dgfP');
-        expect(res.body.userGroups[0].groupname).to.equal('Andela');
-        expect(res.body.userGroups[0]).to.haveOwnProperty('groupId');
-        expect(res.body.userGroups[0]).to.haveOwnProperty('groupname');
-        if (err) return done(err);
+        res.should.have.status(201);
+        expect(res.body.message).to.eql('User group created successfully');
+        expect(res.body).to.have.property('dateCreated');
+        expect(res.body).to.have.property('groupId');
+        expect(res.body).to.have.property('groupName');
+        if (err) return done();
         done();
       });
-    });
-  it('should fetch all the group message', (done) => {
-    const groupId = '-Ky24zneu7LlYn13dgfP';
-    chai.request(server)
-    .get(`/api/v1/group/${groupId}`)
-    .send()
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/api/v1/group/-Ky24zneu7LlYn13dgfP');
-      expect(res.req.method).to.equal('GET');
-      expect(res.body).to.be.an('object');
-      expect(res.body.status).to.equal('Message retrived succcessfully');
-      expect(res.body.groupMessage[0].messageId).to.equal(
-        '-Kx-bhNDZLmYclETVJUc'
-      );
-      expect(res.body.groupMessage[0].message).to.equal(
-        'Humanity is the oldest religion.'
-      );
-      expect(res.body.groupMessage[0].time).to.equal(
-        'Sat Oct 21 2017 21:27:51 GMT+0100 (WAT)'
-      );
-      expect(res.body.groupMessage[0].priority).to.equal('Critical');
-      expect(res.body.groupMessage[0].user).to.equal(
-        'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
-      );
-      if (err) return done(err);
-      done();
-    });
   });
-  it('should get users in a particular group', (done) => {
-    const groupId = 'Ky24zneu7LlYn13dgfP';
+  it('should prompt the user that the group name already exists', (done) => {
     chai.request(server)
-    .get(`/api/v1/group/${groupId}/users`)
-    .send()
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/api/v1/group/-Ky24zneu7LlYn13dgfP/users');
-      expect(res.req.method).to.equal('GET');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('User retrieved successfully');
-      expect(res.body.users[0].userName).to.equal('West');
-      expect(res.body.users[0].userId).to.equal('HIBpkdz7IfTSyOyLbevWasL78HD3');
-      if (err) return done(err);
-      done();
-    });
+      .post('/api/v1/group')
+      .set('x-access-token', token)
+      .send({
+        group: 'Andela group',
+        userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
+        displayName: 'Lester_bode'
+      })
+      .end((err, res) => {
+        res.should.have.status(409);
+        expect(res.body.message).to.eql('Groupname already exists');
+        if (err) return done();
+        done();
+      });
   });
-  it('should fetch all registered user and return 200', (done) => {
-    chai.request(server)
-    .get('/api/v1/user/allusers')
-    .send()
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/api/v1/user/allusers');
-      expect(res.req.method).to.equal('GET');
-      expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('Users retrieved successfully');
-      expect(res.body.usersDetails[0].userId).to.equal(
-        '0A4ynsbZ1tVLhcuOx1arNR6UBK33'
-      );
-      expect(res.body.usersDetails[0].userNames).to.equal('Keanu59');
-      if (err) return done(err);
-      done();
-    });
-  });
-  it('should names of members added to a group and return 200', (done) => {
-    const groupId = '-Ky24zneu7LlYn13dgfP';
-    chai.request(server)
-    .get(`/api/v1/groups/${groupId}/members`)
-    .send()
-    .end((err, res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.res.statusMessage).to.equal('OK');
-      expect(res.req.path).to.equal('/api/v1/groups/-Ky24zneu7LlYn13dgfP/members');
-      expect(res.req.method).to.equal('GET');
-      expect(res.body).to.be.an('object');
-      expect(res.body.users[0].userNames).to.equal('West');
-      if (err) done(err);
-      done();
-    });
+  describe('Add member route', () => {
+    const credentials = {
+      groupId: '-Kz9sQBRDEMaoDtDAoAP',
+      newUser: 'Antonietta_cormier48',
+      userId: '0U5mpd4aRjfRYVlhiFtGFxfNwyU2'
+    };
+    it('should add a member to a group and successfully return 201',
+      (done) => {
+        chai.request(server)
+          .post('/api/v1/group/groupId/user')
+          .set('x-access-token', token)
+          .send(credentials)
+          .end((err, res) => {
+            res.should.have.status(201);
+            expect(res.body.message).to.equal('User added successfully');
+            if (err) return done(err);
+            done();
+          });
+      });
   });
 });
 
+
+describe('Post message route', () => {
+  let token = '';
+  before((done) => {
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send({
+        email: 'Dereck.Maggio@yahoo.com',
+        password: '1f5wZ6vA73ikks6'
+      })
+      .end((err, res) => {
+        token = res.body.jwtToken;
+        done();
+      });
+  });
+  const messageTest = {
+    message: 'Hello World',
+    priority: 'Normal',
+    displayName: 'displayName'
+  };
+  it('should post message to a group succesfully', (done) => {
+    const groupId = '-Kz9uVqCi63UlH-nbkPN';
+    chai.request(server)
+      .post(`/api/v1/groups/${groupId}/message`)
+      .set('x-access-token', token)
+      .send(messageTest)
+      .end((err, res) => {
+        res.should.have.status(201);
+        expect(res.body.status).to.eql('Message posted successfully');
+        expect(res.body.message).to.eql('Hello World');
+        expect(res.body.priority).to.eql('Normal');
+        expect(res.body.displayName).to.eql('displayName');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should post an urgent message to a group and send an email notification',
+    (done) => {
+      const groupId = '-Kz9uVqCi63UlH-nbkPN';
+      chai.request(server)
+        .post(`/api/v1/groups/${groupId}/message`)
+        .set('x-access-token', token)
+        .send({
+          message: 'Hello World',
+          priority: 'Urgent',
+          displayName: 'displayName'
+        })
+        .end((err, res) => {
+          res.should.have.status(201);
+          expect(res.body.status).to.eql('Message posted successfully');
+          expect(res.body.message).to.eql('Hello World');
+          expect(res.body.priority).to.eql('Urgent');
+          expect(res.body.displayName).to.eql('displayName');
+          if (err) return done(err);
+          done();
+        });
+    });
+  it('should post an critical message to a group and send an sms notification',
+    (done) => {
+      const groupId = '-Kz9uVqCi63UlH-nbkPN';
+      chai.request(server)
+        .post(`/api/v1/groups/${groupId}/message`)
+        .set('x-access-token', token)
+        .send({
+          message: 'Hello World',
+          priority: 'Critical',
+          displayName: 'displayName'
+        })
+        .end((err, res) => {
+          res.should.have.status(201);
+          expect(res.body.status).to.eql('Message posted successfully');
+          expect(res.body.message).to.eql('Hello World');
+          expect(res.body.priority).to.eql('Critical');
+          expect(res.body.displayName).to.eql('displayName');
+          if (err) return done(err);
+          done();
+        });
+    });
+});
+
+
+describe('Get user group', () => {
+  let token = '';
+  before((done) => {
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send({
+        email: 'Augustus_Rolfson@yahoo.com',
+        password: 'KNarQgaGsafd8JX'
+      })
+      .end((err, res) => {
+        token = res.body.jwtToken;
+        done();
+      });
+  });
+  it('should fetch the groups of the registered user ', (done) => {
+    const userId = 'syIZmlNJIVTMc2YGT6ecHSrRNFL2';
+    chai.request(server)
+      .get(`/api/v1/${userId}/groups`)
+      .set('x-access-token', token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.status).to.eql('User groups retrived succcessfully');
+        res.body.should.have.property('userGroups').to.eql([{
+          groupId: '-Kz9sQBRDEMaoDtDAoAP',
+          displayName: 'Laurine_yost',
+          groupName: 'Andela group'
+        }]);
+        if (err) return done(err);
+        done();
+      });
+  });
+});
+
+describe('Get group message', () => {
+  let token = '';
+  before((done) => {
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send({
+        email: 'Augustus_Rolfson@yahoo.com',
+        password: 'KNarQgaGsafd8JX'
+      })
+      .end((err, res) => {
+        token = res.body.jwtToken;
+        done();
+      });
+  });
+  it('should fetch the messages in a particular user group', (done) => {
+    const groupId = '-Kz9sQBRDEMaoDtDAoAP';
+    chai.request(server)
+      .get(`/api/v1/group/${groupId}`)
+      .set('x-access-token', token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.status).to.eql('Message retrived succcessfully');
+        res.body.should.have.property('groupMessage').to.eql([{
+          messageId: '-KzARUY0LT8uiLsQxl-S',
+          message: 'jd',
+          timeStamp: 'Friday, November 17, 2017 8:26 PM',
+          priority: 'Normal',
+          displayName: 'displayName'
+        }]);
+        if (err) return done(err);
+        done();
+      });
+  });
+});
+
+
+describe('Get users in group', () => {
+  let token = '';
+  before((done) => {
+    chai.request(server)
+      .post('/api/v1/user/signin')
+      .send({
+        email: 'Augustus_Rolfson@yahoo.com',
+        password: 'KNarQgaGsafd8JX'
+      })
+      .end((err, res) => {
+        token = res.body.jwtToken;
+        done();
+      });
+  });
+  it('should fetch the users in a particular group', (done) => {
+    const groupId = '-Kz9sQBRDEMaoDtDAoAP';
+    chai.request(server)
+      .get(`/api/v1/group/${groupId}/users`)
+      .set('x-access-token', token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.eql('User retrieved successfully');
+        res.body.should.have.property('users')
+          .to.eql([{ userName: 'Lester_bode' },
+          { userName: 'Laurine_yost' },
+          { userName: 'Eulalia.yost17' }]);
+        if (err) return done(err);
+        done();
+      });
+  });
+});

@@ -3,7 +3,7 @@ html, #app, .wrapper, main, #background, .container-fluid, .container{
   width: 100%;
 }
 body {
-  background: #f0f0f0!important;
+  background: #293f50;
   color: #888;
   font-family: "Roboto", sans-serif;;
 }
@@ -125,10 +125,10 @@ after {
   }
   
   #resetpassword {
-    height: 120px;
-    margin-left: 500px;
-    margin-top: 250px;
-    width: 300px;
+    padding-top: 35px;
+    height: 200px;
+    width: 35%;
+    margin: 20% 33%;
   }
   
   #signinfieldset {
@@ -201,7 +201,7 @@ after {
     color: green;
     border: solid 1px;
     border-radius: 4px;
-    width: 97px;
+    width: 116px;
     font-weight: 400;
   }
   
@@ -314,9 +314,6 @@ after {
   #clear {
     color: black;
     clear: both
-  }
-  #not-found {
-    margin-left: 19%;
   }
   #not-found-text {
     color: rgb(244, 237, 237);

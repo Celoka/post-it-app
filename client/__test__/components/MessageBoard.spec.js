@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import AppActions from '../../src/actions/AppActions';
-import MessageBoard from '../../src/components/MessageBoard.jsx';
+import MessageBoard from '../../src/components/container/MessageBoard';
 
 
 describe('<MessageBoard/>', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
-import GroupList from './GroupList.jsx';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
+import GroupList from '../presentation/GroupList';
 
 /**
  * @description creates a class group as a react component

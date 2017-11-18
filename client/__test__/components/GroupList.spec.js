@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import GroupList from '../../src/components/GroupList.jsx';
+import GroupList from '../../src/components/presentation/GroupList';
 
 const KeyName = {
   groupId: 'id',

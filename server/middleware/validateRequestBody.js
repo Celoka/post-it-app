@@ -2,7 +2,7 @@
  * @description describes a function that checks for invalid
  * body request object
  *
- * @param { object } obj
+ * @param { object } request
  *
  * @return { object } validationError messages for the particular identified
  */
@@ -23,25 +23,45 @@ function validate(request) {
           break;
         case 'phoneNumber':
           request.check('phoneNumber', 'Phone number is required')
-          .notEmpty().matches(/\d/);
+            .notEmpty().matches(/\d/);
           break;
         case 'userName':
           request.check('userName', 'Username is required')
-          .notEmpty().matches(/\w/);
+            .notEmpty().matches(/\w/);
+          request.check('userName', 'User name should be at least 3 characters')
+            .isLength(3, 50);
           break;
         case 'group':
-          request.check('group', 'Groupname is required')
-          .notEmpty().matches(/\w/);
+          request.check('group', 'Group name is required')
+            .notEmpty().matches(/\w/);
+          request.check('group', 'Group name should be at least 3 characters')
+            .isLength(3, 50);
           break;
         case 'newUser':
           request.check('newUser', 'Username is required')
-          .notEmpty().matches(/\w/);
+            .notEmpty().matches(/\w/);
           break;
         case 'userId':
-          request.check('userId', 'UserId is requied').notEmpty();
+          request.check('userId', 'User Id is required').notEmpty();
+          break;
+        case 'message':
+          request.check('message', 'Message should not be empty').notEmpty();
           break;
         case 'groupId':
           request.check('groupId', 'GroupId is required').notEmpty();
+          break;
+        case 'displayName':
+          request.check('displayName', 'Displayname is required')
+            .notEmpty().matches(/\w/);
+          request.check('displayName',
+            'Display name should be at least 3 characters')
+            .isLength(3, 50);
+          break;
+        case 'priority':
+          request.check('priority', 'Message priority is required').notEmpty();
+          break;
+        case 'uid':
+          request.check('uid', 'User Id is required').notEmpty();
           break;
         default:
       }

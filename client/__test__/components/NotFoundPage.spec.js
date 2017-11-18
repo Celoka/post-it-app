@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { assert } from 'chai';
-import NotFoundPage from '../../src/components/NotFoundPage.jsx';
+import NotFoundPage from '../../src/components/presentation/NotFoundPage.jsx';
 
 describe('<NotFoundPage/>', () => {
   const wrapper = mount(<NotFoundPage/>,

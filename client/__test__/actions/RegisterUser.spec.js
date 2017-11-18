@@ -13,7 +13,7 @@ describe('action RegisterUser.js ', () => {
   });
 
   it('should return a matching action type and payload', () => {
-    AppActions.registerUser('/user/signup')
+    AppActions.registerUser('/api/v1/user/signup')
       .then(() => {
         const messageResult = dispatch.mock.calls[0][0];
         expect(messageResult.actionType).toEqual(AppConstants.NEW_USER);

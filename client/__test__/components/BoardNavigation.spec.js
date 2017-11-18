@@ -1,7 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import AppActions from '../../src/actions/AppActions';
-import BoardNavigation from '../../src/components/BoardNavigation.jsx';
+import BoardNavigation from
+  '../../src/components/presentation/BoardNavigation.jsx';
 
 describe('<BoardNavigation />', () => {
   const props = {
@@ -21,7 +23,7 @@ describe('<BoardNavigation />', () => {
       }
     }
   );
-  it('it should sign out a user', () => {
+  it('it should sign out a user successfully', () => {
     const logOutSpy = jest.spyOn(AppActions, 'logOut');
     wrapper.find('li').simulate('click');
     expect(logOutSpy).toHaveBeenCalled();

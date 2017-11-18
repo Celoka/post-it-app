@@ -1,9 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import Navbar from '../../src/components/Navbar.jsx';
-import Home from '../../src/components/Home.jsx';
-
+import Navbar from '../../src/components/presentation/Navbar';
+import Home from '../../src/components/presentation/Home';
 
 describe('<Home />', () => {
   const wrapper = shallow(<Home />);

@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import jwt from 'jsonwebtoken';
-import App from './components/App.jsx';
+import App from '../src/components/presentation/App';
 import AppConstants from '../src/constants/AppConstants';
 import AppDispatcher from '../src/dispatcher/AppDispatcher';
 import { setAuthToken } from '../src/utils/';
-
 /**
  * @description describes a condition that checks for a current user
  * and persistently dispatches the user details to the store to keep

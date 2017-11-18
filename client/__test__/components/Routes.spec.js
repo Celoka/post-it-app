@@ -2,11 +2,11 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import Routes from '../../src/Routes.jsx';
-import Home from '../../src/components/Home.jsx';
-import Login from '../../src/components/Login.jsx';
-import NotFoundPage from '../../src/components/NotFoundPage.jsx';
-import DashBoard from '../../src/components/DashBoard.jsx';
-import ResetPassword from '../../src/components/ResetPassword.jsx';
+import Home from '../../src/components/presentation/Home';
+import Login from '../../src/components/container/Login';
+import NotFoundPage from '../../src/components/presentation/NotFoundPage';
+import DashBoard from '../../src/components/container/DashBoard';
+import ResetPassword from '../../src/components/presentation/ResetPassword';
 
 
 describe('<Routes.jsx/>', () => {
