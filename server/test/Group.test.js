@@ -97,9 +97,9 @@ describe('Group routes', () => {
   });
   describe('Add member route', () => {
     const credentials = {
-      groupId: '-KzDbXdaFYGVW3AsfTyM',
-      newUser: 'Hal3',
-      userId: 'ROdMlALHZ7Q3b8FqIUcuoySXfpD2'
+      groupId: '-KzDY6qZy5404LLhaCqp',
+      newUser: 'Tabitha.turcotte46',
+      userId: 'IBalbtanQEhtUWb4hVSKm6b9dRr2'
     };
     it('should add a member to a group and successfully return 201',
       (done) => {
