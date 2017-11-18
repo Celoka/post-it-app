@@ -37,6 +37,13 @@ if (environment === 'development') {
     stats: { colors: true }
   }));
   app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(webpackMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    historyApiFallback: true,
+    stats: { colors: true }
+  }));
+  app.use(webpackHotMiddleware(compiler));
 }
 app.use('/', publicPath);
 

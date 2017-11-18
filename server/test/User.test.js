@@ -460,7 +460,8 @@ describe('Google Update Route', () => {
       .send(googleUser)
       .end((err, res) => {
         res.should.have.status(400);
-        expect(res.body.message).to.eql('Display name should be at least 3 characters');
+        expect(res.body.message)
+          .to.eql('Display name should be at least 3 characters');
         if (err) return done();
         done();
       });
@@ -488,7 +489,7 @@ describe('Password reset route', () => {
   it('should send a password reset link to a registered member',
     (done) => {
       const userTest = {
-        email: 'Ardella.Swift@yahoo.com'
+        email: 'Veda.Romaguera@gmail.com'
       };
       chai.request(server)
         .post('/api/v1/user/passwordreset')
