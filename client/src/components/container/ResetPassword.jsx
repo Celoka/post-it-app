@@ -1,6 +1,6 @@
 import React from 'react';
 import AppActions from '../../actions/AppActions';
-import Navbar from './Navbar';
+import Navbar from './../presentation/Navbar';
 
 /**
  * @description creates a class reset password as a react component
@@ -57,8 +57,10 @@ class ResetPassword extends React.Component {
       email: this.state.email
     };
     AppActions.resetPassword(resetEmail)
-      .then(() => {
-        this.props.history.push('/signin');
+      .then((res) => {
+        if (res) {
+          this.props.history.push('/signin');
+        }
       });
   }
   /**

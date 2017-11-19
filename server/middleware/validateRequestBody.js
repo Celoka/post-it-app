@@ -44,9 +44,6 @@ function validate(request) {
         case 'userId':
           request.check('userId', 'User Id is required').notEmpty();
           break;
-        case 'message':
-          request.check('message', 'Message should not be empty').notEmpty();
-          break;
         case 'groupId':
           request.check('groupId', 'GroupId is required').notEmpty();
           break;

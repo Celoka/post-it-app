@@ -14,16 +14,20 @@ require('dotenv').config();
  */
 export const mapCodeToObj = {
   'auth/email-already-in-use': {
-    status: 409, message: 'Email is already in use'
-  },
-  'auth/user-not-found': {
-    status: 401, message: 'Make sure your email or password is correct'
+    status: 409,
+    message: 'Email is already in use'
   },
   'auth/invalid-email': {
-    status: 400, message: 'Invalid email'
+    status: 400,
+    message: 'Invalid email'
+  },
+  'auth/user-not-found': {
+    status: 401,
+    message: 'User not registered. Make sure your credentials are valid'
   },
   'auth/wrong-password': {
-    status: 400, message: 'Wrong password'
+    status: 400,
+    message: 'Wrong password'
   }
 };
 
@@ -95,11 +99,12 @@ export const sendEmailNotifications = (groupId, priority) => {
           }
         });
         const mailOptions = {
-          from: ' "Post It Admin" <eloka.chima@gmail.com>',
+          from: ' "Post It Admin" <post.it.andela@gmail.com>',
           to: emails,
           subject: 'Urgent Message',
           text: 'Post it App',
-          html: '<h3>An urgent message has been posted on post it </h3>'
+          html:
+          '<h3>You have an urgent message post it app</h3>'
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
@@ -124,7 +129,7 @@ export const sendEmailNotifications = (groupId, priority) => {
  *
  * @return { object } return object containg message body
  */
-export const sendSMSNotifications = (groupId, priority) => {
+export const sendSMSNotifications = (groupId, priority, groupName) => {
   const phoneNumber = [];
   db.database().ref(`groups/${groupId}/phoneNumber`)
     .once('value', (snap) => {
@@ -138,7 +143,7 @@ export const sendSMSNotifications = (groupId, priority) => {
         });
         const from = 'Post It Admin';
         const to = phoneNumber;
-        const text = 'A critical message has been posted on post it';
+        const text = 'You have a critical message on post it app';
         nexmo.message.sendSms(from, to, text);
       }
     });

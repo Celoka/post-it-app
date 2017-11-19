@@ -278,6 +278,7 @@ const AppActions = {
       .then((response) => {
         const status = response.data.message;
         toastr.success(status);
+        return { isConfirmed: response.data.isConfirmed };
       })
       .catch(ToastrError);
   },

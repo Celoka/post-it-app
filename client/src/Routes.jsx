@@ -6,10 +6,10 @@ import Login from '../src/components/container/Login';
 import GoogleUpdate from '../src/components/container/GoogleUpdate';
 import NotFoundPage from '../src/components/presentation/NotFoundPage';
 import DashBoard from '../src/components/container/DashBoard';
-import ResetPassword from '../src/components/presentation/ResetPassword';
+import ResetPassword from '../src/components/container/ResetPassword';
 
 /**
- * @description describesa function that checks for a user token in
+ * @description describes a function that checks for a user token in
  * the local storage and subsequently use this to redirect the user to
  * the appropriate page
  *

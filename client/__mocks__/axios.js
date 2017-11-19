@@ -1,5 +1,5 @@
 import groups from './groups.json';
-import loadmessage from './loadmessage.json';
+import loadMessage from './loadMessage.json';
 import registerUser from './resgisterUser.json';
 import loginUser from './loginUser.json';
 import createGroup from './createGroup.json';
@@ -15,7 +15,7 @@ import googleUpdate from './googleUpdate.json';
 const mockApiCall = {
   get(url) {
     if (url === '/api/v1/group/groupId') {
-      return Promise.resolve(loadmessage);
+      return Promise.resolve(loadMessage);
     } else if (url === '/group/test') {
       return Promise.resolve(getNewUsers);
     } else if (url === '/api/v1/allusers') {

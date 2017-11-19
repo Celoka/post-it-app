@@ -98,8 +98,8 @@ describe('Group routes', () => {
   describe('Add member route', () => {
     const credentials = {
       groupId: '-KzD_5xnINcbgQttZjK_',
-      newUser: 'Myron59',
-      userId: 'uUq5mqeJ7DUDiZQ8tY5FKEcycwC3'
+      newUser: 'Cielo.wiegand57',
+      userId: 'Co4fdjmDs1VmgB8qBx9toMNcnK92'
     };
     it('should add a member to a group and successfully return 201',
       (done) => {

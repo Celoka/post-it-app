@@ -166,10 +166,10 @@ export const googleUpdate = (req, res) => {
 export const resetPassword = (req, res) => {
   const email = req.body.email;
   firebase.auth().sendPasswordResetEmail(email)
-    .then((user) => {
+    .then(() => {
       res.status(200).json({
         message: 'Reset link sent succesfully',
-        user
+        isConfirmed: true
       });
     })
     .catch((error) => {

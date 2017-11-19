@@ -266,7 +266,7 @@ describe('Sign in route', () => {
       .end((err, res) => {
         res.should.have.status(401);
         expect(res.body.message)
-          .to.eql('Make sure your email or password is correct');
+          .to.eql('User not registered. Make sure your credentials are valid');
         if (err) return done();
         done();
       });
@@ -511,7 +511,7 @@ describe('Password reset route', () => {
       .end((err, res) => {
         res.should.have.status(401);
         expect(res.body.message)
-          .to.eql('Make sure your email or password is correct');
+          .to.eql('User not registered. Make sure your credentials are valid');
         if (err) return done();
         done();
       });

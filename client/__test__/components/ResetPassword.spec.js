@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { assert } from 'chai';
 import mockApiCall from '../../__mocks__/axios';
 import AppActions from '../../src/actions/AppActions';
-import ResetPassword from '../../src/components/presentation/ResetPassword.jsx';
+import ResetPassword from '../../src/components/container/ResetPassword.jsx';
 import Navbar from '../../src/components/presentation/Navbar.jsx';
 
 describe('<ResetPassword />', () => {
