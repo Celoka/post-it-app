@@ -21,10 +21,10 @@ class MessageBoard extends React.Component {
   constructor() {
     super();
     this.state = {
-      message: '',
+      groupMessage: '',
       groupId: '',
       groupName: '',
-      groupMessage: [],
+      groupMessages: [],
       displayName: JSON.parse(localStorage.getItem('displayName'))
     };
   }
@@ -43,7 +43,7 @@ class MessageBoard extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       groupId: nextProps.groupId,
-      groupMessage: nextProps.groupMessage,
+      groupMessages: nextProps.groupMessages,
       groupName: nextProps.groupName
     });
   }
@@ -78,7 +78,7 @@ class MessageBoard extends React.Component {
    */
   onChange = (event) => {
     this.setState({
-      message: event.target.value
+      groupMessage: event.target.value
     });
   }
 
@@ -96,14 +96,14 @@ class MessageBoard extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     const messageDetail = {
-      message: this.state.message,
+      groupMessage: this.state.groupMessage,
       priority: this.refs.type.value,
       displayName: this.state.displayName
     };
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
-      this.state.message = '';
+      this.state.groupMessage = '';
       this.refs.type.value = 'Normal';
     }
   }
@@ -120,18 +120,18 @@ class MessageBoard extends React.Component {
             Group Name: {this.props.groupName}
           </h1>
           {
-            this.state.groupMessage.length === 0 ? (
+            this.state.groupMessages.length === 0 ? (
               <h3 className="center-align">
                 You have no messages in this Group
             </h3>
-            ) : this.state.groupMessage.map((KeyName, KeyIndex) =>
+            ) : this.state.groupMessages.map((KeyName, KeyIndex) =>
               <div key={KeyIndex} className="row">
                 <div className="col-sm-12">
                   <div className="well">
                     <div className="row">
                       <div className="col-sm-9">
                         <h4 id="message-text">
-                          {KeyName.message}
+                          {KeyName.groupMessage}
                         </h4>
                       </div>
                       <div className="col-sm-3">
@@ -162,7 +162,7 @@ class MessageBoard extends React.Component {
           <div className="row">
             <div id="message-box" className="form-group">
               <textarea className="form-control"
-                value={this.state.message}
+                value={this.state.groupMessage}
                 onChange={this.onChange}
                 placeholder='type a message..'
                 required>

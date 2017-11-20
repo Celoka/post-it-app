@@ -180,8 +180,13 @@ export const resetPassword = (req, res) => {
       });
     })
     .catch((error) => {
+      const errorCode = error.code;
       const codeObj = mapCodeToObj[error.code];
-      if (codeObj) {
+      if (errorCode === 'auth/user-not-found') {
+        return res.status(404).json({
+          message: 'User email not found'
+        });
+      } else if (codeObj) {
         return res.status(codeObj.status).json({
           message: codeObj.message
         });

@@ -28,7 +28,7 @@ class DashBoard extends React.Component {
       displayName: JSON.parse(localStorage.getItem('displayName')),
       groupId: null,
       groupName: '',
-      groupMessage: [],
+      groupMessages: [],
       userId: [],
       newMember: [],
       googleUser: null
@@ -74,7 +74,7 @@ class DashBoard extends React.Component {
    */
   onStoreChange = () => {
     this.setState({
-      groupMessage: AppStore.getAllMessages(),
+      groupMessages: AppStore.getAllMessages(),
       userId: AppStore.getAllUsers(),
       newMember: AppStore.getNewMember(),
       googleUser: AppStore.getNewGoogleUser(),
@@ -112,7 +112,7 @@ class DashBoard extends React.Component {
         <BoardNavigation googleUser={this.state.googleUser}
           displayName={this.state.displayName} />
         <div className="container-fluid">
-          <div id="profile" className="container">
+          <div id="profile" className="row">
             <div className="col-sm-12 col-md-3 leftsidenav">
               <Group setGroupId={this.setGroupId} />
               <UsersInGroup groupId={this.state.groupId}
@@ -123,13 +123,13 @@ class DashBoard extends React.Component {
               {
                 (this.state.groupId === null) ?
                   <div className="white-board black-text">
-                    <img height="30%" id="mail-box"
+                    <img height="25px" id="mail-box"
                       src=
                       "http://res.cloudinary.com/dnsteufwj/image/upload/v1510496726/mssg_qswl1m.png"
                       alt="message" />
                     <h4 id="clear">
                       <span className="caps">
-                       Welcome, {this.state.displayName}
+                        Welcome, {this.state.displayName}
                       </span>
                     </h4>
                     <h6 id="clear">
@@ -142,7 +142,7 @@ class DashBoard extends React.Component {
                   </div> :
                   <MessageBoard groupId={this.state.groupId}
                     groupName={this.state.groupName}
-                    groupMessage={this.state.groupMessage} />
+                    groupMessages={this.state.groupMessages} />
               }
             </div>
           </div>

@@ -114,7 +114,7 @@ const AppActions = {
         const groupData = response.data;
         toastr.success(`${groupName} created successfully`);
         AppDispatcher.dispatch({
-          actionType: AppConstants.SET_GROUP_NAME,
+          actionType: AppConstants.SET_GROUP_NAMES,
           groupData
         });
         $('#myModal').modal('hide');

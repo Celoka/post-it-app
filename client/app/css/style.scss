@@ -124,13 +124,6 @@ after {
     margin-left: 1px;
   }
   
-  #resetpassword {
-    padding-top: 35px;
-    height: 200px;
-    width: 35%;
-    margin: 20% 33%;
-  }
-  
   #signinfieldset {
     margin-top: 40px;
   }
@@ -142,6 +135,10 @@ after {
   #checkbox {
     margin-left: 20px;
     margin-top: 10px;
+  }
+  #clear {
+    color: black;
+    clear: both
   }
   
   #priority-class {
@@ -207,13 +204,14 @@ after {
   
   #userlist-form {
     background: #ECE8E7;
-    height: 43vh;
-    margin-top: 20px;
+    height: 42vh;
+    margin-top: -5px;
     overflow: auto;
   }
   
   #group-form {
-    height: 43vh;
+    height: 42vh;
+    margin-top: 0px;
     overflow: auto;
   }
   
@@ -279,22 +277,22 @@ after {
     padding-top: 21px;
   }
   
-  
   .message-icon {
     padding-top: 11px;
     padding-left: 5px;
   }
   
   #background {
-    background-image: url("../../../template/postitbg.png");
-    background-repeat: no-repeat;
+    background: linear-gradient(
+      rgba(60, 58, 58, 0.45), 
+      rgba(68, 67, 67, 0.45)
+    ),url("../../../template/postitbg.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
     .container-fluid {
-      margin-top: -20px;
-      padding-bottom: 50px;
-      padding-top: 15px;
-      margin-bottom: 20px;      
-      background-color: rgba(0, 0, 0, 0.5);
+      padding-top: 15px;       
     }
   }
   
@@ -311,19 +309,16 @@ after {
     text-align: left;
   }
 
-  #clear {
-    color: black;
-    clear: both
-  }
   #not-found-text {
     color: rgb(244, 237, 237);
     margin-right: 40%;
   }
   .white-board {
     border: 2px, solid rgb(109, 11, 11);
-    height: 30vh;
+    height: auto;
     width: 50%;
     margin: auto;
+    color: black;
     margin-right: 25%;
     margin-top: 3%;
     background: rgba(240, 236, 236, 0.604);
@@ -338,4 +333,7 @@ after {
 
   form#message-display {
     margin-bottom: 5px;
+  }
+  .reset-password {
+    margin-top: 10%;
   }

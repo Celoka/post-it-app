@@ -72,20 +72,27 @@ class ResetPassword extends React.Component {
     return (
       <div>
         <Navbar />
-        <form id="resetpassword" className="col-sm-12" onSubmit={this.onSubmit}>
-          <fieldset className="account-info">
-            <label>
-              Email Address
-              <input value={this.state.email} onChange={this.onChange}
-                type="email" name="email" required />
-            </label>
-          </fieldset>
-          <button name="login"
-            id="sign"
-            className="btn btn-primary btn-sm">
-            Reset Password
-          </button>
-        </form>
+        <h1 className="reset-password"> Reset Password </h1>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4 col-sm-6 col-sm-3 col-md-offset-4">
+              <form id="resetpassword" className="col-sm-12" onSubmit={this.onSubmit}>
+                <fieldset className="account-info">
+                  <label>
+                    Email Address
+                    <input value={this.state.email} onChange={this.onChange}
+                      type="email" name="email" required />
+                  </label>
+                </fieldset>
+                <button name="login"
+                  id="sign"
+                  className="btn btn-primary btn-sm">
+                  Reset Password
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

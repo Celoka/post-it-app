@@ -77,7 +77,7 @@ class GoogleUpdate extends React.Component {
       <div>
         <Navbar />
         <div id="signin">
-          <h1>Google Update</h1>
+          <h1>Phone number update</h1>
           <form onSubmit={this.onSubmit}>
             <fieldset
               id="signinfieldset"

@@ -65,7 +65,7 @@ export const token = (uid, userName, email) => {
     email
   },
     process.env.SECRET_TOKEN,
-    { expiresIn: 60 * 60 });
+    { expiresIn: '24h' });
   return jwtToken;
 };
 

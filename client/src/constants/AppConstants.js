@@ -3,7 +3,7 @@ import keyMirror from 'keymirror';
 export default keyMirror({
   NEW_USER: null,
   SET_USER: null,
-  SET_GROUP_NAME: null,
+  SET_GROUP_NAMES: null,
   LOAD_GROUP_NAMES: null,
   SET_GROUP_MESSAGE: null,
   LOAD_GROUP_MESSAGES: null,

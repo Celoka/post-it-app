@@ -56,7 +56,7 @@ function validate(request) {
           break;
         case 'priority':
           request.check('priority', 'Message priority is required')
-          .notEmpty().matches(/\w/);
+            .notEmpty().matches(/\w/);
           break;
         default:
       }

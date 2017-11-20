@@ -356,7 +356,7 @@ AppStore.dispatchToken = AppDispatcher.register((action) => {
       setCurrentUser(action.credentials);
       AppStore.emitChange();
       break;
-    case AppConstants.SET_GROUP_NAME:
+    case AppConstants.SET_GROUP_NAMES:
       usersGroups.push(action.groupData);
       currentGroup(action.groupData);
       AppStore.emitChange();
