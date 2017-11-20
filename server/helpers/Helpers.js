@@ -22,8 +22,8 @@ export const mapCodeToObj = {
     message: 'Invalid email'
   },
   'auth/user-not-found': {
-    status: 401,
-    message: 'User not registered. Make sure your credentials are valid'
+    status: 404,
+    message: 'The email or password you entered is incorrect'
   },
   'auth/wrong-password': {
     status: 400,
@@ -129,7 +129,7 @@ export const sendEmailNotifications = (groupId, priority) => {
  *
  * @return { object } return object containg message body
  */
-export const sendSMSNotifications = (groupId, priority, groupName) => {
+export const sendSMSNotifications = (groupId, priority) => {
   const phoneNumber = [];
   db.database().ref(`groups/${groupId}/phoneNumber`)
     .once('value', (snap) => {

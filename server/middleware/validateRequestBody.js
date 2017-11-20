@@ -55,10 +55,8 @@ function validate(request) {
             .isLength(3, 50);
           break;
         case 'priority':
-          request.check('priority', 'Message priority is required').notEmpty();
-          break;
-        case 'uid':
-          request.check('uid', 'User Id is required').notEmpty();
+          request.check('priority', 'Message priority is required')
+          .notEmpty().matches(/\w/);
           break;
         default:
       }

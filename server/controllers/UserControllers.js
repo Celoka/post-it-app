@@ -26,11 +26,18 @@ export const createUser = (req, res) => {
     .once('value', (snapShot) => {
       const names = [];
       snapShot.forEach((details) => {
-        names.push(details.val().displayName);
+        names.push(
+          details.val().displayName,
+          details.val().phoneNumber
+        );
       });
       if (names.indexOf(displayName) > -1) {
         res.status(409).json({
           message: 'Username already exists'
+        });
+      } else if (names.indexOf(phoneNumber) > -1) {
+        res.status(409).json({
+          message: 'Phone number already exists'
         });
       } else {
         registerUser(req, res, email, password, displayName, phoneNumber);

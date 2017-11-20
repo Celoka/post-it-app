@@ -129,7 +129,7 @@ class DashBoard extends React.Component {
                       alt="message" />
                     <h4 id="clear">
                       <span className="caps">
-                        {this.state.displayName}
+                       Welcome, {this.state.displayName}
                       </span>
                     </h4>
                     <h6 id="clear">

@@ -23,7 +23,6 @@ const BoardNavigation = () => ({
    * @function BoardNavigation
    */
   render() {
-    const userName = JSON.parse(localStorage.getItem('userName'));
     return (
       <div>
         <nav className="navbar navbar-default">
@@ -34,7 +33,7 @@ const BoardNavigation = () => ({
                 <span className="sr-only">Toggle navigation</span>
               </button>
               <h3 id="clear">
-                Welcome, {this.props.displayName || userName}
+                Post It
               </h3>
             </div>
             <div className="collapse navbar-collapse">

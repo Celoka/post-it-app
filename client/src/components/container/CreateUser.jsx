@@ -1,5 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
+import { Redirect } from 'react-router-dom';
 import Navbar from '../presentation/Navbar';
 import { validateEmail } from '../../utils/';
 import AppActions from '../../actions/AppActions';
@@ -85,6 +86,9 @@ class CreateUser extends React.Component {
    * @memberof CreateUser
    */
   render() {
+    if (localStorage.token) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div>
         <Navbar />
