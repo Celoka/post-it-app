@@ -2,7 +2,6 @@
  * Import module dependcies
  */
 import chai from 'chai';
-import faker from 'faker';
 import chaiHttp from 'chai-http';
 import server from '../server';
 
@@ -14,17 +13,17 @@ const expect = chai.expect;
 
 describe('Group routes', () => {
   const groupTest = {
-    group: faker.name.findName(),
-    userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
-    displayName: 'Lester_bode'
+    group: 'Test Group 8',
+    userId: 'yzb9pYl92gYLJ5gruMPsc6ZFRq62',
+    displayName: 'Maryj'
   };
   let token = '';
   before((done) => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Dereck.Maggio@yahoo.com',
-        password: '1f5wZ6vA73ikks6'
+        email: 'maryjane@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -37,8 +36,8 @@ describe('Group routes', () => {
       .set('x-access-token', token)
       .send({
         group: '',
-        userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
-        displayName: 'Lester_bode'
+        userId: 'C7nMvV0P2PgeovFTZijuru8IIOq2',
+        displayName: 'Johno'
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -54,7 +53,7 @@ describe('Group routes', () => {
       .send({
         group: 'ee',
         userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
-        displayName: 'Lester_bode'
+        displayName: 'Johno'
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -84,9 +83,9 @@ describe('Group routes', () => {
       .post('/api/v1/group')
       .set('x-access-token', token)
       .send({
-        group: 'Andela group',
-        userId: 'vip1gjkZVKePtQcAMKgzrAy2qbk1',
-        displayName: 'Lester_bode'
+        group: 'Andela',
+        userId: 'yzb9pYl92gYLJ5gruMPsc6ZFRq62',
+        displayName: 'Maryj'
       })
       .end((err, res) => {
         res.should.have.status(409);
@@ -97,9 +96,9 @@ describe('Group routes', () => {
   });
   describe('Add member route', () => {
     const credentials = {
-      groupId: '-KzD_5xnINcbgQttZjK_',
-      newUser: 'Cielo.wiegand57',
-      userId: 'Co4fdjmDs1VmgB8qBx9toMNcnK92'
+      groupId: '-KzP-OKFzesOXjir7WSt',
+      newUser: 'John',
+      userId: 'C7nMvV0P2PgeovFTZijuru8IIOq2'
     };
     it('should add a member to a group and successfully return 201',
       (done) => {
@@ -123,8 +122,8 @@ describe('Post message route', () => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Dereck.Maggio@yahoo.com',
-        password: '1f5wZ6vA73ikks6'
+        email: 'john-doe@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -132,12 +131,12 @@ describe('Post message route', () => {
       });
   });
   const messageTest = {
-    message: 'Hello World',
+    groupMessage: 'Hello World',
     priority: 'Normal',
     displayName: 'displayName'
   };
   it('should post message to a group succesfully', (done) => {
-    const groupId = '-Kz9uVqCi63UlH-nbkPN';
+    const groupId = '-KzQH7VB0CPixeicwV7U';
     chai.request(server)
       .post(`/api/v1/groups/${groupId}/message`)
       .set('x-access-token', token)
@@ -145,7 +144,7 @@ describe('Post message route', () => {
       .end((err, res) => {
         res.should.have.status(201);
         expect(res.body.status).to.eql('Message posted successfully');
-        expect(res.body.message).to.eql('Hello World');
+        expect(res.body.groupMessage).to.eql('Hello World');
         expect(res.body.priority).to.eql('Normal');
         expect(res.body.displayName).to.eql('displayName');
         if (err) return done(err);
@@ -154,48 +153,47 @@ describe('Post message route', () => {
   });
   it('should post an urgent message to a group and send an email notification',
     (done) => {
-      const groupId = '-Kz9uVqCi63UlH-nbkPN';
+      const groupId = '-KzQH7VB0CPixeicwV7U';
       chai.request(server)
         .post(`/api/v1/groups/${groupId}/message`)
         .set('x-access-token', token)
         .send({
-          message: 'Hello World',
+          groupMessage: 'Hello World',
           priority: 'Urgent',
-          displayName: 'displayName'
+          displayName: 'Johno'
         })
         .end((err, res) => {
           res.should.have.status(201);
           expect(res.body.status).to.eql('Message posted successfully');
-          expect(res.body.message).to.eql('Hello World');
+          expect(res.body.groupMessage).to.eql('Hello World');
           expect(res.body.priority).to.eql('Urgent');
-          expect(res.body.displayName).to.eql('displayName');
+          expect(res.body.displayName).to.eql('Johno');
           if (err) return done(err);
           done();
         });
     });
   it('should post an critical message to a group and send an sms notification',
     (done) => {
-      const groupId = '-Kz9uVqCi63UlH-nbkPN';
+      const groupId = '-KzQH7VB0CPixeicwV7U';
       chai.request(server)
         .post(`/api/v1/groups/${groupId}/message`)
         .set('x-access-token', token)
         .send({
-          message: 'Hello World',
+          groupMessage: 'Hello World',
           priority: 'Critical',
-          displayName: 'displayName'
+          displayName: 'Johno'
         })
         .end((err, res) => {
           res.should.have.status(201);
           expect(res.body.status).to.eql('Message posted successfully');
-          expect(res.body.message).to.eql('Hello World');
+          expect(res.body.groupMessage).to.eql('Hello World');
           expect(res.body.priority).to.eql('Critical');
-          expect(res.body.displayName).to.eql('displayName');
+          expect(res.body.displayName).to.eql('Johno');
           if (err) return done(err);
           done();
         });
     });
 });
-
 
 describe('Get user group', () => {
   let token = '';
@@ -203,8 +201,8 @@ describe('Get user group', () => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Augustus_Rolfson@yahoo.com',
-        password: 'KNarQgaGsafd8JX'
+        email: 'john-doe@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -212,18 +210,44 @@ describe('Get user group', () => {
       });
   });
   it('should fetch the groups of the registered user ', (done) => {
-    const userId = 'syIZmlNJIVTMc2YGT6ecHSrRNFL2';
+    const userId = 'MBoDQwaBXOQzXQYw0mh6374Q2Rf2';
     chai.request(server)
       .get(`/api/v1/${userId}/groups`)
       .set('x-access-token', token)
       .end((err, res) => {
         res.should.have.status(200);
         expect(res.body.status).to.eql('User groups retrived succcessfully');
-        res.body.should.have.property('userGroups').to.eql([{
-          groupId: '-Kz9sQBRDEMaoDtDAoAP',
-          displayName: 'Laurine_yost',
-          groupName: 'Andela group'
-        }]);
+        res.body.should.have.property('userGroups').to.eql([
+          {
+            groupId: '-KzP336KF8FKlIbnT1FL',
+            displayName: 'Johno',
+            groupName: 'Andela'
+          },
+          {
+            groupId: '-KzQGmESK7_yta8bFBrY',
+            displayName: 'Johno',
+            groupName: 'Test 4'
+          },
+          {
+            groupId: '-KzQGrdrlEim1QtPxIIC',
+            displayName: 'Johno',
+            groupName: 'Test 5'
+          },
+          {
+            groupId: '-KzQGxEsgeU0ThtndE82',
+            displayName: 'Johno',
+            groupName: 'Test 6'
+          },
+          {
+            groupId: '-KzQH1uWx7eizUGlxv85',
+            displayName: 'Johno',
+            groupName: 'Test 7'
+          },
+          {
+            groupId: '-KzQH7VB0CPixeicwV7U',
+            displayName: 'Johno',
+            groupName: 'Test 8'
+          }]);
         if (err) return done(err);
         done();
       });
@@ -236,8 +260,8 @@ describe('Get group message', () => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Augustus_Rolfson@yahoo.com',
-        password: 'KNarQgaGsafd8JX'
+        email: 'john-doe@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -245,7 +269,7 @@ describe('Get group message', () => {
       });
   });
   it('should fetch the messages in a particular user group', (done) => {
-    const groupId = '-Kz9sQBRDEMaoDtDAoAP';
+    const groupId = '-KzQGrdrlEim1QtPxIIC';
     chai.request(server)
       .get(`/api/v1/group/${groupId}`)
       .set('x-access-token', token)
@@ -253,11 +277,109 @@ describe('Get group message', () => {
         res.should.have.status(200);
         expect(res.body.status).to.eql('Message retrived succcessfully');
         res.body.should.have.property('groupMessage').to.eql([{
-          messageId: '-KzARUY0LT8uiLsQxl-S',
-          message: 'jd',
-          timeStamp: 'Friday, November 17, 2017 8:26 PM',
+          messageId: '-KzQZtXyz-Rf-qbDTaGj',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:36 PM',
           priority: 'Normal',
           displayName: 'displayName'
+        },
+        {
+          messageId: '-KzQZtaODZG-W10O0pc9',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:36 PM',
+          priority: 'Urgent',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQZtdtzmHb9TzdX88z',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:36 PM',
+          priority: 'Critical',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_2QKWoy6ssMfCSuf',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Normal',
+          displayName: 'displayName'
+        },
+        {
+          messageId: '-KzQ_2TjQ3tW6sqfVc1c',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Urgent',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_2XIm-cUoNBnvymT',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Critical',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_AWVtgO9A8iufzZJ',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Normal',
+          displayName: 'displayName'
+        },
+        {
+          messageId: '-KzQ_AZqmFbZrCeB88HZ',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Urgent',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_AcQOmmPSaxo_lBW',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:37 PM',
+          priority: 'Critical',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_Ic3Rn2v9dfEhlO8',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:38 PM',
+          priority: 'Normal',
+          displayName: 'displayName'
+        },
+        {
+          messageId: '-KzQ_Iff48mANPHSnJ_l',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:38 PM',
+          priority: 'Urgent',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_Ij3vJYHDJhTYgCc',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:38 PM',
+          priority: 'Critical',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_Qhxm3L2cS5QB4a7',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:39 PM',
+          priority: 'Normal',
+          displayName: 'displayName'
+        },
+        {
+          messageId: '-KzQ_QlWRl3jtClFCKhM',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:39 PM',
+          priority: 'Urgent',
+          displayName: 'Johno'
+        },
+        {
+          messageId: '-KzQ_Qp1FFwltx1yoJGj',
+          groupMessage: 'Hello World',
+          timeStamp: 'Monday, November 20, 2017 11:39 PM',
+          priority: 'Critical',
+          displayName: 'Johno'
         }]);
         if (err) return done(err);
         done();
@@ -265,15 +387,14 @@ describe('Get group message', () => {
   });
 });
 
-
 describe('Get users in group', () => {
   let token = '';
   before((done) => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Augustus_Rolfson@yahoo.com',
-        password: 'KNarQgaGsafd8JX'
+        email: 'johndoe@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -281,7 +402,7 @@ describe('Get users in group', () => {
       });
   });
   it('should fetch the users in a particular group', (done) => {
-    const groupId = '-Kz9sQBRDEMaoDtDAoAP';
+    const groupId = '-KzP-OKFzesOXjir7WSt';
     chai.request(server)
       .get(`/api/v1/group/${groupId}/users`)
       .set('x-access-token', token)
@@ -290,11 +411,13 @@ describe('Get users in group', () => {
         expect(res.body.message).to.eql('User retrieved successfully');
         res.body.should.have.property('users')
           .to.eql([
-            { userName: 'Lester_bode' },
-            { userName: 'Laurine_yost' },
-            { userName: 'Eulalia.yost17' },
-            { userName: 'Antonietta_cormier48' }
-          ]);
+            { userName: 'John' },
+            { userName: 'West' },
+            { userName: 'Johno' },
+            { userName: 'Jane x' },
+            { userName: 'Oxenfurt' },
+            { userName: 'Willaims k' },
+            { userName: 'Maryj' }]);
         if (err) return done(err);
         done();
       });
@@ -306,8 +429,8 @@ describe('Fetch all users ', () => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Augustus_Rolfson@yahoo.com',
-        password: 'KNarQgaGsafd8JX'
+        email: 'william_kaneX@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -333,8 +456,8 @@ describe('Fetch new users', () => {
     chai.request(server)
       .post('/api/v1/user/signin')
       .send({
-        email: 'Augustus_Rolfson@yahoo.com',
-        password: 'KNarQgaGsafd8JX'
+        email: 'johndoe@yahoo.com',
+        password: 'Asorock1'
       })
       .end((err, res) => {
         token = res.body.jwtToken;
@@ -342,17 +465,21 @@ describe('Fetch new users', () => {
       });
   });
   it('should fetch new users', (done) => {
-    const groupId = '-Kz9sQBRDEMaoDtDAoAP';
+    const groupId = '-KzP-OKFzesOXjir7WSt';
     chai.request(server)
       .get(`/api/v1/groups/${groupId}/members`)
       .set('x-access-token', token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('users')
-          .to.eql([{ displayName: 'Lester_bode' },
-          { displayName: 'Laurine_yost' },
-          { displayName: 'Eulalia.yost17' },
-          { displayName: 'Antonietta_cormier48' }]);
+          .to.eql([
+            { displayName: 'John' },
+            { displayName: 'West' },
+            { displayName: 'Johno' },
+            { displayName: 'Jane x' },
+            { displayName: 'Oxenfurt' },
+            { displayName: 'Willaims k' },
+            { displayName: 'Maryj' }]);
         if (err) return done(err);
         done();
       });

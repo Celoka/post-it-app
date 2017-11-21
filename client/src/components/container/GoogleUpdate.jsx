@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Navbar from '../presentation/Navbar';
 import AppActions from '../../actions/AppActions';
 
@@ -73,6 +74,9 @@ class GoogleUpdate extends React.Component {
    * @memberof GoogleUpdate
    */
   render() {
+    if (localStorage.token) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div>
         <Navbar />

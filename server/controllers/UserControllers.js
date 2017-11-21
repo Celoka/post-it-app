@@ -7,7 +7,8 @@ import {
   registerUser,
   normalizeString,
   token,
-  mapCodeToObj
+  mapCodeToObj,
+  serverError
 } from '../helpers/Helpers';
 
 /**
@@ -44,9 +45,7 @@ export const createUser = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 
@@ -79,9 +78,7 @@ export const logIn = (req, res) => {
           message: codeObj.message
         });
       }
-      return res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      return serverError();
     });
 };
 
@@ -120,9 +117,7 @@ export const googleSignIn = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 
@@ -155,9 +150,7 @@ export const googleUpdate = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 
@@ -191,9 +184,7 @@ export const resetPassword = (req, res) => {
           message: codeObj.message
         });
       }
-      return res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      return serverError(res);
     });
 };
 
@@ -214,9 +205,7 @@ export const logOut = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 
@@ -249,9 +238,7 @@ export const getAllUsers = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 
@@ -284,9 +271,7 @@ export const newUsersInGroup = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
 

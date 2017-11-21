@@ -28,15 +28,26 @@ export const mapCodeToObj = {
   'auth/wrong-password': {
     status: 400,
     message: 'Wrong password'
-  }
+  },
 };
+
+/**
+ * @description describes a function that returns server errors
+ *
+ * @param { object } res response in form of an object
+ *
+ * @return { void }
+ */
+export const serverError = res => res.status(500).json({
+  message: 'Hey..Stop! Something went wrong.'
+});
 
 /**
  * @description describes a function that takes in a string,
  * as a parameter, takes the string to lower case and returns
  * the first character to upper case
  *
- * @param { string } character
+ * @param { string } character that will be converted to lower case
  *
  * @function normalizeString
  *

@@ -3,8 +3,6 @@
  */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import assert from 'assert';
-import faker from 'faker';
 import server from '../server';
 
 process.env.NODE_ENV = 'test';
@@ -17,10 +15,10 @@ const expect = chai.expect;
 describe('Sign up route', () => {
   it('should create a new user successfully', (done) => {
     const newUser = {
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      userName: faker.internet.userName(),
-      phoneNumber: '2347032337154'
+      email: 'kenedykX@yahoo.com',
+      password: 'Asorock1',
+      userName: 'Kenedy K',
+      phoneNumber: '2347034224658'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
@@ -40,7 +38,7 @@ describe('Sign up route', () => {
       email: '',
       password: 'andela24344',
       userName: 'Andelan',
-      phoneNumber: '090335425425'
+      phoneNumber: '23490335425425'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
@@ -125,12 +123,12 @@ describe('Sign up route', () => {
       });
   });
 
-  it('should register not register an existing user', (done) => {
+  it('should not register an existing user', (done) => {
     const userTest = {
-      email: 'lurline_windler@hotmail.com',
-      password: 'vsZdfjNe7RG1JHC',
-      userName: 'Hiram_ondricka',
-      phoneNumber: '2347032337154'
+      email: 'johndoe@yahoo.com',
+      password: 'Asorock1',
+      userName: 'John',
+      phoneNumber: '2347032337155'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
@@ -138,6 +136,23 @@ describe('Sign up route', () => {
       .end((err, res) => {
         res.should.have.status(409);
         expect(res.body.message).to.eql('Username already exists');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should not register duplicate phone number', (done) => {
+    const userTest = {
+      email: 'Brandfi79@gmail.com',
+      password: 'Asorock1',
+      userName: 'Milfford91',
+      phoneNumber: '2347032337155'
+    };
+    chai.request(server)
+      .post('/api/v1/user/signup')
+      .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(409);
+        expect(res.body.message).to.eql('Phone number already exists');
         if (err) return done();
         done();
       });
@@ -163,8 +178,8 @@ describe('Sign up route', () => {
 describe('Sign in route', () => {
   it('should successfully sign in a resgistered user', (done) => {
     const userTest = {
-      email: 'Lurline_Windler@hotmail.com',
-      password: 'vsZdfjNe7RG1JHC',
+      email: 'johndoe@yahoo.com',
+      password: 'Asorock1',
     };
     chai.request(server)
       .post('/api/v1/user/signin')
@@ -172,8 +187,8 @@ describe('Sign in route', () => {
       .end((err, res) => {
         res.should.have.status(200);
         expect(res.body.message).to.eql('User Signed in!');
-        expect(res.body.user.uid).to.eql('JK5rSTmxjRMf5nBTUi008oKx95k2');
-        expect(res.body.user.email).to.eql('lurline_windler@hotmail.com');
+        expect(res.body.user.uid).to.eql('C7nMvV0P2PgeovFTZijuru8IIOq2');
+        expect(res.body.user.email).to.eql('johndoe@yahoo.com');
         expect(res.body.isConfirmed).to.eql(true);
         if (err) return done();
         done();
@@ -242,8 +257,8 @@ describe('Sign in route', () => {
   });
   it('should require a correct password', (done) => {
     const userTest = {
-      email: 'Lurline_Windler@hotmail.com',
-      password: 'vsZdfjNe7RG1JH',
+      email: 'johndoe@yahoo.com',
+      password: 'Asorock11',
     };
     chai.request(server)
       .post('/api/v1/user/signin')
@@ -255,10 +270,10 @@ describe('Sign in route', () => {
         done();
       });
   });
-  it('should require a correct password', (done) => {
+  it('should require a valid input credentials', (done) => {
     const userTest = {
-      email: 'Lurline_Wivndler@hotmail.com',
-      password: 'vsZdfjNe7RG1JHC',
+      email: 'Brandfi79@gmail.com',
+      password: 'Asorock1',
     };
     chai.request(server)
       .post('/api/v1/user/signin')
@@ -277,7 +292,7 @@ describe('Google SignIn Route', () => {
   it('should redirect a first time google user for update', (done) => {
     const googleUser = {
       email: 'andelaTest@yahoo.com',
-      uid: '77477474hhhf',
+      uid: '4hceOknjZ1eZvYhYgidCaP09erh5',
       userName: 'Andela Test'
     };
     chai.request(server)
@@ -294,9 +309,9 @@ describe('Google SignIn Route', () => {
   });
   it('should sign in a user in successfully', (done) => {
     const googleUser = {
-      email: 'Lurline_Windler@hotmail.com',
-      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
-      userName: 'Hiram_ondricka'
+      email: 'west-luska@yahoo.com',
+      uid: '9407qIUIYtg2NCY6nFL8pG7Vxkg1',
+      userName: 'West'
     };
     chai.request(server)
       .post('/api/v1/user/googlesignin')
@@ -313,8 +328,8 @@ describe('Google SignIn Route', () => {
   it('should require email of a google user', (done) => {
     const googleUser = {
       email: '',
-      uid: 'JK5rSTmxjRMf5nBTUi008oKx95k2',
-      userName: 'Hiram_ondricka'
+      uid: '4hceOknjZ1eZvYhYgidCaP09edH2',
+      userName: 'John'
     };
     chai.request(server)
       .post('/api/v1/user/googlesignin')
@@ -380,10 +395,10 @@ describe('Google Update Route', () => {
   it('should sign in a google user successfully after phonenumber update',
     (done) => {
       const googleUser = {
-        phoneNumber: '2347032337154',
-        uid: 'yryyrt773664',
-        displayName: faker.internet.userName(),
-        email: faker.internet.email(),
+        phoneNumber: '2347032337234',
+        uid: 'MBoDQwaBXOQzXQYw0mh6374Q2R5try',
+        displayName: 'CyndyX',
+        email: 'cyndyfg@gmail.com',
       };
       chai.request(server)
         .post('/api/v1/user/googleupdate')
@@ -401,8 +416,8 @@ describe('Google Update Route', () => {
     const googleUser = {
       phoneNumber: '',
       uid: 'yryyrt773664',
-      displayName: faker.internet.userName(),
-      email: faker.internet.email(),
+      displayName: 'Cyndy',
+      email: 'cyndycrawford@yahoo.com',
     };
     chai.request(server)
       .post('/api/v1/user/googleupdate')
@@ -418,8 +433,8 @@ describe('Google Update Route', () => {
     const googleUser = {
       phoneNumber: '2347032337154',
       uid: '',
-      displayName: faker.internet.userName(),
-      email: faker.internet.email(),
+      displayName: 'Cyndy',
+      email: 'cyndycrawdford@yahoo.com',
     };
     chai.request(server)
       .post('/api/v1/user/googleupdate')
@@ -436,7 +451,7 @@ describe('Google Update Route', () => {
       phoneNumber: '2347032337154',
       uid: 'yryyrt773664',
       displayName: '',
-      email: faker.internet.email(),
+      email: 'email@yahoo.com',
     };
     chai.request(server)
       .post('/api/v1/user/googleupdate')
@@ -453,7 +468,7 @@ describe('Google Update Route', () => {
       phoneNumber: '2347032337154',
       uid: 'yryyrt773664',
       displayName: 'ee',
-      email: faker.internet.email(),
+      email: 'email@yahoo.com'
     };
     chai.request(server)
       .post('/api/v1/user/googleupdate')
@@ -489,7 +504,7 @@ describe('Password reset route', () => {
   it('should send a password reset link to a registered member',
     (done) => {
       const userTest = {
-        email: 'Veda.Romaguera@gmail.com'
+        email: 'maryjane@yahoo.com'
       };
       chai.request(server)
         .post('/api/v1/user/passwordreset')
@@ -509,9 +524,9 @@ describe('Password reset route', () => {
       .post('/api/v1/user/passwordreset')
       .send(userTest)
       .end((err, res) => {
-        res.should.have.status(401);
+        res.should.have.status(404);
         expect(res.body.message)
-          .to.eql('The email or password you entered is incorrect');
+          .to.eql('User email not found');
         if (err) return done();
         done();
       });
@@ -551,8 +566,8 @@ describe('Sign out route', () => {
     chai.request(server)
       .post('api/v1/users/signin')
       .send({
-        email: 'Lurline_Windler@hotmail.com',
-        password: 'vsZdfjNe7RG1JHC',
+        email: 'johndoe@yahoo.com',
+        password: 'Asorock1',
       })
       .end(() => {
         done();

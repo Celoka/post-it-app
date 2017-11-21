@@ -9,7 +9,8 @@ import {
   sendSMSNotifications,
   normalizeString,
   userValidation,
-  setGroupDetails
+  setGroupDetails,
+  serverError
 } from '../helpers/Helpers';
 
 require('dotenv').config();
@@ -39,7 +40,7 @@ export const createGroup = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+      serverError(res);
     });
 };
 
@@ -72,7 +73,7 @@ export const addMemberToGroup = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(500).json({ message: 'Hey..Stop! Something went wrong.' });
+      serverError(res);
     });
 };
 /**
@@ -126,9 +127,7 @@ export const postMessage = (req, res) => {
         });
       })
       .catch(() => {
-        res.status(500).json({
-          message: 'Hey..Stop! Something went wrong.'
-        });
+        serverError(res);
       });
     sendEmailNotifications(groupId, priority);
     sendSMSNotifications(groupId, priority);
@@ -164,7 +163,7 @@ export const getUserGroup = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
+      serverError(res);
     });
 };
 
@@ -200,7 +199,7 @@ export const getGroupMessage = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
+      serverError(res);
     });
 };
 
@@ -232,6 +231,6 @@ export const getUserInGroup = (req, res) => {
       });
     })
     .catch(() => {
-      res.status(500).json({ message: 'Hey..Stop. Something went wrong.' });
+      serverError(res);
     });
 };
