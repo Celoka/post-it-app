@@ -1,5 +1,5 @@
 /**
- * Import module dependcies
+ * Import module dependencies
  */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -15,10 +15,10 @@ const expect = chai.expect;
 describe('Sign up route', () => {
   it('should create a new user successfully', (done) => {
     const newUser = {
-      email: 'kenedykX@yahoo.com',
+      email: 'watermelon@yahoo.com',
       password: 'Asorock1',
-      userName: 'Kenedy K',
-      phoneNumber: '2347034224658'
+      userName: 'west',
+      phoneNumber: '2347034224633'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
@@ -125,14 +125,30 @@ describe('Sign up route', () => {
 
   it('should not register an existing user', (done) => {
     const userTest = {
-      email: 'johndoe@yahoo.com',
+      email: 'johnholt@yahoo.com',
       password: 'Asorock1',
-      userName: 'John',
-      phoneNumber: '2347032337155'
+      userName: 'Johndf',
+      phoneNumber: '2347032337153'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
       .send(userTest)
+      .end((err, res) => {
+        res.should.have.status(409);
+        expect(res.body.message).to.eql('Email is already in use');
+        if (err) return done();
+        done();
+      });
+  });
+  it('should not register user with username conflict', (done) => {
+    chai.request(server)
+      .post('/api/v1/user/signup')
+      .send({
+        email: 'johndoee@yahoo.com',
+        password: 'Asorock1',
+        userName: 'John',
+        phoneNumber: '2347032337155'
+      })
       .end((err, res) => {
         res.should.have.status(409);
         expect(res.body.message).to.eql('Username already exists');
@@ -141,15 +157,14 @@ describe('Sign up route', () => {
       });
   });
   it('should not register duplicate phone number', (done) => {
-    const userTest = {
-      email: 'Brandfi79@gmail.com',
-      password: 'Asorock1',
-      userName: 'Milfford91',
-      phoneNumber: '2347032337155'
-    };
     chai.request(server)
       .post('/api/v1/user/signup')
-      .send(userTest)
+      .send({
+        email: 'johnhofdddlt@yahoo.com',
+        password: 'Asorock1',
+        userName: 'Johnn',
+        phoneNumber: '2347034224614'
+      })
       .end((err, res) => {
         res.should.have.status(409);
         expect(res.body.message).to.eql('Phone number already exists');
@@ -178,7 +193,7 @@ describe('Sign up route', () => {
 describe('Sign in route', () => {
   it('should successfully sign in a resgistered user', (done) => {
     const userTest = {
-      email: 'johndoe@yahoo.com',
+      email: 'west@yahoo.com',
       password: 'Asorock1',
     };
     chai.request(server)
@@ -187,8 +202,8 @@ describe('Sign in route', () => {
       .end((err, res) => {
         res.should.have.status(200);
         expect(res.body.message).to.eql('User Signed in!');
-        expect(res.body.user.uid).to.eql('C7nMvV0P2PgeovFTZijuru8IIOq2');
-        expect(res.body.user.email).to.eql('johndoe@yahoo.com');
+        expect(res.body.user.uid).to.eql('po9DB2rZMzVW3KiLeYJMK0zjBeh1');
+        expect(res.body.user.email).to.eql('west@yahoo.com');
         expect(res.body.isConfirmed).to.eql(true);
         if (err) return done();
         done();
@@ -257,7 +272,7 @@ describe('Sign in route', () => {
   });
   it('should require a correct password', (done) => {
     const userTest = {
-      email: 'johndoe@yahoo.com',
+      email: 'johnholt@yahoo.com',
       password: 'Asorock11',
     };
     chai.request(server)
@@ -272,7 +287,7 @@ describe('Sign in route', () => {
   });
   it('should require a valid input credentials', (done) => {
     const userTest = {
-      email: 'Brandfi79@gmail.com',
+      email: 'keneddy@yahoo.com',
       password: 'Asorock1',
     };
     chai.request(server)
@@ -309,8 +324,8 @@ describe('Google SignIn Route', () => {
   });
   it('should sign in a user in successfully', (done) => {
     const googleUser = {
-      email: 'west-luska@yahoo.com',
-      uid: '9407qIUIYtg2NCY6nFL8pG7Vxkg1',
+      email: 'west@yahoo.com',
+      uid: 'po9DB2rZMzVW3KiLeYJMK0zjBeh1',
       userName: 'West'
     };
     chai.request(server)
@@ -368,7 +383,7 @@ describe('Google SignIn Route', () => {
       .send(googleUser)
       .end((err, res) => {
         res.should.have.status(400);
-        expect(res.body.message).to.eql('User Id is required');
+        expect(res.body.message).to.eql('This field cannot be empty');
         if (err) return done();
         done();
       });
@@ -425,23 +440,6 @@ describe('Google Update Route', () => {
       .end((err, res) => {
         res.should.have.status(400);
         expect(res.body.message).to.eql('Phone number is required');
-        if (err) return done();
-        done();
-      });
-  });
-  it('should require a google user user Id', (done) => {
-    const googleUser = {
-      phoneNumber: '2347032337154',
-      uid: '',
-      displayName: 'Cyndy',
-      email: 'cyndycrawdford@yahoo.com',
-    };
-    chai.request(server)
-      .post('/api/v1/user/googleupdate')
-      .send(googleUser)
-      .end((err, res) => {
-        res.should.have.status(400);
-        expect(res.body.message).to.eql('User Id is required');
         if (err) return done();
         done();
       });
@@ -504,7 +502,7 @@ describe('Password reset route', () => {
   it('should send a password reset link to a registered member',
     (done) => {
       const userTest = {
-        email: 'maryjane@yahoo.com'
+        email: 'post-it@yahoo.com'
       };
       chai.request(server)
         .post('/api/v1/user/passwordreset')

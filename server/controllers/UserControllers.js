@@ -274,4 +274,3 @@ export const newUsersInGroup = (req, res) => {
       serverError(res);
     });
 };
-

@@ -74,9 +74,6 @@ class GoogleUpdate extends React.Component {
    * @memberof GoogleUpdate
    */
   render() {
-    if (localStorage.token) {
-      return <Redirect to="/dashboard" />;
-    }
     return (
       <div>
         <Navbar />

@@ -58,6 +58,10 @@ function validate(request) {
           request.check('priority', 'Message priority is required')
             .notEmpty().matches(/\w/);
           break;
+        case 'uid':
+          request.check('uid', 'This field cannot be empty')
+            .notEmpty().matches(/\w/);
+          break;
         default:
       }
     }
