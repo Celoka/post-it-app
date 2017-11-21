@@ -13,7 +13,7 @@ const expect = chai.expect;
 
 describe('Group routes', () => {
   const groupTest = {
-    group: 'Test Group 22',
+    group: 'Test Group 33',
     userId: '35KlmtIB5Fg1WJ8gaD7F4jNdvRg2',
     displayName: 'Post-it'
   };
@@ -96,7 +96,7 @@ describe('Group routes', () => {
   });
   describe('Add member route', () => {
     const credentials = {
-      groupId: '-KzTBcu5HZ9s5aPN5cmz',
+      groupId: '-KzTN5kSLI8pR_Mwa9Zn',
       newUser: 'Zuma',
       userId: 'WkZdAkN4IyVyqWMf6qThXm7qzSm2'
     };
