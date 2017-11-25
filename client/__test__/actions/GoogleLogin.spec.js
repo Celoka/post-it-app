@@ -1,5 +1,6 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
+import { googleUsersDetails } from '../actions/seeders';
 import AppConstants from '../../src/constants/AppConstants.js';
 
 describe('GoogleLogin.js', () => {
@@ -10,6 +11,12 @@ describe('GoogleLogin.js', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
+
+  it('Should call the action creator with the expected details ', () => {
+    const googleLoginSpy = jest.spyOn(AppActions, 'googleLogin');
+    expect(googleLoginSpy).toBeCalledWith(googleUsersDetails);
+  });
+
   it('should should match the api response', () => {
     AppActions.googleLogin('/api/v1/user/googlesignin')
       .then(() => {

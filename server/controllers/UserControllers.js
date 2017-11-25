@@ -2,14 +2,15 @@
  * Import module dependencies
  */
 import firebase from 'firebase';
-import db from '../config/config';
+
+import configuration from '../config/configuration';
 import {
   registerUser,
   normalizeString,
   token,
-  mapCodeToObj,
+  mapCodeToObject,
   serverError
-} from '../helpers/Helpers';
+} from '../helpers/serverHelpers';
 
 /**
  * @description This controller creates a new user
@@ -23,7 +24,8 @@ import {
 export const createUser = (req, res) => {
   const { email, password, userName, phoneNumber } = req.body;
   const displayName = normalizeString(userName);
-  db.database().ref('usernames')
+
+  configuration.database().ref('usernames')
     .once('value', (snapShot) => {
       const names = [];
       snapShot.forEach((details) => {
@@ -60,6 +62,7 @@ export const createUser = (req, res) => {
  */
 export const logIn = (req, res) => {
   const { email, password } = req.body;
+
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((user) => {
       const { uid, displayName } = user;
@@ -72,10 +75,10 @@ export const logIn = (req, res) => {
       });
     })
     .catch((error) => {
-      const codeObj = mapCodeToObj[error.code];
-      if (codeObj) {
-        return res.status(codeObj.status).json({
-          message: codeObj.message
+      const codeObject = mapCodeToObject[error.code];
+      if (codeObject) {
+        return res.status(codeObject.status).json({
+          message: codeObject.message
         });
       }
       return serverError();
@@ -91,12 +94,11 @@ export const logIn = (req, res) => {
  *
  * @return { object } returns a google user object
  */
-
 export const googleSignIn = (req, res) => {
   const { email, uid, userName } = req.body;
   const displayName = normalizeString(userName);
   const jwtToken = token(uid, displayName, email);
-  db.database().ref('users')
+  configuration.database().ref('users')
     .once('value', (snapShot) => {
       const emails = [];
       snapShot.forEach((details) => {
@@ -132,7 +134,8 @@ export const googleSignIn = (req, res) => {
  */
 export const googleUpdate = (req, res) => {
   const { phoneNumber, uid, displayName, email } = req.body;
-  db.database().ref(`users/${uid}`)
+
+  configuration.database().ref(`users/${uid}`)
     .set({
       email,
       displayName,
@@ -140,7 +143,7 @@ export const googleUpdate = (req, res) => {
     })
     .then(() => {
       const jwtToken = token(uid, displayName, email);
-      db.database().ref('usernames').push({
+      configuration.database().ref('usernames').push({
         displayName
       });
       res.status(201).json({
@@ -165,6 +168,7 @@ export const googleUpdate = (req, res) => {
  */
 export const resetPassword = (req, res) => {
   const email = req.body.email;
+
   firebase.auth().sendPasswordResetEmail(email)
     .then(() => {
       res.status(200).json({
@@ -174,14 +178,14 @@ export const resetPassword = (req, res) => {
     })
     .catch((error) => {
       const errorCode = error.code;
-      const codeObj = mapCodeToObj[error.code];
+      const codeObject = mapCodeToObject[error.code];
       if (errorCode === 'auth/user-not-found') {
         return res.status(404).json({
           message: 'User email not found'
         });
-      } else if (codeObj) {
-        return res.status(codeObj.status).json({
-          message: codeObj.message
+      } else if (codeObject) {
+        return res.status(codeObject.status).json({
+          message: codeObject.message
         });
       }
       return serverError(res);
@@ -222,7 +226,8 @@ export const logOut = (req, res) => {
  */
 export const getAllUsers = (req, res) => {
   const usersDetails = [];
-  db.database().ref('users')
+
+  configuration.database().ref('users')
     .once('value', (snapShot) => {
       let usersInGroup = {};
       snapShot.forEach((details) => {
@@ -256,7 +261,8 @@ export const getAllUsers = (req, res) => {
 export const newUsersInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const users = [];
-  db.database().ref(`groups/${groupId}/users`)
+
+  configuration.database().ref(`groups/${groupId}/users`)
     .once('value', (snapShot) => {
       let newUsers = {};
       snapShot.forEach((details) => {

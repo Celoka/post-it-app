@@ -1,9 +1,9 @@
 /**
  * Module dependencies
  */
-
 import moment from 'moment';
-import db from '../config/config';
+
+import configuration from '../config/configuration';
 import {
   sendEmailNotifications,
   sendSMSNotifications,
@@ -11,7 +11,7 @@ import {
   userValidation,
   setGroupDetails,
   serverError
-} from '../helpers/Helpers';
+} from '../helpers/serverHelpers';
 
 require('dotenv').config();
 /**
@@ -27,12 +27,14 @@ export const createGroup = (req, res) => {
   const { group, userId, displayName } = req.body;
   const timeStamp = new Date().toString();
   const groupName = normalizeString(group);
-  db.database().ref(`/users/${userId}/groups`)
+
+  configuration.database().ref(`/users/${userId}/groups`)
     .once('value', (snapShot) => {
       const groupNames = [];
       snapShot.forEach((details) => {
         groupNames.push(details.val().groupName);
       });
+
       if (groupNames.indexOf(groupName) > -1) {
         res.status(409).json({ message: 'Groupname already exists' });
       } else {
@@ -56,16 +58,18 @@ export const createGroup = (req, res) => {
 export const addMemberToGroup = (req, res) => {
   const { groupId, userId, newUser } = req.body;
   const displayName = normalizeString(newUser);
-  db.database().ref(`groups/${groupId}/users`)
+
+  configuration.database().ref(`groups/${groupId}/users`)
     .once('value', (snapShot) => {
       const names = [];
       snapShot.forEach((details) => {
         names.push(details.val().displayName);
       });
+
       if (names.indexOf(displayName) > -1) {
         res.status(409).json({ message: 'User is already in group' });
       } else {
-        db.database().ref(`groups/${groupId}/users/`)
+        configuration.database().ref(`groups/${groupId}/users/`)
           .push({
             displayName
           });
@@ -92,16 +96,17 @@ export const postMessage = (req, res) => {
     .notEmpty().matches(/\w/);
   const errors = req.validationErrors();
   const timeStamp = moment().format('LLLL');
+
   if (errors) {
     const message = errors[0].msg;
     res.status(400).json({
       message
     });
   } else {
-    const messageKey = db.database().ref('messages/')
+    const messageKey = configuration.database().ref('messages/')
       .push({})
       .key;
-    const messageRef = db.database()
+    const messageRef = configuration.database()
       .ref(`messages/${messageKey}/groups/${groupId}`);
     messageRef.push({
       groupMessage,
@@ -109,7 +114,7 @@ export const postMessage = (req, res) => {
       timeStamp,
       displayName
     });
-    const groupRef = db.database().ref(`groups/${groupId}/messages`);
+    const groupRef = configuration.database().ref(`groups/${groupId}/messages`);
     groupRef.push({
       groupMessage,
       priority,
@@ -146,7 +151,8 @@ export const postMessage = (req, res) => {
 export const getUserGroup = (req, res) => {
   const userId = req.params.userId;
   const userGroups = [];
-  db.database().ref(`/users/${userId}/groups`)
+
+  configuration.database().ref(`/users/${userId}/groups`)
     .once('value', (snapShot) => {
       let groupDetail = {};
       snapShot.forEach((details) => {
@@ -179,7 +185,8 @@ export const getUserGroup = (req, res) => {
 export const getGroupMessage = (req, res) => {
   const groupId = req.params.groupId;
   const groupMessage = [];
-  db.database().ref(`/groups/${groupId}/messages`)
+
+  configuration.database().ref(`/groups/${groupId}/messages`)
     .once('value', (snap) => {
       let message = {};
       snap.forEach((details) => {
@@ -215,7 +222,8 @@ export const getGroupMessage = (req, res) => {
 export const getUserInGroup = (req, res) => {
   const groupId = req.params.groupId;
   const users = [];
-  db.database().ref(`/groups/${groupId}/users`)
+
+  configuration.database().ref(`/groups/${groupId}/users`)
     .once('value', (snap) => {
       let usersInGroup = {};
       snap.forEach((details) => {

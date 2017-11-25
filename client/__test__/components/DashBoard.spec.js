@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import AppStore from '../../src/stores/AppStore';
 import MessageBoard from '../../src/components/container/MessageBoard.jsx';
 import UsersInGroup from '../../src/components/container/UsersInGroup.jsx';
@@ -9,12 +10,10 @@ import DashBoard from '../../src/components/container/DashBoard.jsx';
 describe('<DashBoard />', () => {
   const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
   const removeChangeListenerSpy = jest.spyOn(AppStore, 'removeChangeListener');
-
-  const groupId = 'test';
-  const groupName = 'test';
   const wrapper = mount(<DashBoard />,
     {
       childContextTypes: { router: React.PropTypes.object },
+
       context: {
         router: {
           history: {
@@ -30,6 +29,7 @@ describe('<DashBoard />', () => {
               key: 'qi4prx'
             }
           },
+
           route: {
             location: {
               pathname: '/dashboard',
@@ -37,6 +37,7 @@ describe('<DashBoard />', () => {
               hash: '',
               key: 'qi4prx'
             },
+
             match: {
               path: '/',
               url: '/',
@@ -52,9 +53,9 @@ describe('<DashBoard />', () => {
     expect(wrapper.state().displayName).toBe(null);
     expect(wrapper.state().groupId).toBe(null);
     expect(wrapper.state().groupName).toEqual('');
-    expect(wrapper.state().groupMessage).toHaveLength(0);
-    expect(wrapper.state().newMember).toHaveLength(0);
-    expect(wrapper.state().googleUser).toHaveLength(0);
+    expect(wrapper.state().groupMessages).toEqual([]);
+    expect(wrapper.state().newMember).toEqual([]);
+    expect(wrapper.state().googleUser).toEqual([]);
     expect(wrapper.state().userId).toEqual([
       { userId: 'AKFnhd92XHNvMGHmUSHJ2CGt1Au1', userNames: 'West' },
       { userId: 'HIBpkdz7IfTSyOyLbevWasL78HD3', userNames: 'West' },
@@ -69,9 +70,22 @@ describe('<DashBoard />', () => {
   it('contains a < UsersInGroup /> component', () => {
     expect(wrapper.find(UsersInGroup)).toHaveLength(1);
   });
+
   it('should find <MessageBoard /> component when the state is set', () => {
     expect(wrapper.find(MessageBoard)).toBeDefined();
   });
+
+  it('should call setGroupId function', () => {
+    const setGroupIdSpy = jest.spyOn(
+      wrapper.instance(), 'setGroupId'
+    ).mockImplementation(() => Promise.resolve({}));
+    wrapper.setState({
+      groupId: '6363ghrh',
+      groupName: 'Andela'
+    });
+    expect(setGroupIdSpy).toBeDefined();
+  });
+
   it('calls componentDidMount() lifecycle method', () => {
     expect(addChangeListenerSpy).toHaveBeenCalled();
   });

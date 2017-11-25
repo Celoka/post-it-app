@@ -23,6 +23,7 @@ describe('<BoardNavigation />', () => {
       }
     }
   );
+
   it('it should sign out a user successfully', () => {
     const logOutSpy = jest.spyOn(AppActions, 'logOut');
     wrapper.find('li').simulate('click');

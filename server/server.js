@@ -23,12 +23,11 @@ const app = express();
 const port = process.env.PORT || 8000;
 const compiler = webpack(config);
 const publicPath = express.static(path.join(__dirname,
-   '../client/app/index.html'));
+  '../client/app/index.html'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(bodyParser.json());
-
 
 if (environment === 'development') {
   app.use(webpackMiddleware(compiler, {
@@ -43,15 +42,14 @@ if (environment === 'development') {
     historyApiFallback: true,
     stats: { colors: true }
   }));
+
   app.use(webpackHotMiddleware(compiler));
 }
 app.use('/', publicPath);
-
 app.use(routes);
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/app/index.html'));
 });
-
 app.listen(port);
 console.log(`listening on ${port}`);
 export default app;

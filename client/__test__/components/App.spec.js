@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
+
 import App from '../../src/components/presentation/App';
 import Routes from '../../src/Routes';
 

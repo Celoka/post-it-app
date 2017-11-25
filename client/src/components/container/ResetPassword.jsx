@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppActions from '../../actions/AppActions';
 import Navbar from './../presentation/Navbar';
 
@@ -80,8 +81,12 @@ class ResetPassword extends React.Component {
                 <fieldset className="account-info">
                   <label>
                     Email Address
-                    <input value={this.state.email} onChange={this.onChange}
-                      type="email" name="email" required />
+                    <input
+                      value={this.state.email}
+                      onChange={this.onChange}
+                      type="email"
+                      name="email"
+                      required />
                   </label>
                 </fieldset>
                 <button name="login"

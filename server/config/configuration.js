@@ -9,7 +9,9 @@ if (env === 'test') {
 } else if (env === 'production') {
   checkProcess = '';
 }
+
 dotenv.config();
+
 /**
  * @description This contains App confirguration from google firebase
  */
@@ -22,6 +24,8 @@ const config = {
   storageBucket: process.env[`${checkProcess}storageBucket`],
   messagingSenderId: process.env[`${checkProcess}messagingSenderId`]
 };
-const db = firebase.initializeApp(config);
-export default db;
+
+const configuration = firebase.initializeApp(config);
+
+export default configuration;
 

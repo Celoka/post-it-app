@@ -1,5 +1,6 @@
 {
-  "data": {  "status": "Message posted successfully",
+  "data": {
+    "status": "Message posted successfully",
     "message": "Hello world",
     "priority": "Normal",
     "timestamp": "Thu Oct 26 2017 16:45:25 GMT+0100 (WAT)"

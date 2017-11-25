@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import CreateUser from '../../src/components/container/CreateUser.jsx';
 import AppActions from '../../src/actions/AppActions';
 
@@ -36,7 +37,7 @@ describe('<Signup/>', () => {
   );
 
   it('should redirect to dashboard on click of submit', () => {
-    const registerUserSpy = jest.spyOn(AppActions, 'registerUser');
+    const registerUserSpy = jest.spyOn(AppActions, 'registerUser').mockImplementation(() => Promise.resolve({}));
     wrapper.setState({
       email: 'test@yahoo.com',
       password: 'andela2',
@@ -47,6 +48,7 @@ describe('<Signup/>', () => {
     wrapper.find('form').simulate('submit');
     expect(registerUserSpy).toHaveBeenCalled();
   });
+
   it('should call onChange method', () => {
     const onChangeSpy = jest.spyOn(
       wrapper.instance(), 'onChange'
@@ -59,6 +61,7 @@ describe('<Signup/>', () => {
     wrapper.instance().onChange(event);
     expect(onChangeSpy).toHaveBeenCalled();
   });
+
   it('should successfully create a user and call onsubmit method', () => {
     const onSubmitSpy = jest.spyOn(
       wrapper.instance(), 'onSubmit'

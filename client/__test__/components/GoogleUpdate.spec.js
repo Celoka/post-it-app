@@ -1,11 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import GoogeleUpdate from '../../src/components/container/GoogleUpdate';
 
 describe('<GoogleUpdate />', () => {
   const wrapper = mount(<GoogeleUpdate />,
     {
       childContextTypes: { router: React.PropTypes.object },
+
       context: {
         router: {
           history: {
@@ -19,6 +21,7 @@ describe('<GoogleUpdate />', () => {
               search: '',
               hash: ''
             },
+
             computedMatch: {
               path: '/googlepage',
               url: '/googlepage',

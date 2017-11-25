@@ -5,26 +5,30 @@ import firebase from 'firebase';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import Nexmo from 'nexmo';
-import db from '../config/config';
+
+import configuration from '../config/configuration';
 
 require('dotenv').config();
 
 /**
  * @description describes an object that abstracts errors
  */
-export const mapCodeToObj = {
+export const mapCodeToObject = {
   'auth/email-already-in-use': {
     status: 409,
     message: 'Email is already in use'
   },
+
   'auth/invalid-email': {
     status: 400,
     message: 'Invalid email'
   },
+
   'auth/user-not-found': {
     status: 404,
     message: 'The email or password you entered is incorrect'
   },
+
   'auth/wrong-password': {
     status: 400,
     message: 'Wrong password'
@@ -77,6 +81,7 @@ export const token = (uid, userName, email) => {
   },
     process.env.SECRET_TOKEN,
     { expiresIn: '24h' });
+
   return jwtToken;
 };
 
@@ -95,7 +100,7 @@ export const token = (uid, userName, email) => {
  */
 export const sendEmailNotifications = (groupId, priority) => {
   const email = [];
-  db.database().ref(`groups/${groupId}/email`)
+  configuration.database().ref(`groups/${groupId}/email`)
     .once('value', (snapShot) => {
       snapShot.forEach((details) => {
         email.push(details.val());
@@ -112,16 +117,17 @@ export const sendEmailNotifications = (groupId, priority) => {
         const mailOptions = {
           from: ' "Post It Admin" <post.it.andela@gmail.com>',
           to: emails,
-          subject: 'Urgent Message',
+          subject: '',
           text: 'Post it App',
           html:
-          '<h3>You have an urgent message post it app</h3>'
+          '<h3>You have a message on post it app, kindly follow the link to login. https://eloka-postit.herokuapp.com/</h3>'
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
           }
-          console.log('Message sent: %s', info);
+
+          return console.log('Message sent: %s', info);
         });
       }
     });
@@ -142,7 +148,7 @@ export const sendEmailNotifications = (groupId, priority) => {
  */
 export const sendSMSNotifications = (groupId, priority) => {
   const phoneNumber = [];
-  db.database().ref(`groups/${groupId}/phoneNumber`)
+  configuration.database().ref(`groups/${groupId}/phoneNumber`)
     .once('value', (snap) => {
       snap.forEach((details) => {
         phoneNumber.push(details.val());
@@ -154,7 +160,7 @@ export const sendSMSNotifications = (groupId, priority) => {
         });
         const from = 'Post It Admin';
         const to = phoneNumber;
-        const text = 'You have a critical message on post it app';
+        const text = 'You have a critical message on post it app, kindly follow the link to login. https://eloka-postit.herokuapp.com';
         nexmo.message.sendSms(from, to, text);
       }
     });
@@ -178,15 +184,15 @@ export const sendSMSNotifications = (groupId, priority) => {
 export const pushMemberDetails = (
   req, res, groupId, email, phoneNumber, userId, displayName
 ) => {
-  db.database().ref(`groups/${groupId}/groupName`)
+  configuration.database().ref(`groups/${groupId}/groupName`)
     .once('value', (groupSnapshot) => {
       if (groupSnapshot.exists()) {
-        db.database().ref(`groups/${groupId}/email`)
+        configuration.database().ref(`groups/${groupId}/email`)
           .push(email);
-        db.database().ref(`groups/${groupId}/phoneNumber`)
+        configuration.database().ref(`groups/${groupId}/phoneNumber`)
           .push(phoneNumber);
       } else {
-        res.status(403).json({
+        res.status(404).json({
           message: 'Group does not exists'
         });
       }
@@ -199,9 +205,7 @@ export const pushMemberDetails = (
       });
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong'
-      });
+      serverError(res);
     });
 };
 /**
@@ -216,14 +220,14 @@ export const pushMemberDetails = (
  * @return { void }
  */
 export const userValidation = (req, res, userId, groupId, displayName) => {
-  db.database().ref(`/users/${userId}`)
+  configuration.database().ref(`/users/${userId}`)
     .once('value', (userSnapShot) => {
       if (userSnapShot.exists()) {
         const { email, phoneNumber } = userSnapShot.val();
-        db.database().ref(`groups/${groupId}`)
+        configuration.database().ref(`groups/${groupId}`)
           .once('value', (snap) => {
             const groupName = snap.val().groupName;
-            db.database().ref(`/users/${userId}/groups/${groupId}`)
+            configuration.database().ref(`/users/${userId}/groups/${groupId}`)
               .update({
                 displayName,
                 groupName
@@ -244,11 +248,40 @@ export const userValidation = (req, res, userId, groupId, displayName) => {
       }
     })
     .catch(() => {
-      res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      serverError(res);
     });
 };
+
+/**
+ * @description describes a function that pushes the user details to
+ * the email and phone number node for notification to be sent to them.
+ *
+ * @param { object } res request body object
+ * @param { string } groupKey the group Id for the
+ * email and phone number node to be guided
+ * @param { string } email member email to be pushed
+ * @param { string } phoneNumber member phone number to be pushed
+ *
+ * @return { void }
+ *
+ */
+export const membersDetails = (res, groupKey, email, phoneNumber) => {
+  configuration.database().ref(`groups/${groupKey}/groupName`)
+    .once('value', (groupSnapshot) => {
+      if (groupSnapshot.exists()) {
+        configuration.database().ref(`groups/${groupKey}/email`)
+          .push(email);
+        configuration.database().ref(`groups/${groupKey}/phoneNumber`)
+          .push(phoneNumber);
+      } else {
+        res.status(404).json({
+          message: 'Group does not exists'
+        });
+      }
+    });
+};
+
+
 /**
  * @description describes a function that sets the group details to the group
  * node and the user node in firebase
@@ -264,16 +297,30 @@ export const userValidation = (req, res, userId, groupId, displayName) => {
  */
 export const setGroupDetails = (
   req, res, groupName, timeStamp, displayName, userId) => {
-  const groupKey = db.database().ref('/groups')
+  const groupKey = configuration.database().ref('/groups')
     .push({
       groupName,
       dateCreated: timeStamp
     }).key;
-  db.database().ref(`/groups/${groupKey}/users`)
+
+  configuration.database().ref(`/users/${userId}`)
+    .once('value', (snapShot) => {
+      if (snapShot.exists()) {
+        const { email, phoneNumber } = snapShot.val();
+        membersDetails(res, groupKey, email, phoneNumber);
+      } else {
+        res.status(404).json({
+          message: 'User details not found'
+        });
+      }
+    });
+
+  configuration.database().ref(`/groups/${groupKey}/users`)
     .push({
       displayName
     });
-  db.database().ref(`/users/${userId}/groups`)
+
+  configuration.database().ref(`/users/${userId}/groups`)
     .child(groupKey)
     .set({
       groupName,
@@ -293,9 +340,7 @@ export const setGroupDetails = (
           message: 'Login to perform this operation'
         });
       } else {
-        res.status(500).json({
-          message: 'Hey..Stop! Something went wrong.'
-        });
+        serverError(res);
       }
     });
 };
@@ -315,19 +360,22 @@ export const setGroupDetails = (
  */
 export const registerUser = (
   req, res, email, password, displayName, phoneNumber) => {
+
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((user) => {
       const { uid } = user;
       user.updateProfile({
         displayName
       });
-      db.database().ref(`users/${uid}`).set({
+
+      configuration.database().ref(`users/${uid}`).set({
         email,
         password,
         displayName,
         phoneNumber
       });
-      db.database().ref('usernames').push({
+
+      configuration.database().ref('usernames').push({
         displayName,
         phoneNumber
       });
@@ -339,12 +387,12 @@ export const registerUser = (
       });
     })
     .catch((error) => {
-      const codeObj = mapCodeToObj[error.code];
-      if (codeObj) {
-        return res.status(codeObj.status).json({ message: codeObj.message });
+      const codeObject = mapCodeToObject[error.code];
+      if (codeObject) {
+        return res.status(codeObject.status).json({
+          message: codeObject.message
+        });
       }
-      return res.status(500).json({
-        message: 'Hey..Stop! Something went wrong.'
-      });
+      return serverError(res);
     });
 };

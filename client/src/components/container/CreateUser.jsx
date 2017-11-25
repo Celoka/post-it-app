@@ -1,6 +1,7 @@
 import React from 'react';
 import toastr from 'toastr';
 import { Redirect } from 'react-router-dom';
+
 import Navbar from '../presentation/Navbar';
 import { validateEmail } from '../../utils/';
 import AppActions from '../../actions/AppActions';
@@ -33,7 +34,6 @@ class CreateUser extends React.Component {
       allUsers: []
     };
   }
-
 
   /**
    * @description Monitors changes in the components and change the state
@@ -155,8 +155,7 @@ class CreateUser extends React.Component {
               id="sign"
               type="submit"
               name="submit"
-              style={{ width: 118, marginBottom: 10 }}
-            >
+              style={{ width: 118, marginBottom: 10 }}>
               Register Now
             </button>
           </form>

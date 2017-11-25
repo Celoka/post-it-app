@@ -12,6 +12,11 @@ describe('LoginUser.js action ', () => {
     dispatch.mockReset();
   });
 
+  it('Should call the action creator with the expected details ', () => {
+    const postMessageSpy = jest.spyOn(AppActions, 'postMessage');
+    expect(postMessageSpy).toBeCalled();
+  });
+
   it('should successfully match the user login details', () => {
     AppActions.postMessage()
       .then(() => {

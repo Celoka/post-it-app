@@ -1,6 +1,8 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
+import { googleCredentails } from '../actions/seeders';
+
 
 describe('GoogleLogin.js', () => {
   let dispatch;
@@ -10,6 +12,11 @@ describe('GoogleLogin.js', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
+  it('Should call the action creator with the expected details ', () => {
+    const googleUpdateSpy = jest.spyOn(AppActions, 'googleUpdate');
+    expect(googleUpdateSpy).toBeCalledWith(googleCredentails);
+  });
+
   it('should match the api response', () => {
     AppActions.googleUpdate('/api/v1/user/googleupdate')
       .then(() => {

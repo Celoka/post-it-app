@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+
 import UsersInGroup from '../../src/components/container/UsersInGroup.jsx';
 import AppActions from '../../src/actions/AppActions';
 import { newProperty, nextProps, event } from '../../__mocks__/seeders';
@@ -11,16 +12,17 @@ describe('<UsersInGroup/>', () => {
         displayName: 'West',
         userId: 'A7332TqlocVLBlIxX9r91vGjyVY2'
       },
+
       {
         displayName: 'Tobi',
         userId: 'A7332TqlocVLBlIxasdfrar91vGjyVY2'
-      },
+      }
     ]
   };
   const modal = jest.fn();
-  const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup');
   const wrapper = mount(<UsersInGroup newProperty={newProperty}
-   {...props} modal = {modal} />);
+    {...props} modal={modal} />);
+
   it('should call onChange method', () => {
     const onChangeSpy = jest.spyOn(
       wrapper.instance(), 'onChange'
@@ -28,6 +30,7 @@ describe('<UsersInGroup/>', () => {
     wrapper.instance().onChange(event);
     expect(onChangeSpy).toHaveBeenCalled();
   });
+
   it('calls componentWillReceiveProps method', () => {
     const componentWillReceivePropsSpy = jest.spyOn(
       wrapper.instance(), 'componentWillReceiveProps'
@@ -35,6 +38,7 @@ describe('<UsersInGroup/>', () => {
     wrapper.instance().componentWillReceiveProps(nextProps);
     expect(componentWillReceivePropsSpy).toHaveBeenCalled();
   });
+
   it('should call onChange method', () => {
     const onChangeSpy = jest.spyOn(
       wrapper.instance(), 'onChange'
@@ -49,6 +53,8 @@ describe('<UsersInGroup/>', () => {
   });
 
   it('should add a memebr to group when condition is met', () => {
+    const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup')
+      .mockImplementation(() => Promise.resolve({}));
     global.$ = () => null;
     const onClickSpy = jest.spyOn(
       wrapper.instance(), 'onClick'
@@ -56,11 +62,21 @@ describe('<UsersInGroup/>', () => {
     const event2 = {
       preventDefault: jest.fn()
     };
-
     wrapper.setState(newProperty);
     wrapper.instance().onClick(event2);
     expect(onClickSpy).toHaveBeenCalled();
     expect(addUserToGroupSpy).toHaveBeenCalled();
+  });
+
+  it('calls openAddMemberModal method', () => {
+    const openAddMemberModalSpy = jest.spyOn(
+      wrapper.instance(), 'openAddMemberModal'
+    );
+    const event2 = {
+      preventDefault: jest.fn()
+    };
+    wrapper.instance().openAddMemberModal(event2);
+    expect(openAddMemberModalSpy).toHaveBeenCalled();
   });
 
   it('should call userValidation method', () => {
@@ -70,5 +86,14 @@ describe('<UsersInGroup/>', () => {
     const displayName = 'user';
     wrapper.instance().userValidation(displayName);
     expect(userValidationSpy).toHaveBeenCalled();
+  });
+
+  it('should not add a user to group because user does not exist', () => {
+    const onClickSpy = jest.spyOn(AppActions, 'addUserToGroup').mockImplementation(() => Promise.reject({}));
+    wrapper.setState({
+      newUser: 'Andela',
+    });
+    wrapper.find('button').at(3).simulate('click');
+    expect(onClickSpy).toHaveBeenCalled();
   });
 });

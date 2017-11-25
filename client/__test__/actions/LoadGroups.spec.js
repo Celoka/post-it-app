@@ -11,15 +11,33 @@ describe('LoadGroups.js', () => {
     dispatch.mockReset();
   });
 
+  it('Should call the action creator with the expected details ', () => {
+    const loadGroupsSpy = jest.spyOn(AppActions, 'loadGroups');
+    expect(loadGroupsSpy).toBeCalled();
+  });
+
   it('should get all groups', () => {
     AppActions.loadGroups()
       .then(() => {
         const checkVariable = dispatch.mock.calls[0][0];
         expect(checkVariable.actionType).toEqual('LOAD_GROUP_NAMES');
         expect(checkVariable.actionType).toHaveProperty('userGroups')
-          .toEqual([{ groupId: '-Kwz6LQ8P66M25GfxlNQ', groupname: 'Nwendu' },
-          { groupId: '-Kwz6UdeGr7kjKRhpE0T', groupname: 'Ebuka' },
-          { groupId: '-KwzMzLzSbVLm_Vsauwd', groupname: 'Andela' }]);
+          .toEqual([
+            {
+              groupId: '-Kwz6LQ8P66M25GfxlNQ',
+              groupname: 'Nwendu'
+            },
+
+            {
+              groupId: '-Kwz6UdeGr7kjKRhpE0T',
+              groupname: 'Ebuka'
+            },
+
+            {
+              groupId: '-KwzMzLzSbVLm_Vsauwd',
+              groupname: 'Andela'
+            }
+          ]);
         expect(checkVariable.actionType).toEqual(AppConstants.LOAD_GROUP_NAMES);
       });
   });

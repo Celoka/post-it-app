@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Navbar from './Navbar';
 
 /**
@@ -16,11 +17,11 @@ const NotFoundPage = () => ({
       <div>
         <Navbar />
         <div className="col-sm-12">
-           <Link to="/" style={{ float: 'unset' }}>
-        <img style={{ width: '100%' }} src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510500970/404_e9uzrw.jpg"
-          id="not-found" />
-           </Link>
-          
+          <Link to="/" style={{ float: 'unset' }}>
+            <img style={{ width: '100%' }} src="http://res.cloudinary.com/dnsteufwj/image/upload/v1510500970/404_e9uzrw.jpg"
+              id="not-found" />
+          </Link>
+
         </div>
       </div>
     );
