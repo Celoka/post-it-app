@@ -5,8 +5,6 @@ import jwt from 'jsonwebtoken';
 
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import AppActions from '../actions/AppActions';
-
 /**
  * @description describes a function that pops a notification
  * when an error occurs
@@ -22,7 +20,9 @@ export const ToastrError = (error) => {
     error.message === 'Request failed with status code 403' ||
     error.message === 'Unauthorized operation'
   ) {
-    AppActions.logOut();
+    localStorage.clear();
+    location.href = '/signin';
+    toastr.error('Your session has expired, kindly login again');
   } else if (error.message === 'Request failed with status code 500') {
     toastr.error('An unexpected error occurred.');
   } else if (error.message === 'Network Error') {
