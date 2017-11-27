@@ -3,7 +3,6 @@ import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
 import mockApiCall from '../../__mocks__/axios';
 
-
 describe('CreateGroup.js ', () => {
   let dispatch;
   beforeEach(() => {
@@ -13,7 +12,6 @@ describe('CreateGroup.js ', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
-
 
   it('should successfully match the returned group details', () => {
     AppActions.createGroup('/api/v1/group')

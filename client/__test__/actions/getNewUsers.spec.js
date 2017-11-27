@@ -2,7 +2,6 @@ import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
 
-
 describe('GetNewUsers.js', () => {
   let dispatch;
   beforeEach(() => {

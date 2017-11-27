@@ -3,7 +3,6 @@ import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
 import mockApiCall from '../../__mocks__/axios';
 
-
 describe('AddUser.js', () => {
   let dispatch;
   beforeEach(() => {

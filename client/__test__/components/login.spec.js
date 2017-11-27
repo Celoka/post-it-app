@@ -8,7 +8,6 @@ import firebase from '../../src/firebase/firebase';
 import AppActions from '../../src/actions/AppActions';
 import Login from '../../src/components/container/Login.jsx';
 
-
 jest.mock('../../src/firebase/firebase', () => {
   /**
    * @description describes a function that mocks firebase module,

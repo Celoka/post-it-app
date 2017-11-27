@@ -3,15 +3,15 @@ import { shallow } from 'enzyme';
 
 import GroupList from '../../src/components/presentation/GroupList';
 
-const KeyName = {
-  groupId: 'id',
-  groupname: 'name',
-};
-const setGroupId = jest.fn();
-const wrapper = shallow(<GroupList KeyName={KeyName}
-  setGroupId={setGroupId} />);
-
 describe('<GroupList/>', () => {
+  const KeyName = {
+    groupId: 'id',
+    groupname: 'name',
+  };
+  const setGroupId = jest.fn();
+  const wrapper = shallow(<GroupList KeyName={KeyName}
+    setGroupId={setGroupId} />);
+
   it('should find a div', () => {
     expect(wrapper.find('div')).toHaveLength(1);
   });

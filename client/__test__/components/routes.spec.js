@@ -9,7 +9,6 @@ import NotFoundPage from '../../src/components/presentation/NotFoundPage';
 import DashBoard from '../../src/components/container/DashBoard';
 import ResetPassword from '../../src/components/container/ResetPassword';
 
-
 describe('<Routes.jsx/>', () => {
   const wrapper = mount(<MemoryRouter><Routes /></MemoryRouter>);
   it('should contain all the child component in the component', () => {

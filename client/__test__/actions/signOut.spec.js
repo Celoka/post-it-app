@@ -1,7 +1,6 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 
-
 describe('SignOut.js', () => {
   let dispatch;
   beforeEach(() => {

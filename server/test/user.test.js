@@ -15,10 +15,10 @@ const expect = chai.expect;
 describe('Sign up route', () => {
   it('should create a new user successfully', (done) => {
     const newUser = {
-      email: 'telon56@yahoo.com',
+      email: 'telon57@yahoo.com',
       password: 'Asorock1',
-      userName: 'TelonXXX',
-      phoneNumber: '2347045112430'
+      userName: 'TelonP',
+      phoneNumber: '2347045112431'
     };
     chai.request(server)
       .post('/api/v1/user/signup')

@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import CreateUser from '../../src/components/container/CreateUser.jsx';
 import AppActions from '../../src/actions/AppActions';
 
-
 describe('<Signup/>', () => {
   const wrapper = mount(<CreateUser />,
     {

@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import AppActions from '../../src/actions/AppActions';
 import MessageBoard from '../../src/components/container/MessageBoard';
 
-
 describe('<MessageBoard/>', () => {
   const KeyName = {
     groupId: 'id',
