@@ -19,7 +19,8 @@ import AppActions from '../actions/AppActions';
  */
 export const ToastrError = (error) => {
   if (error.message === 'Request failed with status code 401' ||
-    error.message === 'Request failed with status code 403'
+    error.message === 'Request failed with status code 403' ||
+    error.message === 'Unauthorized operation'
   ) {
     AppActions.logOut();
   } else if (error.message === 'Request failed with status code 500') {

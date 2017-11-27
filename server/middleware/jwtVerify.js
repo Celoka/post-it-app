@@ -26,7 +26,7 @@ const jwtVerify = (req, res, next) => {
     if (error) {
       if (error.message === 'jwt expired') {
         return res.status(401).json({
-          message: 'Token has expired'
+          message: 'Unauthorized operation'
         });
       }
 

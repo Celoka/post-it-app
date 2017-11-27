@@ -44,7 +44,7 @@ router.post('/api/v1/groups/:groupId/message',
 
 router.get('/api/v1/groups/:groupId/members', jwtVerify, newUsersInGroup);
 
-router.get('/api/v1/allusers', jwtVerify, getAllUsers);
+router.get('/api/v1/allusers', getAllUsers);
 
 router.get('/api/v1/:userId/groups',
   jwtVerify, validateRequestBody, getUserGroup);
