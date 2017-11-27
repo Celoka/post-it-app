@@ -63,17 +63,6 @@ describe('<Group/>', () => {
     expect(getUserGroupSpy).toHaveBeenCalled();
   });
 
-  it('calls openCreateGroupModal', () => {
-    const openCreateGroupModalSpy = jest.spyOn(
-      wrapper.instance(), 'openCreateGroupModal'
-    );
-    const event = {
-      preventDefault: jest.fn()
-    };
-    wrapper.instance().openCreateGroupModal(event);
-    expect(openCreateGroupModalSpy).toBeCalled();
-  });
-
   it('calls componentWillUnmount lifecycle method', () => {
     wrapper.unmount();
     expect(removeChangeListenerSpy).toHaveBeenCalled();

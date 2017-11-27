@@ -4,19 +4,15 @@ import {
   addedMember,
   getAllUsers,
   loadNewUsers,
-  googleUpdate,
   allGroupMessages,
-  groupNames,
-  googleLogin,
+  loadGroupNames,
   registerUser,
-  groupMessage,
-  groupName,
+  postGroupMessage,
+  getGroupUsers
 } from './seeders';
 
-jest.mock('../../src/dispatcher/AppDispatcher');
 jest.dontMock('../../src/stores/AppStore');
 
-const callback = AppDispatcher.register.mock.calls[0][0];
 const listenerCallBack = () => {
   'listenerCallBack';
 };
@@ -31,49 +27,44 @@ describe('Appstore', () => {
     expect(AppStore.getAllUsers()).toEqual([]);
     expect(AppStore.getAddMember()).toEqual([]);
     expect(AppStore.getNewMember()).toEqual([]);
-    expect(AppStore.getNewGoogleUser()).toEqual([]);
-    expect(AppStore.getGoogleUpdate()).toEqual([]);
   });
 
-  describe('Create user', () => {
+  describe('User store', () => {
     it('should successfully receive registered users details payload', () => {
-      callback(registerUser);
-      expect(AppDispatcher.register.mock.calls.length).toBe(1);
-      expect(AppStore.getCurrentUser()).toEqual([{
+      AppDispatcher.dispatch(registerUser.action);
+      expect(AppStore.getCurrentUser()).toEqual({
         isConfirmed: true,
         jwtToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJDandoVmZOZU9OT1ZrT1g5UVp6bVFGMko1ajgzIiwiZGlzcGxheU5hbWUiOiJFbWVrYSIsImlhdCI6MTUxMTYxODUzNCwiZXhwIjoxNTExNzA0OTM0fQ.ufKD1ru8iwhLru63f_mogzZcyq_5lUYt-vcGizvs3V0',
         message: 'Registration success'
-      }
-      ]);
+      });
     });
   });
 
-  describe('Create group', () => {
-    it('should update the group store with group names and Ids', () => {
-      callback(groupName);
+  describe('Group store', () => {
+    it('should be updated with the group names and Ids', () => {
       const emitChange = jest.fn();
       emitChange();
-      expect(AppDispatcher.register.mock.calls.length).toBe(1);
+      AppDispatcher.dispatch(loadGroupNames.action);
       expect(AppStore.getCurrentGroup()).toEqual([
         {
-          userId: 'AKFnhd92XHNvMGHmUSHJ2CGt1Au1',
-          userNames: 'West'
-        },
+          status: 'Message retrieved successfully',
+          userGroups: [
+            {
+              groupId: '-Kwz6LQ8P66M25GfxlNQ',
+              groupName: 'Nwendu'
+            },
 
-        {
-          userId: 'HIBpkdz7IfTSyOyLbevWasL78HD3',
-          userNames: 'West'
-        },
+            {
+              groupId: '-Kwz6UdeGr7kjKRhpE0T',
+              groupName: 'Ebuka'
+            },
 
-        {
-          userId: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1',
-          userNames: 'Chinwendu'
-        },
-
-        {
-          userId: 'f9TGDZzckNhTxr4KakHiChiAVYP2',
-          userNames: 'Ebuka'
+            {
+              groupId: '-KwzMzLzSbVLm_Vsauwd',
+              groupName: 'Andela'
+            }
+          ]
         }
       ]);
       expect(emitChange).toHaveBeenCalled();
@@ -91,28 +82,27 @@ describe('Appstore', () => {
       });
   });
 
-  describe('Load groups', () => {
+  describe('Get group users', () => {
     it('should update the group store with the groupnames data', () => {
-      callback(groupNames);
       const emitChange = jest.fn();
       emitChange();
-      expect(AppDispatcher.register.mock.calls.length).toBe(1);
-      expect(AppStore.getUserGroup()).toEqual([
-        {
-          groupId: '-Kwz6LQ8P66M25GfxlNQ',
-          groupname: 'Nwendu'
-        },
-
-        {
-          groupId: '-Kwz6UdeGr7kjKRhpE0T',
-          groupname: 'Ebuka'
-        },
-
-        {
-          groupId: '-KwzMzLzSbVLm_Vsauwd',
-          groupname: 'Andela'
-        }
-      ]);
+      AppDispatcher.dispatch(getGroupUsers.action);
+      expect(AppStore.getUserGroup()).toEqual([{
+        status: 'Message retrieved successfully',
+        userGroups: [
+          {
+            groupId: '-Kwz6LQ8P66M25GfxlNQ',
+            groupName: 'Nwendu'
+          },
+          {
+            groupId: '-Kwz6UdeGr7kjKRhpE0T',
+            groupName: 'Ebuka'
+          },
+          {
+            groupId: '-KwzMzLzSbVLm_Vsauwd',
+            groupName: 'Andela'
+          }]
+      }]);
       expect(emitChange).toHaveBeenCalled();
     });
     it('should call the event listener when store receives data', () => {
@@ -128,40 +118,43 @@ describe('Appstore', () => {
       });
   });
 
-  describe('Post group message', () => {
-    it('should update the post message store with the group messages mock data',
-      () => {
-        callback(groupMessage);
-        const emitChange = jest.fn();
-        emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getGroupMessage([
-          {
-            messageId: '-Kx-bhNDZLmYclETVJUc',
-            message: 'Humanity is the oldest religion.',
-            time: 'Sat Oct 21 2017 21:27:51 GMT+0100 (WAT)',
-            priority: 'Critical',
-            user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
-          },
+  describe('Group message store', () => {
+    it('should should receive group messages posted by users', () => {
+      const emitChange = jest.fn();
+      emitChange();
+      AppDispatcher.dispatch(postGroupMessage.action);
+      expect(AppStore.getGroupMessage()).toEqual([
+        {
+          status: 'Message retrived succcessfully',
+          groupMessage: [
+            {
+              messageId: '-Kx-bhNDZLmYclETVJUc',
+              message: 'Humanity is the oldest religion.',
+              time: 'Sat Oct 21 2017 21:27:51 GMT+0100 (WAT)',
+              priority: 'Critical',
+              user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
+            },
 
-          {
-            messageId: '-Kx-bpTOVwHSHS8Qv7mf',
-            message: 'We will hereby commence our product launch',
-            time: 'Sat Oct 21 2017 21:28:25 GMT+0100 (WAT)',
-            priority: 'Urgent',
-            user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
-          },
+            {
+              messageId: '-Kx-bpTOVwHSHS8Qv7mf',
+              message: 'We will hereby commence our product launch',
+              time: 'Sat Oct 21 2017 21:28:25 GMT+0100 (WAT)',
+              priority: 'Urgent',
+              user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
+            },
 
-          {
-            messageId: '-KxAdcAa8gylf2UncLw5',
-            message: 'Hello world ',
-            time: 'Tue Oct 24 2017 00:52:04 GMT+0100 (WAT)',
-            priority: 'Normal',
-            user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
-          }
-        ]));
-        expect(emitChange).toHaveBeenCalled();
-      });
+            {
+              messageId: '-KxAdcAa8gylf2UncLw5',
+              message: 'Hello world ',
+              time: 'Tue Oct 24 2017 00:52:04 GMT+0100 (WAT)',
+              priority: 'Normal',
+              user: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1'
+            }
+          ]
+        }
+      ]);
+      expect(emitChange).toHaveBeenCalled();
+    });
     it('should call the event listener when store receives data', () => {
       AppStore.addChangeListener(listenerCallBack);
       const events = AppStore._events;
@@ -178,31 +171,32 @@ describe('Appstore', () => {
   describe('Get all users', () => {
     it('should update all users store with all get all users data',
       () => {
-        callback(getAllUsers);
         const emitChange = jest.fn();
         emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getAllUsers()).toEqual([
+        AppDispatcher.dispatch(getAllUsers.action);
+        expect(AppStore.getAllUsers()).toEqual(
           {
-            userId: 'AKFnhd92XHNvMGHmUSHJ2CGt1Au1',
-            userNames: 'West'
-          },
-
-          {
-            userId: 'HIBpkdz7IfTSyOyLbevWasL78HD3',
-            userNames: 'West'
-          },
-
-          {
-            userId: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1',
-            userNames: 'Chinwendu'
-          },
-
-          {
-            userId: 'f9TGDZzckNhTxr4KakHiChiAVYP2',
-            userNames: 'Ebuka'
+            message: 'Users retrieved successfully',
+            usersDetails:
+              [
+                {
+                  userId: 'AKFnhd92XHNvMGHmUSHJ2CGt1Au1',
+                  userNames: 'West'
+                },
+                {
+                  userId: 'HIBpkdz7IfTSyOyLbevWasL78HD3',
+                  userNames: 'West'
+                },
+                {
+                  userId: 'JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1',
+                  userNames: 'Chinwendu'
+                },
+                {
+                  userId: 'f9TGDZzckNhTxr4KakHiChiAVYP2',
+                  userNames: 'Ebuka'
+                }]
           }
-        ]);
+        );
         expect(emitChange).toHaveBeenCalled();
       });
     it('should call the event listener when store receives data', () => {
@@ -218,13 +212,12 @@ describe('Appstore', () => {
       });
   });
 
-  describe('Add user to group', () => {
-    it('should update add user to group store with all get addedMember data',
+  describe('Member add store', () => {
+    it('should receive member data when a user adds a new member',
       () => {
-        callback(addedMember);
         const emitChange = jest.fn();
         emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
+        AppDispatcher.dispatch(addedMember.action);
         expect(AppStore.getAddMember()).toEqual([{
           message: 'User added successfully'
         }]);
@@ -246,23 +239,18 @@ describe('Appstore', () => {
   describe('Load new users', () => {
     it('should update load new users store with loadNewUsers data',
       () => {
-        callback(loadNewUsers);
         const emitChange = jest.fn();
         emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getNewMember()).toEqual([
+        AppDispatcher.dispatch(loadNewUsers.action);
+        expect(AppStore.getNewMember()).toEqual(
           {
-            userNames: 'West'
-          },
-
-          {
-            userNames: 'Chinwendu'
-          },
-
-          {
-            userNames: 'Ebuka'
-          }
-        ]);
+            users:
+              [
+                { userNames: 'West' },
+                { userNames: 'Chinwendu' },
+                { userNames: 'Ebuka' }
+              ]
+          });
         expect(emitChange).toHaveBeenCalled();
       });
     it('should call the event listener when store receives data', () => {
@@ -278,77 +266,24 @@ describe('Appstore', () => {
       });
   });
 
-  describe('Google login', () => {
-    it('should update Google login store with googleLogin data',
-      () => {
-        callback(googleLogin);
-        const emitChange = jest.fn();
-        emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getNewGoogleUser()).toEqual([
-          {
-            isConfirmed: false,
-            jwtToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJDQnJYS05mSFdZUVZUa2wyMlkwRzZNWWFyMHQxIiwiZGlzcGxheU5hbWUiOiJFbG9rYSBjaGltYSIsImVtYWlsIjoiZWxva2FjaGltYUBnbWFpbC5jb20iLCJpYXQiOjE1MTA4Mjk2MDMsImV4cCI6MTUxMDgzMzIwM30.V6ECaccJ3lR0gwc3y2bzb2psjMT7JFddWiQTRODp_MM',
-            message: 'Another step is required '
-          }]);
-        expect(emitChange).toHaveBeenCalled();
-      });
-    it('should call the event listener when store receives data', () => {
-      AppStore.addChangeListener(listenerCallBack);
-      const events = AppStore._events;
-      expect(Object.keys(events).length).toEqual(1);
-    });
-    it('should remove change listener when data change has been emitted',
-      () => {
-        AppStore.removeChangeListener(listenerCallBack);
-        const events = AppStore._events;
-        expect(Object.keys(events).length).toEqual(0);
-      });
-  });
-
-  describe('Google update', () => {
-    it('should update Google update store with googleUpdate data',
-      () => {
-        callback(googleUpdate);
-        const emitChange = jest.fn();
-        emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getGoogleUpdate()).toEqual([{
-          isConfirmed: true,
-          jwtToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJEYmdRTWpzWjVCVkptRW43RG1ZVzJQbGdVdXoyIiwiZGlzcGxheU5hbWUiOiJFbG9rYSBjaGltYSIsImVtYWlsIjoiZWxva2FjaGltYUBnbWFpbC5jb20iLCJpYXQiOjE1MTA4MzA1MTIsImV4cCI6MTUxMDgzNDExMn0.np2HOTEgliKNpO__GDYD3XWQ1ncVl9phbEi5uVXGiXk',
-          message: 'Login successful'
-        }]);
-        expect(emitChange).toHaveBeenCalled();
-      });
-    it('should call the event listener when store receives data', () => {
-      AppStore.addChangeListener(listenerCallBack);
-      const events = AppStore._events;
-      expect(Object.keys(events).length).toEqual(1);
-    });
-    it('should remove change listener when data change has been emitted',
-      () => {
-        AppStore.removeChangeListener(listenerCallBack);
-        const events = AppStore._events;
-        expect(Object.keys(events).length).toEqual(0);
-      });
-  });
-
-  describe('Get all group message', () => {
+  describe('All group message store', () => {
     it('should update all messages store with allGroupMessages data',
       () => {
-        callback(allGroupMessages);
         const emitChange = jest.fn();
         emitChange();
-        expect(AppDispatcher.register.mock.calls.length).toBe(1);
-        expect(AppStore.getAllMessages()).toEqual([
+        AppDispatcher.dispatch(allGroupMessages.action);
+        expect(AppStore.getAllMessages()).toEqual(
           {
-            messageId: '-KznV7kzR0j3Ge8r9tr-',
-            groupMessage: 'Hello world ',
-            timeStamp: 'Saturday, November 25, 2017 3:06 PM',
-            priority: 'Normal',
-            displayName: 'Emeka'
-          }
-        ]);
+            message: 'Message retrieved successfully',
+            groupMessage:
+              [{
+                messageId: '-KznV7kzR0j3Ge8r9tr-',
+                groupMessage: 'Hello world ',
+                timeStamp: 'Saturday, November 25, 2017 3:06 PM',
+                priority: 'Normal',
+                displayName: 'Emeka'
+              }]
+          });
         expect(emitChange).toHaveBeenCalled();
       });
 

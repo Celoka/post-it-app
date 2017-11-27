@@ -55,7 +55,6 @@ describe('<UsersInGroup/>', () => {
   it('should add a memebr to group when condition is met', () => {
     const addUserToGroupSpy = jest.spyOn(AppActions, 'addUserToGroup')
       .mockImplementation(() => Promise.resolve({}));
-    global.$ = () => null;
     const onClickSpy = jest.spyOn(
       wrapper.instance(), 'onClick'
     );
@@ -66,17 +65,6 @@ describe('<UsersInGroup/>', () => {
     wrapper.instance().onClick(event2);
     expect(onClickSpy).toHaveBeenCalled();
     expect(addUserToGroupSpy).toHaveBeenCalled();
-  });
-
-  it('calls openAddMemberModal method', () => {
-    const openAddMemberModalSpy = jest.spyOn(
-      wrapper.instance(), 'openAddMemberModal'
-    );
-    const event2 = {
-      preventDefault: jest.fn()
-    };
-    wrapper.instance().openAddMemberModal(event2);
-    expect(openAddMemberModalSpy).toHaveBeenCalled();
   });
 
   it('should call userValidation method', () => {
