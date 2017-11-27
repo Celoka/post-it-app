@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
 
 import mockApiCall from '../../__mocks__/axios';
-import firebase from '../../src/firebase/index';
+import firebase from '../../src/firebase/firebase';
 import AppActions from '../../src/actions/AppActions';
 import Login from '../../src/components/container/Login.jsx';
 
 
-jest.mock('../../src/firebase/index', () => {
+jest.mock('../../src/firebase/firebase', () => {
   /**
    * @description describes a function that mocks firebase module,
    * fires it action to make an Api call, returns a promise that is mocked

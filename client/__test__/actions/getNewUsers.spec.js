@@ -1,6 +1,5 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
-import { getNewUsers } from '../actions/seeders';
 import AppConstants from '../../src/constants/AppConstants.js';
 
 
@@ -11,11 +10,6 @@ describe('GetNewUsers.js', () => {
   });
   afterEach(() => {
     dispatch.mockReset();
-  });
-
-  it('Should call the action creator with the expected details ', () => {
-    const getNewUsersSpy = jest.spyOn(AppActions, 'getNewUsers');
-    expect(getNewUsersSpy).toBeCalledWith(getNewUsers);
   });
 
   it('should return the details of added member', () => {
@@ -31,6 +25,17 @@ describe('GetNewUsers.js', () => {
             groupKey: '-KxNrlB8sWhbiFnLjQhP'
           });
         expect(messageResult.actionType).toEqual(AppConstants.LOAD_NEW_USERS);
+      });
+  });
+
+  it('should dispatch actiontype SET_GROUP_NAMES successfully', () => {
+    AppActions.getNewUsers('groups/test/members')
+      .then(() => {
+        const userData = dispatch.mock.calls[0][0];
+        expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+          actionType: AppConstants.SET_GROUP_NAMES,
+          userData
+        });
       });
   });
 });

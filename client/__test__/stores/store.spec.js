@@ -42,7 +42,7 @@ describe('Appstore', () => {
       expect(AppStore.getCurrentUser()).toEqual([{
         isConfirmed: true,
         jwtToken:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJDandoVmZOZU9OT1ZrT1g5UVp6bVFGMko1ajgzIiwiZGlzcGxheU5hbWUiOiJFbWVrYSIsImlhdCI6MTUxMTYxODUzNCwiZXhwIjoxNTExNzA0OTM0fQ.ufKD1ru8iwhLru63f_mogzZcyq_5lUYt-vcGizvs3V0',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJDandoVmZOZU9OT1ZrT1g5UVp6bVFGMko1ajgzIiwiZGlzcGxheU5hbWUiOiJFbWVrYSIsImlhdCI6MTUxMTYxODUzNCwiZXhwIjoxNTExNzA0OTM0fQ.ufKD1ru8iwhLru63f_mogzZcyq_5lUYt-vcGizvs3V0',
         message: 'Registration success'
       }
       ]);
@@ -92,7 +92,7 @@ describe('Appstore', () => {
   });
 
   describe('Load groups', () => {
-    it('should update the group store with the groupnames mock data', () => {
+    it('should update the group store with the groupnames data', () => {
       callback(groupNames);
       const emitChange = jest.fn();
       emitChange();
@@ -176,7 +176,7 @@ describe('Appstore', () => {
   });
 
   describe('Get all users', () => {
-    it('should update all users store with all get all users mock data',
+    it('should update all users store with all get all users data',
       () => {
         callback(getAllUsers);
         const emitChange = jest.fn();
@@ -219,16 +219,17 @@ describe('Appstore', () => {
   });
 
   describe('Add user to group', () => {
-    it('should update add user to group store with all get addedMember mock data', () => {
-      callback(addedMember);
-      const emitChange = jest.fn();
-      emitChange();
-      expect(AppDispatcher.register.mock.calls.length).toBe(1);
-      expect(AppStore.getAddMember()).toEqual([{
-        message: 'User added successfully'
-      }]);
-      expect(emitChange).toHaveBeenCalled();
-    });
+    it('should update add user to group store with all get addedMember data',
+      () => {
+        callback(addedMember);
+        const emitChange = jest.fn();
+        emitChange();
+        expect(AppDispatcher.register.mock.calls.length).toBe(1);
+        expect(AppStore.getAddMember()).toEqual([{
+          message: 'User added successfully'
+        }]);
+        expect(emitChange).toHaveBeenCalled();
+      });
     it('should call the event listener when store receives data', () => {
       AppStore.addChangeListener(listenerCallBack);
       const events = AppStore._events;
@@ -243,7 +244,7 @@ describe('Appstore', () => {
   });
 
   describe('Load new users', () => {
-    it('should update load new users store with loadNewUsers mock data',
+    it('should update load new users store with loadNewUsers data',
       () => {
         callback(loadNewUsers);
         const emitChange = jest.fn();
@@ -278,7 +279,7 @@ describe('Appstore', () => {
   });
 
   describe('Google login', () => {
-    it('should update Google login store with googleLogin mock data',
+    it('should update Google login store with googleLogin data',
       () => {
         callback(googleLogin);
         const emitChange = jest.fn();
@@ -306,7 +307,7 @@ describe('Appstore', () => {
   });
 
   describe('Google update', () => {
-    it('should update Google update store with googleUpdate mock data',
+    it('should update Google update store with googleUpdate data',
       () => {
         callback(googleUpdate);
         const emitChange = jest.fn();
@@ -333,7 +334,7 @@ describe('Appstore', () => {
   });
 
   describe('Get all group message', () => {
-    it('should update all messages store with allGroupMessages mock data',
+    it('should update all messages store with allGroupMessages data',
       () => {
         callback(allGroupMessages);
         const emitChange = jest.fn();

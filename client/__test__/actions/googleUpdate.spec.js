@@ -1,8 +1,6 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
-import { googleCredentails } from '../actions/seeders';
-
 
 describe('GoogleLogin.js', () => {
   let dispatch;
@@ -12,12 +10,8 @@ describe('GoogleLogin.js', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
-  it('Should call the action creator with the expected details ', () => {
-    const googleUpdateSpy = jest.spyOn(AppActions, 'googleUpdate');
-    expect(googleUpdateSpy).toBeCalledWith(googleCredentails);
-  });
 
-  it('should match the api response', () => {
+  it('should make a call to the end point and resolve the response', () => {
     AppActions.googleUpdate('/api/v1/user/googleupdate')
       .then(() => {
         const checkVariable = dispatch.mock.calls[0][0];
@@ -28,6 +22,17 @@ describe('GoogleLogin.js', () => {
           message: 'Login successful'
         });
         expect(checkVariable.actionType).toEqual(AppConstants.GOOGLE_UPDATE);
+      });
+  });
+
+  it('should dispatch actiontype GOOGLE_UPDATE successfully', () => {
+    AppActions.googleUpdate('/api/v1/user/googleupdate')
+      .then(() => {
+        const userData = dispatch.mock.calls[0][0];
+        expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+          actionType: AppConstants.GOOGLE_UPDATE,
+          userData
+        });
       });
   });
 });

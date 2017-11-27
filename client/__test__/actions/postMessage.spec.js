@@ -12,11 +12,6 @@ describe('LoginUser.js action ', () => {
     dispatch.mockReset();
   });
 
-  it('Should call the action creator with the expected details ', () => {
-    const postMessageSpy = jest.spyOn(AppActions, 'postMessage');
-    expect(postMessageSpy).toBeCalled();
-  });
-
   it('should successfully match the user login details', () => {
     AppActions.postMessage()
       .then(() => {
@@ -30,6 +25,16 @@ describe('LoginUser.js action ', () => {
             timestamp: 'Thu Oct 26 2017 16:45:25 GMT+0100 (WAT)'
           });
         expect(messageResult.actionType).toEqual(AppConstants.SET_GROUP_MESSAGE);
+      });
+  });
+  it('should dispatch actiontype SET_GROUP_MESSAGE successfully', () => {
+    AppActions.postMessage()
+      .then(() => {
+        const groupMessage = dispatch.mock.calls[0][0];
+        expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+          actionType: AppConstants.SET_GROUP_MESSAGE,
+          groupMessage
+        });
       });
   });
 });

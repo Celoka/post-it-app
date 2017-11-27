@@ -14,10 +14,6 @@ describe('CreateGroup.js ', () => {
     dispatch.mockReset();
   });
 
-  it('Should call the action creator with the expected details ', () => {
-    const createGroupSpy = jest.spyOn(AppActions, 'createGroup');
-    expect(createGroupSpy).toBeCalled();
-  });
 
   it('should successfully match the returned group details', () => {
     AppActions.createGroup('/api/v1/group')
@@ -33,5 +29,15 @@ describe('CreateGroup.js ', () => {
           });
         expect(messageResult.actionType).toEqual(AppConstants.SET_GROUP_NAME);
       });
+  });
+
+  it('should dispatch actiontype SET_GROUP_NAMES successfully', () => {
+    AppActions.createGroup('/api/v1/group').then(() => {
+      const groupData = dispatch.mock.calls[0][0];
+      expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+        actionType: AppConstants.SET_GROUP_NAMES,
+        groupData
+      });
+    });
   });
 });

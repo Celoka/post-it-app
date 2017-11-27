@@ -11,11 +11,6 @@ describe('LoadGroups.js', () => {
     dispatch.mockReset();
   });
 
-  it('Should call the action creator with the expected details ', () => {
-    const loadGroupsSpy = jest.spyOn(AppActions, 'loadGroups');
-    expect(loadGroupsSpy).toBeCalled();
-  });
-
   it('should get all groups', () => {
     AppActions.loadGroups()
       .then(() => {
@@ -39,6 +34,17 @@ describe('LoadGroups.js', () => {
             }
           ]);
         expect(checkVariable.actionType).toEqual(AppConstants.LOAD_GROUP_NAMES);
+      });
+  });
+
+  it('should dispatch actiontype LOAD_GROUP_NAMES successfully', () => {
+    AppActions.loadGroups()
+      .then(() => {
+        const userGroups = dispatch.mock.calls[0][0];
+        expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+          actionType: AppConstants.LOAD_GROUP_NAMES,
+          userGroups
+        });
       });
   });
 });

@@ -1,7 +1,6 @@
 import AppActions from '../../src/actions/AppActions.js';
 import AppDispatcher from '../../src/dispatcher/AppDispatcher.js';
 import AppConstants from '../../src/constants/AppConstants.js';
-import { groupDetail } from '../actions/seeders';
 import mockApiCall from '../../__mocks__/axios';
 
 describe('AllGroupMembers.js', () => {
@@ -12,11 +11,6 @@ describe('AllGroupMembers.js', () => {
   });
   afterEach(() => {
     dispatch.mockReset();
-  });
-
-  it('Should call the action creator with the expected details ', () => {
-    const getAllUsersSpy = jest.spyOn(AppActions, 'getAllUsers');
-    expect(getAllUsersSpy).toBeCalledWith(groupDetail);
   });
 
   it('should get all group messages', () => {
@@ -47,6 +41,17 @@ describe('AllGroupMembers.js', () => {
             }
           ]);
         expect(messageResult.actionType).toEqual(AppConstants.GET_ALL_USERS);
+      });
+  });
+
+  it('should dispatch actiontype GET_ALL_USERS successfully', () => {
+    AppActions.getAllUsers('/api/v1/allusers')
+      .then(() => {
+        const allUsers = dispatch.mock.calls[0][0];
+        expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
+          actionType: AppConstants.GET_ALL_USERS,
+          allUsers
+        });
       });
   });
 });
