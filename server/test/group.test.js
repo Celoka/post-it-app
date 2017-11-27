@@ -13,7 +13,7 @@ const expect = chai.expect;
 
 describe('Group routes', () => {
   const groupTest = {
-    group: 'New Group 26',
+    group: 'New Group 27',
     userId: '35KlmtIB5Fg1WJ8gaD7F4jNdvRg2',
     displayName: 'Post-it'
   };
@@ -97,8 +97,8 @@ describe('Group routes', () => {
   describe('Add member route', () => {
     const credentials = {
       groupId: '-KzTN5kSLI8pR_Mwa9Zn',
-      newUser: 'Telonx',
-      userId: 'FKRoGStfSicCnqByNWPrSNcXekM2'
+      newUser: 'Emmason',
+      userId: '5o4NnNuxrybxLeYoMdGkIzrq82D3'
     };
     it('should add a member to a group and successfully return 201',
       (done) => {

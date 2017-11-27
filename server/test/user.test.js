@@ -15,10 +15,10 @@ const expect = chai.expect;
 describe('Sign up route', () => {
   it('should create a new user successfully', (done) => {
     const newUser = {
-      email: 'telon57@yahoo.com',
+      email: 'telon67@yahoo.com',
       password: 'Asorock1',
-      userName: 'TelonP',
-      phoneNumber: '2347045112431'
+      userName: 'TelonPF',
+      phoneNumber: '2347044112439'
     };
     chai.request(server)
       .post('/api/v1/user/signup')
@@ -502,7 +502,7 @@ describe('Password reset route', () => {
   it('should send a password reset link to a registered member',
     (done) => {
       const userTest = {
-        email: 'post-it@yahoo.com'
+        email: 'telon5@yahoo.com'
       };
       chai.request(server)
         .post('/api/v1/user/passwordreset')
