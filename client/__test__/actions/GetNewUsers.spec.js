@@ -11,12 +11,11 @@ describe('GetNewUsers.js', () => {
   afterEach(() => {
     dispatch.mockReset();
   });
-
   it('should return the details of added member', () => {
     AppActions.getNewUsers('groups/test/members')
-    .then(() => {
-      const messageResult = dispatch.mock.calls[0][0];
-      expect(messageResult.actionType).toEqual(AppConstants.GET_NEW_USERS);
-    });
+      .then(() => {
+        const messageResult = dispatch.mock.calls[0][0];
+        expect(messageResult.actionType).toEqual(AppConstants.LOAD_NEW_USERS);
+      });
   });
 });

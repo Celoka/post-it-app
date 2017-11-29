@@ -13,8 +13,8 @@ describe('ResetPassWordAction.js', () => {
 
   it('should successfully return a promise after API call', () => {
     AppActions.resetPassword('/user/passwordreset')
-    .then(() => {
-      expect(dispatch.mock.calls).toHaveLength(0);
-    });
+      .then(() => {
+        expect(dispatch.mock.calls).toHaveLength(0);
+      });
   });
 });

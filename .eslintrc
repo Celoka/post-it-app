@@ -50,7 +50,8 @@
         "getCurrentGroup",
         "getCurrentUser",
         "getGroupMessage",
-        "getNewGoogleUser"
+        "getNewGoogleUser",
+        "getGoogleUpdate"
       ]
     }],
     "no-shadow": [
@@ -89,7 +90,9 @@
   "globals": {
     "jest": true,
     "no-unused-vars": false,
-    "localStorage": true
+    "localStorage": true,
+    "document": true,
+    "$": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

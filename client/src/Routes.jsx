@@ -1,12 +1,22 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import CreateUser from './components/CreateUser.jsx';
-import Home from './components/Home.jsx';
-import Login from './components/Login.jsx';
-import NotFoundPage from './components/NotFoundPage.jsx';
-import DashBoard from './components/DashBoard.jsx';
-import ResetPassword from './components/ResetPassword.jsx';
+import CreateUser from '../src/components/container/CreateUser';
+import Home from '../src/components/presentation/Home';
+import Login from '../src/components/container/Login';
+import GoogleUpdate from '../src/components/container/GoogleUpdate';
+import NotFoundPage from '../src/components/presentation/NotFoundPage';
+import DashBoard from '../src/components/container/DashBoard';
+import ResetPassword from '../src/components/container/ResetPassword';
 
+/**
+ * @description describes a function that checks for a user token in
+ * the local storage and subsequently use this to redirect the user to
+ * the appropriate page
+ *
+ * @param { component } param0
+ *
+ * @return { void }
+ */
 const RequireAuth = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -24,13 +34,13 @@ const RequireAuth = ({ component: Component, ...rest }) => (
   />
 );
 
-
 const Routes = () => (
   <main>
      <Switch>
       <Route exact path='/' component={ Home } />
       <Route path='/signup' component={ CreateUser } />
       <Route path='/signin' component={ Login } />
+      <Route path='/googlepage' component={GoogleUpdate} />
       <Route exact path ='/resetpassword' component={ ResetPassword } />
       <RequireAuth path='/dashboard' component={ DashBoard } />
       <Route component={NotFoundPage} />

@@ -9,11 +9,10 @@ import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import routes from './routes/routes';
-import getCurrentUser from './middlewares/auth';
 
 
 let configPath;
-const environment = process.env.NODE_ENV || 'production';
+const environment = process.env.NODE_ENV || 'development';
 if (environment === 'production') {
   configPath = '../webpack.config.prod';
 } else {
@@ -23,39 +22,34 @@ const config = require(configPath);
 const app = express();
 const port = process.env.PORT || 8000;
 const compiler = webpack(config);
-const publicPath = express.static(path.join(__dirname, '../client/app/js'));
+const publicPath = express.static(path.join(__dirname,
+   '../client/app/index.html'));
 
-
-/**
- * @type
- * @returns current signup user
- */
-
-app.use((req, res, next) => {
-  getCurrentUser().then((user) => {
-    req.user = user;
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POSTS');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, ' +
-         'content-type, Authorization');
-    next();
-  });
-});
-
-app.use(webpackMiddleware(compiler, {
-  publicPath: config.output.publicPath,
-  historyApiFallback: true,
-  stats: { colors: true }
-}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(bodyParser.json());
-app.use(webpackHotMiddleware(compiler));
+
+
+if (environment === 'development') {
+  app.use(webpackMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    historyApiFallback: true,
+    stats: { colors: true }
+  }));
+  app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(webpackMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    historyApiFallback: true,
+    stats: { colors: true }
+  }));
+  app.use(webpackHotMiddleware(compiler));
+}
 app.use('/', publicPath);
 
 app.use(routes);
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/app/js/index.html'));
+  res.sendFile(path.join(__dirname, '../client/app/index.html'));
 });
 
 app.listen(port);

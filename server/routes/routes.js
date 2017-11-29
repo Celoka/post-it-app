@@ -1,43 +1,42 @@
 import express from 'express';
-import {
-  validateCreateUser,
-  validateLogin,
-  validateCreateGroup,
-  validateAddmember,
-  validateResetPassword
- } from '../utils/helpers';
+import jwtVerify from '../middleware/jwtVerify';
+import validateRequestBody from '../middleware/validateRequestBody';
 import {
   createUser,
   logIn,
   logOut,
   resetPassword,
-  getAllUsersInGroup,
+  getAllUsers,
   newUsersInGroup,
-  googleSignIn
-} from '../controllers/users';
+  googleSignIn,
+  googleUpdate
+} from '../controllers/UserControllers';
 import {
   createGroup,
   addMemberToGroup,
   postMessage,
-  getGroup,
+  getUserGroup,
   getGroupMessage,
   getUserInGroup
-} from '../controllers/groups';
+} from '../controllers/GroupControllers';
 
 const router = express.Router();
-
-router.post('/api/v1/user/signup', validateCreateUser, createUser);
-router.post('/api/v1/user/signin', validateLogin, logIn);
-router.post('/api/v1/user/googlesignin', googleSignIn);
+router.post('/api/v1/user/googleupdate', validateRequestBody, googleUpdate);
+router.post('/api/v1/user/signup', validateRequestBody, createUser);
+router.post('/api/v1/user/signin', validateRequestBody, logIn);
+router.post('/api/v1/user/googlesignin', validateRequestBody, googleSignIn);
 router.post('/api/v1/user/signout', logOut);
-router.post('/api/v1/user/passwordreset', validateResetPassword, resetPassword);
-router.post('/api/v1/group', validateCreateGroup, createGroup);
-router.post('/api/v1/group/groupId/user', validateAddmember, addMemberToGroup);
-router.post('/api/v1/groups/:groupId/message', postMessage);
-router.get('/api/v1/groups/:groupId/members', newUsersInGroup);
-router.get('/api/v1/user/allusers', getAllUsersInGroup);
-router.get('/api/v1/groups', getGroup);
-router.get('/api/v1/group/:groupId', getGroupMessage);
-router.get('/api/v1/group/:groupId/users', getUserInGroup);
+router.post('/api/v1/user/passwordreset', validateRequestBody, resetPassword);
+router.post('/api/v1/group', jwtVerify, validateRequestBody, createGroup);
+router.post('/api/v1/group/groupId/user', jwtVerify,
+  validateRequestBody, addMemberToGroup);
+router.post('/api/v1/groups/:groupId/message',
+ jwtVerify, validateRequestBody, postMessage);
+router.get('/api/v1/groups/:groupId/members', jwtVerify, newUsersInGroup);
+router.get('/api/v1/allusers', jwtVerify, getAllUsers);
+router.get('/api/v1/:userId/groups',
+  jwtVerify, validateRequestBody, getUserGroup);
+router.get('/api/v1/group/:groupId', jwtVerify, getGroupMessage);
+router.get('/api/v1/group/:groupId/users', jwtVerify, getUserInGroup);
 
 export default router;

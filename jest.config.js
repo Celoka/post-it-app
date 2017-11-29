@@ -8,5 +8,6 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     'localStorage'
-  ]
+  ],
+  collectCoverage: true
 };

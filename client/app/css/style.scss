@@ -1,0 +1,339 @@
+html, #app, .wrapper, main, #background, .container-fluid, .container{
+  height: 100%;
+  width: 100%;
+}
+body {
+  background: #293f50;
+  color: #888;
+  font-family: "Roboto", sans-serif;;
+}
+.menu {
+  background-color: #fff;
+  border-color: #e7e7e7;
+  height: 73px;
+  border-bottom: solid 1px #dddddd;
+  border-radius: 0;
+  padding-top: 10px;
+  padding-left: 26px;
+}
+after {
+    box-sizing: border-box;
+  }
+  form {
+    background-color: white;
+    border: 1px solid #c6c7ce;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 10px 25px 10px 25px;
+    width: inherit;
+    position: relative;
+    margin-bottom: 40px;
+  }
+  
+  #groupnav {
+    background-color: white;
+    height: 370px;
+    position: relative;
+    padding: 10px 35px 10px 20px;
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  
+  
+  section {
+    float: auto;
+    margin: 0 1.5%;
+    width: 63%;
+    text-align: center;
+    padding: 0;
+  }
+  
+  h2, header {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+  }
+  h3 {
+    font-weight: 100;
+    margin-top: 32px;
+    margin-bottom: 25px;
+    font-size: 21px;
+  }
+  input[type=checkbox], input[type=radio] {
+    margin: 4px 11px 0 -18px;
+  }
+  input {
+    border-radius: 5px;
+    margin: 0;
+  }
+  
+  .account-info {
+    padding: 0px;
+    label {
+      color: #395870;
+      display: block;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    input {
+      background: #fff;
+      border: 1px solid #c6c7cc;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+      color: #636466;
+      padding: 6px;
+      margin-top: 6px;
+      margin-bottom: 28px;
+      width: 100%;
+    }
+  }
+  
+  .account-action {
+    background: #f0f0f2;
+    border-top: 1px solid #c6c7cc;
+    padding: 20px;
+    .btn {
+      background: linear-gradient(#49708f, #293f50);
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      float: left;
+      padding: 8px 16px;
+    }
+    label {
+      color: #7c7c80;
+      font-size: 12px;
+      float: left;
+      margin: 10px 0 0 20px;
+    }
+  }
+  
+  #signup, #signin {
+    width: 300px;
+    margin: 75px auto 0px auto;
+  }
+  
+  #messageboard {
+    height: 18.5vh;
+    margin-left: -15px;
+    margin-right: -15px;
+    width: 100%;
+    margin-left: 1px;
+  }
+  
+  #signinfieldset {
+    margin-top: 40px;
+  }
+  
+  #button-segment {
+    margin-top: 20px;
+  }
+  
+  #checkbox {
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+  #clear {
+    color: black;
+    clear: both
+  }
+  
+  #priority-class {
+    margin-left: 15px;
+  }
+  
+  a {
+    float: right;
+    color: grey;
+    &:hover {
+      color: #a9b2b9;
+    }
+  }
+  
+  /*
+  -----------
+  Buttons
+  -----------
+  */
+  
+  #googlebutton {
+    margin-top: 50px;
+    margin-bottom: 25px;
+  }
+  
+  #button {
+    margin-top: 25px;
+  }
+  
+  #text {
+    margin-top: 200px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-weight: 100;
+    font-size: 43px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    line-height: 44px;
+    
+  }
+  
+  p {
+    font-size: 23px;
+    line-height: 30px;
+  }
+  
+  #sign {
+    border: 0;
+    cursor: pointer;
+    float: right;
+    padding: 8px 16px;
+    background-color: white;
+    color: green;
+    border: solid 1px;
+    border-radius: 4px;
+    width: 116px;
+    font-weight: 400;
+  }
+  
+  #userlist-form {
+    background: #ECE8E7;
+    height: 42vh;
+    margin-top: -5px;
+    overflow: auto;
+  }
+  
+  #group-form {
+    height: 42vh;
+    margin-top: 0px;
+    overflow: auto;
+  }
+  
+  #MessageForm {
+    margin-top: 50px;
+  }
+  
+  #message-display {
+    height: 70vh;
+    margin-top: -1px;
+    overflow: auto;
+  }
+  
+  #modal-button {
+    margin-top: -15px;
+  }
+  
+  #style-group {
+    color: black;
+    cursor: pointer;
+  }
+  
+  #member-list {
+    color: #050505;
+  }
+  
+  #message-text {
+    color: #09031f;
+  }
+  
+  .register {
+    border-radius: 2px;
+    background-color: #f0f0f0;
+    border: solid 1px;
+    padding: 8px 40px;
+    width: 167px;
+    cursor: pointer;
+    margin: 5px;
+    span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+      &:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+    }
+    &:hover span {
+      padding-right: 25px;
+      &:after {
+        opacity: 1;
+        right: 0;
+      }
+    }
+  }
+  
+  .brand-header {
+    padding-top: 21px;
+  }
+  
+  .message-icon {
+    padding-top: 11px;
+    padding-left: 5px;
+  }
+  
+  #background {
+    background: linear-gradient(
+      rgba(60, 58, 58, 0.45), 
+      rgba(68, 67, 67, 0.45)
+    ),url("../../../template/postitbg.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .container-fluid {
+      padding-top: 15px;       
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    #signin, #signin, #resetpassword, #message-display   {
+      width: 100%;
+      margin: 0;
+      border: 5px;
+    }
+  }
+  
+  h1.group-title {
+    color: rgb(38, 58, 8);
+    text-align: left;
+  }
+
+  #not-found-text {
+    color: rgb(244, 237, 237);
+    margin-right: 40%;
+  }
+  .white-board {
+    border: 2px, solid rgb(109, 11, 11);
+    height: auto;
+    width: 50%;
+    margin: auto;
+    color: black;
+    margin-right: 25%;
+    margin-top: 3%;
+    background: rgba(240, 236, 236, 0.604);
+    padding: 5%;
+    margin-bottom: 50px;
+  }
+
+  h3#clear {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  form#message-display {
+    margin-bottom: 5px;
+  }
+  .reset-password {
+    margin-top: 10%;
+  }

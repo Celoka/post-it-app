@@ -1,16 +1,17 @@
 {
-   "data": { "users": [
-        {},
-        {
-            "userNames": "West"
-        },
-        {
-            "userNames": "Chinwendu"
-        },
-        {
-            "userNames": "Ebuka"
-        },
-        {}
+  "data": {
+    "users": [
+      {},
+      {
+        "userNames": "West"
+      },
+      {
+        "userNames": "Chinwendu"
+      },
+      {
+        "userNames": "Ebuka"
+      },
+      {}
     ]
   }
 }
