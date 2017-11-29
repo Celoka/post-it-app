@@ -1,22 +1,26 @@
 {
-  "data": {  "message": "Users retrieved successfully",
-  "usersDetails": [
+  "data": {
+    "message": "Users retrieved successfully",
+    "usersDetails": [
       {
-          "userId": "AKFnhd92XHNvMGHmUSHJ2CGt1Au1",
-          "userNames": "West"
+        "userId": "AKFnhd92XHNvMGHmUSHJ2CGt1Au1",
+        "userNames": "West"
       },
+
       {
-          "userId": "HIBpkdz7IfTSyOyLbevWasL78HD3",
-          "userNames": "West"
+        "userId": "HIBpkdz7IfTSyOyLbevWasL78HD3",
+        "userNames": "West"
       },
+
       {
-          "userId": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1",
-          "userNames": "Chinwendu"
+        "userId": "JZDm5SXVRoRkX8ZZGwkGIqCg3Hn1",
+        "userNames": "Chinwendu"
       },
+      
       {
-          "userId": "f9TGDZzckNhTxr4KakHiChiAVYP2",
-          "userNames": "Ebuka"
+        "userId": "f9TGDZzckNhTxr4KakHiChiAVYP2",
+        "userNames": "Ebuka"
       }
     ]
-  }       
+  }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+
 import Navbar from '../presentation/Navbar';
 import AppActions from '../../actions/AppActions';
 
@@ -104,8 +104,7 @@ class GoogleUpdate extends React.Component {
               id="sign"
               type="submit"
               name="submit"
-              style={{ marginBottom: 10 }}
-            >
+              style={{ marginBottom: 10 }}>
               Submit
             </button>
           </form>

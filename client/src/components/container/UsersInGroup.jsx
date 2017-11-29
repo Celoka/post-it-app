@@ -1,5 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
+
 import AppActions from '../../actions/AppActions';
 
 /**
@@ -28,7 +29,6 @@ class UsersInGroup extends React.Component {
       groupId: null
     };
   }
-
 
   /**
    * @description This receives props from a parent component and
@@ -86,6 +86,7 @@ class UsersInGroup extends React.Component {
         return null;
       }
     });
+
     return usersInGroup;
   }
 
@@ -107,25 +108,26 @@ class UsersInGroup extends React.Component {
       this.setState({
         error: toastr.error('Click a group to add a member'),
       });
+
       return true;
     }
+
     const userDetails = {
       newUser: this.state.newUser,
       groupId: this.state.groupId,
       userId: this.userValidation(this.state.newUser)
     };
+
     if (!userDetails.userId) {
       this.setState({
         error: toastr.error('User does not exist or Invalid input'),
       });
     } else {
       AppActions.addUserToGroup(userDetails)
-        .then((res) => {
-          if (res) {
-            this.setState({
-              newUser: '',
-            });
-          }
+        .then(() => {
+          this.setState({
+            newUser: '',
+          });
         });
     }
   }

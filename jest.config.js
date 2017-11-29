@@ -1,6 +1,7 @@
 module.exports = {
   setupFiles: [
-    '<rootDir>/mock/localStorage'
+    '<rootDir>/mock/LocalStorage',
+    '<rootDir>/mock/jqueryMock'
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

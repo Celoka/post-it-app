@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import GroupList from '../presentation/GroupList';
@@ -111,6 +112,7 @@ class Group extends React.Component {
       displayName: this.state.displayName
 
     };
+
     AppActions.createGroup(groupDetail)
       .then((res) => {
         if (res) {

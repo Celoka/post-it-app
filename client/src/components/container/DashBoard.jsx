@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppActions from '../../actions/AppActions';
 import Group from '../container/Group';
 import AppStore from '../../stores/AppStore';
@@ -48,6 +49,9 @@ class DashBoard extends React.Component {
   componentDidMount() {
     AppActions.getAllUsers();
     AppStore.addChangeListener(this.onStoreChange);
+    this.setState({
+      groupId: localStorage.getItem('currentGroupId')
+    });
   }
   /**
    * @description A react life cycle method that removes
@@ -141,7 +145,7 @@ class DashBoard extends React.Component {
                       </h6>
                   </div> :
                   <MessageBoard groupId={this.state.groupId}
-                    groupName={this.state.groupName}
+                    groupName={this.state.groupName || localStorage.getItem('GroupName')}
                     groupMessages={this.state.groupMessages} />
               }
             </div>

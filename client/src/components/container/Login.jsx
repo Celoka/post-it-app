@@ -2,7 +2,8 @@ import React from 'react';
 import toastr from 'toastr';
 import GoogleButton from 'react-google-button';
 import { Link, Redirect } from 'react-router-dom';
-import firebase from '../../firebase/';
+
+import firebase from '../../firebase/firebase';
 import { validateEmail } from '../../utils/';
 import AppActions from '../../actions/AppActions';
 import Navbar from '../presentation/Navbar';

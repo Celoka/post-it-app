@@ -2,10 +2,9 @@
 import toastr from 'toastr';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+
 import AppConstants from '../constants/AppConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import AppActions from '../actions/AppActions';
-
 /**
  * @description describes a function that pops a notification
  * when an error occurs
@@ -18,9 +17,12 @@ import AppActions from '../actions/AppActions';
  */
 export const ToastrError = (error) => {
   if (error.message === 'Request failed with status code 401' ||
-    error.message === 'Request failed with status code 403'
+    error.message === 'Request failed with status code 403' ||
+    error.message === 'Unauthorized operation'
   ) {
-    AppActions.logOut();
+    localStorage.clear();
+    location.href = '/signin';
+    toastr.error('Your session has expired, kindly login again');
   } else if (error.message === 'Request failed with status code 500') {
     toastr.error('An unexpected error occurred.');
   } else if (error.message === 'Network Error') {
@@ -60,7 +62,7 @@ export const setCurrentUser = (response) => {
   setAuthToken(jwtToken);
   const userDetails = jwt.decode(localStorage.token);
   localStorage.setItem('displayName',
-   JSON.stringify(userDetails.displayName));
+    JSON.stringify(userDetails.displayName));
   localStorage.setItem('uid', userDetails.uid);
   toastr.success(`Welcome, ${userDetails.displayName}`);
   AppDispatcher.dispatch({
@@ -78,7 +80,8 @@ export const setCurrentUser = (response) => {
  * @return { string } this returns an email after the validation
  */
 export const validateEmail = (email) => {
-  const regexForEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regexForEmail =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regexForEmail.test(email);
 };
 

@@ -1,5 +1,6 @@
 {
-    "data": { "status": "Message retrieved successfully",
+  "data": {
+    "status": "Message retrieved successfully",
     "userGroups": [
       {
         "groupId": "-Kwz6LQ8P66M25GfxlNQ",

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppActions from '../../actions/AppActions';
 
 /**
@@ -100,6 +101,7 @@ class MessageBoard extends React.Component {
       priority: this.refs.type.value,
       displayName: this.state.displayName
     };
+
     const groupId = this.state.groupId;
     if (groupId !== '') {
       AppActions.postMessage(messageDetail, groupId);
@@ -117,7 +119,8 @@ class MessageBoard extends React.Component {
       <div>
         <form id="message-display">
           <h1 className="group-title">
-            Group Name: {this.props.groupName}
+            Group Name: {this.props.groupName ||
+              localStorage.getItem('Groupname')}
           </h1>
           {
             this.state.groupMessages.length === 0 ? (
@@ -143,12 +146,12 @@ class MessageBoard extends React.Component {
                     <div className="row">
                       <div className="col-sm-9">
                         <time id="time-tag">
-                          sent on: {KeyName.timeStamp}
+                          posted on: {KeyName.timeStamp}
                         </time>
                       </div>
                       <div className="col-sm-3">
                         <small>
-                          sent by: {KeyName.displayName}
+                          posted by: {KeyName.displayName}
                         </small>
                       </div>
                     </div>
