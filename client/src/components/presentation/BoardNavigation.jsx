@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import AppActions from '../../actions/AppActions';
 
 /**
@@ -29,12 +30,15 @@ const BoardNavigation = () => ({
         <nav className="navbar navbar-default">
           <div className="container">
             <div className="navbar-header brand-header">
-              <button type="button" className="navbar-toggle"
-                data-toggle="collapse" data-target=".navbar-collapse">
+              <button
+                type="button"
+                className="navbar-toggle"
+                data-toggle="collapse"
+                data-target=".navbar-collapse">
                 <span className="sr-only">Toggle navigation</span>
               </button>
               <h3 id="clear">
-                Hi, { this.props.displayName || userName }
+                Hi, {this.props.displayName || userName}
               </h3>
             </div>
             <div className="collapse navbar-collapse">

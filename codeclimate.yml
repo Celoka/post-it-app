@@ -1,21 +1,25 @@
 engines:
  duplication:
    enabled: true
+   config:
+     languages:
+     - javascript:
    checks:
      Similar code:
        enabled: false
-   config:
-     languages:
-     - javascript
- fixme:
+ eslint:
    enabled: true
-ratings:
- paths:
- - "server/*.js"
- - "server/**/*.js"
+   checks:
+     import/extensions:
+       enabled: false
+     no-multiple-empty-lines:
+       enabled: true
+     linebreak-style:
+       enabled: true
 exclude_paths:
-- "node_modules/"
+- "template/"
+- "client/"
 - "server/test/"
-- "client/__test__/*"
-- "client/__mocks__/*"
-- "bundle.js"
+ratings:
+  paths:
+  - "server/**/*"

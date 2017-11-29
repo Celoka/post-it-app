@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import jwt from 'jsonwebtoken';
 import toastr from 'toastr';
+
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 import { setAuthToken } from '../utils/';

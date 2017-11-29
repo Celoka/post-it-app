@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppActions from '../../actions/AppActions';
 
 /**
@@ -19,6 +20,10 @@ const GroupList = () => ({
         AppActions.getNewUsers(this.props.KeyName.groupId);
         AppActions.loadGroupMessage(this.props.KeyName.groupId);
         this.props.setGroupId(this.props.KeyName.groupId,
+          this.props.KeyName.groupName);
+        localStorage.setItem('currentGroupId',
+          this.props.KeyName.groupId);
+        localStorage.setItem('Groupname',
           this.props.KeyName.groupName);
       }}>
         <h5 id="style-group" className="list-group-item">

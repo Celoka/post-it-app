@@ -18,18 +18,28 @@ const config = {
   module: {
     loaders: [
       {
+        test: /\.js$/,
+        loaders: ['babel-loader'],
+        exclude: /node_modules/,
+      },
+
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: [
-          'react-hot-loader',
-          'babel-loader'
-        ]
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react', 'stage-2']
+        }
       },
-      { test: /\.css$/,
+
+      {
+        test: /\.css$/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          loader: 'css-loader?importLoaders=1' })
+          loader: 'css-loader?importLoaders=1'
+        })
       },
+
       {
         test: /\.scss$/,
         exclude: /node_modules/,
@@ -38,6 +48,7 @@ const config = {
           use: ['css-loader', 'sass-loader']
         })
       },
+
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
@@ -53,6 +64,7 @@ const config = {
     new webpack.LoaderOptionsPlugin({
       debug: false
     }),
+
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
@@ -64,10 +76,12 @@ const config = {
         messagingSenderId: JSON.stringify(process.env.messagingSenderId)
       }
     }),
+
     new UglifyJsPlugin({
       sourceMap: true,
     }),
   ],
+
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
